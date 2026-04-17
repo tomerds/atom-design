@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Rendered exports (regenerate via html-screenshot skill)
+**/*@2x.png
+
+# Personal Claude Code settings (shared settings live in .claude/settings.json)
+.claude/settings.local.json
