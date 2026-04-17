@@ -1,8 +1,11 @@
 # macOS
 .DS_Store
 
-# Rendered exports (regenerate via html-screenshot skill)
-**/*@2x.png
-
 # Personal Claude Code settings (shared settings live in .claude/settings.json)
 .claude/settings.local.json
+
+# Ignore all top-level directories (project deliverables stay local)
+# except the shared brand assets and Claude Code setup.
+/*/
+!/assets/
+!/.claude/
