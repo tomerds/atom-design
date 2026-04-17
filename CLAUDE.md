@@ -37,6 +37,7 @@ Apply these consistently across every material unless the user explicitly overri
 - **Text:** black (`#000000`)
 - **Dark gray:** `#333333`
 - **Light gray:** `#d9d9d9`
+- **Atom Chrome:** `linear-gradient(180deg, #FE6400, #FF3338)` — the hero gradient, used on the logo and primary CTAs only.
 
 Use red and orange as accent/brand colors (headlines, highlights, CTAs, gradients between the two). Avoid introducing off-brand colors; if a chart or diagram needs more hues, derive tints/shades of the two brand colors first, then fall back to grayscale.
 
@@ -62,6 +63,7 @@ CSS variables to prefer:
   --text: #000000;
   --gray-dark: #333333;
   --gray-light: #d9d9d9;
+  --atom-chrome: linear-gradient(180deg, #fe6400, #ff3338);
   --font-title: "Cal Sans", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
 }
