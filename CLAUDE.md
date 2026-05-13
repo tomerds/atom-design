@@ -68,6 +68,28 @@ CSS variables to prefer:
 }
 ```
 
+### Headshots
+
+All headshots of people — author cards, speaker portraits, team bios, testimonial avatars, anywhere a real person's face appears — must be **black-and-white** and **square with rounded corners**. No full circles, no color photos. Crop so the full head is visible with a small margin of headroom above; if the source photo is portrait-oriented, bias the crop upward (`object-position: center ~15-20%`) rather than centering.
+
+Apply via CSS:
+
+```css
+.avatar {
+  width: 200px; height: 200px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: grayscale(100%);
+}
+```
+
+This matches the webinar speaker portrait convention already used in `og-tile`.
+
 ## Conventions for New Materials
 
 - **One HTML file per deliverable** by default (easier to share/export). Inline CSS or a single `<style>` block is fine — don't introduce a build step unless asked.
@@ -77,6 +99,7 @@ CSS variables to prefer:
 - **Animations:** prefer CSS keyframes or lightweight JS; avoid pulling in heavy animation libraries unless the brief calls for it.
 - **Mockups:** when showing product UI, keep it consistent with the real Atom Grants product styling if reference is available.
 - **OG / social tiles** for resources (`atomgrants.com/resources/...`) and webinars (`atomgrants.com/webinars/...`): always 1200 × 630 on white. Resource tiles = title + category pill + bottom accent bar. Webinar tiles = title + dated header + grayscale square-rounded speaker portraits. The complete spec, layout grids, copy rules, headshot-sourcing playbook (incl. Cloudflare-blocked institution sites), and the grayscale/crop helper live in `.claude/skills/og-tile/SKILL.md` — read that before designing or extending either family. Examples: `Resource_Tiles/`, `Webinar_Tiles/`.
+- **Partner check-in decks** (90/180/270-day reviews, QBRs, renewal-conversation decks): always 13.333 × 7.5 in landscape, one HTML file with the canonical 12-13 slide sequence (cover → all-time headlines → activation → period comparison → weekly trend → cohort flow → top departments → fastest growing → funder mix → channels → power users → next steps → modules teaser). The complete spec — slide order, accent discipline, copy register, period-comparison framing, chart conventions, data-interpretation gotchas, print-CSS overrides, render commands, and the boilerplate skeleton — lives in `.claude/skills/checkin-deck/SKILL.md`. Read that before starting or extending any check-in deck. Reference implementation: `NYULH_180_Day_Checkin/v1/`.
 - **LinkedIn / social concept posts:** 1200 × 1200 square on white. Lead with a **diagram or UX mockup**, not a typographic quote — show the concept, don't write it. For "X vs Y" posts (the most common kind), use a two-column comparison with stark asymmetry: the worse paradigm gets a long list of dim/low-relevance items, the better one a short list of dark/high-relevance items. Represent UI text with **skeleton bars** (gray `<div>` rectangles of varying width — `w-90`, `w-70`, etc.) so the viewer reads the shape of the UI, not the words. Reserve real text for: column labels (small caps, gray), one short Cal Sans title per column, the input mock (search bar query, profile name + context chips), and a single bottom takeaway line in Cal Sans. Brand frame: small logo top-left (~38px), URL top-right (16px gray). Use accent red only for the "good" side's signals — match meters, why-it-matches tags, the takeaway punch word. Example: `LinkedIn_Knows_Me/`.
 
 ## Rendering to PNG
