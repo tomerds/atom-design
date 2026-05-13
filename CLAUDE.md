@@ -20,7 +20,8 @@ Design/
 │   └── skills/
 │       ├── html-screenshot/      # HTML → PNG, see "Rendering to PNG" below
 │       ├── html-to-pdf/          # HTML → vector PDF (default), see "Rendering to PDF" below
-│       └── png-to-pdf/           # PNGs → raster PDF, see "Rendering to PDF" below
+│       ├── png-to-pdf/           # PNGs → raster PDF, see "Rendering to PDF" below
+│       └── og-tile/              # Resource + Webinar OG image conventions, see "OG Tiles" below
 └── CLAUDE.md
 ```
 
@@ -75,6 +76,8 @@ CSS variables to prefer:
 - **Downloadable resources / playbooks / ebooks:** multi-page HTML sized as Letter portrait (`816 x 1056px` per page at 96dpi). Each page is a `.page` section with a sequential id (`#page-1`, `#page-2`, ...). Include the `@page` + `@media print` boilerplate from the "Rendering to PDF" section so the HTML can be exported directly via `html-to-pdf` (the default). Keep a consistent running header/footer across interior pages. Example: `Newsletter_Playbook/`.
 - **Animations:** prefer CSS keyframes or lightweight JS; avoid pulling in heavy animation libraries unless the brief calls for it.
 - **Mockups:** when showing product UI, keep it consistent with the real Atom Grants product styling if reference is available.
+- **OG / social tiles** for resources (`atomgrants.com/resources/...`) and webinars (`atomgrants.com/webinars/...`): always 1200 × 630 on white. Resource tiles = title + category pill + bottom accent bar. Webinar tiles = title + dated header + grayscale square-rounded speaker portraits. The complete spec, layout grids, copy rules, headshot-sourcing playbook (incl. Cloudflare-blocked institution sites), and the grayscale/crop helper live in `.claude/skills/og-tile/SKILL.md` — read that before designing or extending either family. Examples: `Resource_Tiles/`, `Webinar_Tiles/`.
+- **LinkedIn / social concept posts:** 1200 × 1200 square on white. Lead with a **diagram or UX mockup**, not a typographic quote — show the concept, don't write it. For "X vs Y" posts (the most common kind), use a two-column comparison with stark asymmetry: the worse paradigm gets a long list of dim/low-relevance items, the better one a short list of dark/high-relevance items. Represent UI text with **skeleton bars** (gray `<div>` rectangles of varying width — `w-90`, `w-70`, etc.) so the viewer reads the shape of the UI, not the words. Reserve real text for: column labels (small caps, gray), one short Cal Sans title per column, the input mock (search bar query, profile name + context chips), and a single bottom takeaway line in Cal Sans. Brand frame: small logo top-left (~38px), URL top-right (16px gray). Use accent red only for the "good" side's signals — match meters, why-it-matches tags, the takeaway punch word. Example: `LinkedIn_Knows_Me/`.
 
 ## Rendering to PNG
 
@@ -154,3 +157,6 @@ python3 .claude/skills/png-to-pdf/merge.py \
 - Ask what the deliverable is for (audience, format, export target) before designing if it's not obvious from the request.
 - When the user says "make a deck/poster/etc.", produce a complete, openable HTML file rather than fragments.
 - Don't invent additional brand rules (new colors, new fonts, taglines) without checking — flag and ask.
+- **Default to a diagram or product mock** when the post explains a concept (how something works, before-vs-after, a paradigm shift). Reserve typographic-hero / pull-quote designs for quote or voice posts where the words *are* the point. If you're unsure which the brief calls for, ask before designing.
+- **Use skeleton bars for UI text.** When mocking product surfaces in a diagram, fill non-essential text with light-gray rectangles of varying width. Reserve real copy for the elements that carry meaning (search query, profile chips, match labels, takeaway).
+- **Plain copy, not marketing voice.** Direct phrasing in every deliverable. Use the simplest word that works ("favorites," not "save-for-later actions"). No flowery framing — in copy or in conversation.
