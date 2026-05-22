@@ -1,30 +1,35 @@
 ---
 name: og-tile
-description: Build Atom Grants Open Graph (OG) social-share images at 1200×630 for two deliverable families — downloadable resources and webinars. Trigger when the user asks for "OG image", "og card", "social tile", "share image", "Twitter card", or wants a thumbnail for a resource on atomgrants.com/resources or a webinar on atomgrants.com/webinars. Encodes layout, copy treatment, headshot sourcing & grayscale workflow so output stays consistent across runs and conversations.
+description: Build Atom Grants Open Graph (OG) social-share images at 1200×630 for three deliverable families — downloadable resources, webinars, and blog posts. Trigger when the user asks for "OG image", "og card", "social tile", "share image", "Twitter card", or wants a thumbnail for a resource on atomgrants.com/resources, a webinar on atomgrants.com/webinars, or a blog post on atomgrants.com/blog. Encodes layout, copy treatment, headshot sourcing & grayscale workflow so output stays consistent across runs and conversations.
 ---
 
 # Atom Grants OG Tiles
 
-Two layouts, same brand system. **Resource** tiles (downloadable resources) and **Webinar** tiles (event share cards) both render at **1200 × 630 px** (OG standard) on white, exported via the `html-screenshot` skill at 2× retina.
+Three layouts, same brand system. **Resource** tiles (downloadable resources), **Webinar** tiles (event share cards), and **Blog** tiles (article share cards) all render at **1200 × 630 px** (OG standard), exported via the `html-screenshot` skill at 2× retina.
 
 ## When to use which
 
-- **Resource OG** — downloadable assets from `atomgrants.com/resources` (playbooks, guides, templates, calculators, brochures). Single hero title, no people.
-- **Webinar OG** — events from `atomgrants.com/webinars` (upcoming or past). Title + grayscale presenter portraits.
+- **Resource OG** — downloadable assets from `atomgrants.com/resources` (playbooks, guides, templates, calculators, brochures). Single hero title, no people. Bottom 10px accent bar.
+- **Webinar OG** — events from `atomgrants.com/webinars` (upcoming or past). Title + subtitle + grayscale presenter portraits.
+- **Blog OG** — articles from `atomgrants.com/blog`. Two variants: **featured** (external interviewee/guest writer — bottom collab strip with grayscale headshot) and **general** (Atom-authored — bottom accent bar).
 
-## Shared brand system (must match in both)
+## Shared brand system (must match in all three)
 
 | Token | Value |
 |---|---|
 | Accent | `#ff4227` (the only brand color — no gradients, no secondary red) |
-| Background | `#ffffff` |
+| **Tile background** | **`#fafafa`** (light gray — applied to all three families; page background stays `#ffffff`) |
 | Text | `#000000`, secondary `#333`, tertiary `#666` |
 | Title font | Cal Sans (loaded from `https://fonts.cdnfonts.com/css/cal-sans`) |
 | Body font | DM Sans 400/500/600/700 (Google Fonts) |
 | Logo | `../assets/newredlogowordmarkhighres.png` (height: 44–52px in tiles) |
-| Bottom accent bar | 10px solid `#ff4227`, full-width — **resource tiles only** |
+| **Tile padding** | **`64px 144px`** (universal — matches the website card padding) |
+| Headshot frame | Square + `border-radius: 18px` + grayscale + `box-shadow: 0 0 0 1px rgba(0,0,0,0.04)` (the inset shadow keeps the avatar legible against the gray tile bg) |
+| Bottom accent bar | 10px solid `#ff4227`, full-width — **resource tiles + general blog tiles** (not webinars, not featured blog tiles) |
 
-Wrap in a `:root` CSS-variables block so both layouts share tokens. Always set `width: 1200px; height: 630px;` on the `.tile` element so the screenshot crop is exact.
+Wrap in a `:root` CSS-variables block so all three layouts share tokens (`--accent`, `--tile-bg`, `--text`, `--gray-light`, `--font-title`, `--font-body`). Always set `width: 1200px; height: 630px;` on the `.tile` element so the screenshot crop is exact.
+
+The `#fafafa` tile-on-white treatment matches how cards appear on the live atomgrants.com pages — keeps the tiles visually unified across the three families and consistent with the website chrome.
 
 ## Layout 1 — Resource OG
 
@@ -42,7 +47,7 @@ Wrap in a `:root` CSS-variables block so both layouts share tokens. Always set `
 ```
 
 Key rules:
-- Padding: `64px 72px`. Title sits in `.tile-body` with `margin-top: auto` so it anchors to bottom-left.
+- Padding: `64px 144px` (the universal tile padding). Title sits in `.tile-body` with `margin-top: auto` so it anchors to bottom-left.
 - **One word in the title is highlighted in `#ff4227`** — usually the most distinctive noun (e.g. "Library", "Newsletter", "AI-Readiness"). Wrap in `<span class="accent">…</span>`.
 - **No subtitle, no description.** Title only — meant to be readable in a small social preview.
 - Category pill top-right: outlined `#ff4227`, uppercase 16px DM Sans 600, letter-spacing `0.18em`, padding `10px 20px`, border-radius `999px`.
@@ -69,7 +74,7 @@ Reference implementation: `Resource_Tiles/Resource_Tiles.html` (12 tiles, all va
 ```
 
 Key rules:
-- Padding: `56px 64px`. Three-row grid: header / title (1fr, vertically centered) / presenter footer.
+- Padding: `64px 144px` (the universal tile padding). Three-row grid: header / title (1fr, vertically centered) / presenter footer.
 - Header right side: small `#ff4227` dot + `WEBINAR` (accent) + `·` separator + date (e.g. `MAY 19, 2026`). All uppercase, DM Sans 700, 18px, letter-spacing `0.18em`. **No pill** — that's the resource tile's treatment.
 - **Subtitle is required** (event tagline). Gray `#666`, DM Sans 500, 22px.
 - Presenter row sits above a 1px `#d9d9d9` top border. 24px top padding inside the border.
@@ -87,6 +92,138 @@ Key rules:
 | 4+ | use `.three` and shrink further or stack as 2×2 grid | — | Rare — only seen on past panel webinars |
 
 Reference implementation: `Webinar_Tiles/Webinar_Tiles.html`.
+
+### YouTube version — ALWAYS generate alongside the webinar OG
+
+**Rule: every webinar tile ships in two sizes.** Whenever you create or update a webinar OG tile (1200 × 630), you must also produce a **YouTube** version of the same webinar. Webinars become recordings, and the recording's thumbnail needs the 16:9 frame. Never hand off a webinar OG without its YouTube twin.
+
+- **Dimensions:** `1280 × 720` (16:9 — the YouTube thumbnail standard). Render at 2× → `2560 × 1440`.
+- **Same everything else:** identical copy, date tag, accent split, speakers, and grayscale square-rounded headshots. Only the frame ratio and the type/spacing scale change (the OG is wider; 16:9 is taller, so the layout breathes into the extra height and the title grows for small-thumbnail legibility).
+
+**Canonical method — a `.yt` twin in the master file.** For each `#tile-NN` add a sibling `<section class="tile yt" id="tile-NN-yt">` with the *same inner markup*, then render it to `tile_NN_yt@2x.png`. The `.tile.yt` modifier overrides only dimensions, padding, and scale:
+
+> **Note:** all deliverable folders (`Webinar_Tiles/`, etc.) are gitignored — deliverables stay local. So **this skill is the source of truth**, not any local HTML. When you open or recreate `Webinar_Tiles.html`, paste the `.tile.yt` block below into its `<style>` if it isn't already there.
+
+| Element | OG (1200×630) | YouTube (`.yt`, 1280×720) |
+|---|---|---|
+| `.tile` | `padding: 64px 144px; gap: 28px` | `padding: 72px 128px; gap: 32px` |
+| `.logo` | 44px | 52px |
+| `.date-tag` / dot | 18px / 10px | 20px / 11px |
+| `.title` (default / `.sm` / `.xs`) | 78 / 66 / 56px | 96 / 80 / 68px |
+| `.subtitle` | 22px | 26px |
+| `.avatar` (2-up) | 96px, radius 18 | 110px, radius 20 |
+| `.presenter-name` / `.role` | 22 / 14px | 26 / 16px |
+| `.avatar` (`.three`) | 78px | 92px, radius 16 |
+| `.three` name / role | 18 / 12px | 21 / 14px |
+
+Paste-ready block (drop into the webinar master file's `<style>`):
+
+```css
+/* ── YouTube twin: 1280×720 (16:9). Same copy/speakers/accent as the OG;
+   only frame + scale change. Duplicate a tile as <section class="tile yt"
+   id="tile-NN-yt"> and render to tile_NN_yt@2x.png. ── */
+.tile.yt { width: 1280px; height: 720px; gap: 32px; padding: 72px 128px; }
+.tile.yt .logo { height: 52px; }
+.tile.yt .date-tag { font-size: 20px; }
+.tile.yt .date-tag::before { width: 11px; height: 11px; }
+.tile.yt .title { font-size: 96px; margin-bottom: 22px; }
+.tile.yt .title.sm { font-size: 80px; }
+.tile.yt .title.xs { font-size: 68px; }
+.tile.yt .subtitle { font-size: 26px; }
+.tile.yt .presenters { gap: 36px; padding-top: 28px; }
+.tile.yt .presenter { grid-template-columns: 110px 1fr; gap: 20px; }
+.tile.yt .avatar { width: 110px; height: 110px; border-radius: 20px; }
+.tile.yt .presenter-name { font-size: 26px; }
+.tile.yt .presenter-role { font-size: 16px; }
+.tile.yt .presenters.three .presenter { grid-template-columns: 92px 1fr; gap: 16px; }
+.tile.yt .presenters.three .avatar { width: 92px; height: 92px; border-radius: 16px; }
+.tile.yt .presenters.three .presenter-name { font-size: 21px; }
+.tile.yt .presenters.three .presenter-role { font-size: 14px; }
+```
+
+```bash
+# render both sizes of the same webinar
+python3 .claude/skills/html-screenshot/shoot.py Webinar_Tiles/Webinar_Tiles.html --selector "#tile-NN"    -o Webinar_Tiles/tile_NN@2x.png
+python3 .claude/skills/html-screenshot/shoot.py Webinar_Tiles/Webinar_Tiles.html --selector "#tile-NN-yt" -o Webinar_Tiles/tile_NN_yt@2x.png
+```
+
+For a standalone, hand-off-ready deliverable (its own folder with copied speaker crops), see the reference implementation `BuildingTrust_YouTube/` — same spec, written as one self-contained file.
+
+## Layout 3 — Blog OG
+
+Two variants share the same shell and header signature. Pick **featured** when the post has an external interviewee or guest writer; **general** otherwise.
+
+### Shared shell (both variants)
+
+```
+┌─────────────────────────────────────────────┐
+│  [LOGO]                  ● BLOG · DATE      │  ← header row
+│                                             │
+│                                             │
+│  Title Line One                             │  ← Cal Sans 88px (sm 76, xs 64)
+│  Title Line Two (accent)                    │     anchored above the footer
+│                                             │
+│  ─ footer (variant-specific) ─              │
+└─────────────────────────────────────────────┘
+```
+
+Key shell rules:
+- **Tile background:** `#fafafa` (universal — shared with resource & webinar tiles). Page background stays white; the gray fills the 1200×630 card.
+- **Padding:** `64px 144px` (universal — matches the website card padding).
+- **Header right side:** small `#ff4227` dot + `BLOG` (accent) + `·` separator + uppercase date (`APR 22, 2026` — month abbreviated to 3 letters, no leading zero on day). Same DM Sans 700 18px / `0.18em` tracking as webinar tiles. Reuse the `.date-tag` pattern.
+- **Title split:** find the word boundary closest to the character midpoint; first half stays black on line 1, second half goes to accent on line 2. For 1-word titles, accent the whole word; for 2-word titles, accent the second word.
+- **Size variants** (length-based):
+  - Featured: 88px default, `.sm` (76px) if `len > 20`, `.xs` (64px) if `len > 28`.
+  - General: 88px default, `.sm` (76px) if `len > 22`, `.xs` (64px) if `len > 32`.
+- **No subtitle** — title only, like resource tiles. The deck below the title (collab strip or accent bar) is the only thing under the headline.
+
+### Featured variant
+
+```
+│  ─────────────────────────────────────────  │  ← 1px gray divider
+│  [▢] IN COLLABORATION WITH                  │  ← collab strip
+│      Person Name                            │     square rounded headshot (96px)
+│      Role, Organization                     │
+└─────────────────────────────────────────────┘
+```
+
+- Bottom collab strip sits above a `1px #d9d9d9` top border, 22px top padding.
+- 96 × 96 grayscale **square with `border-radius: 18px`** headshot — same crop/grayscale rules as webinar speakers (`object-fit: cover; object-position: center 18%` for portrait sources, plus an inset shadow `0 0 0 1px rgba(0,0,0,0.04)` since the headshot sits on the gray tile).
+- Eyebrow: `IN COLLABORATION WITH` — DM Sans 700, 13px, `0.22em` tracking, `#666`.
+- Name: Cal Sans 600 26px black. Role/org line: DM Sans 500 16px gray with `<span class="org">` wrapping the organization in black 600.
+- **No bottom accent bar** on featured (the collab strip is the anchor).
+
+### General variant
+
+```
+│                                             │
+│  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔  │  ← 10px accent bar
+```
+
+- No collab strip. Title block uses `align-self: end; padding-bottom: 12px;` to sit just above the bar.
+- 10px solid `#ff4227` flush against the tile's bottom edge (same treatment as resource tiles — but on `#fafafa` instead of white).
+
+### Workflow — fetching blog metadata + featured headshots
+
+Atom Grants blog pages embed their content in Next.js RSC chunks (`self.__next_f.push([N, "..."])`). The reference parser is `/tmp/parse_blog.py` in this repo's working set, but the algorithm is:
+
+1. **Slug list** — fetch `atomgrants.com/blog` with a Chrome UA and grep `/blog/<slug>` from the raw HTML. Drop strict-prefix truncations (e.g. `research-grant-finder-acad` when `research-grant-finder-academic-...` is also present).
+2. **Per-post page** — fetch `atomgrants.com/blog/<slug>` and:
+   - Title: `<h1>...</h1>` or `"h1"…"children":"..."` in the decoded chunks.
+   - Date: `<p class="text-center">Mon DD, YYYY</p>` above the title.
+3. **Featured detection** — scan markdown image references at `https://api.atomgrants.com/storage/v1/object/public/app/...`. Two alt-text patterns mark a featured author:
+   - `![A Picture of <Name>](url)`
+   - `![*This article was written by <Name>.*](url)`
+   Skip if the name matches the Atom Grants in-house roster (`raphaël/raphael bernier`, `tomer dicturel`, `matteus pan`, `brian evans`, `mathilde bernier`).
+4. **Bio extraction** — try in order:
+   - Bold-name block: `**<FirstToken>...**\n<bio line>` (allow up to 40 trailing chars to absorb credentials like `, M.Ed., CRA`).
+   - Prose: `<FirstToken> is the/a <role> at <org>.`
+   - Trim trailing relative clauses with `re.split(r'\s+(?:who|which|that|where|whose)\s+', first, maxsplit=1)[0]` so bios like "...at Northwestern University who specializes in..." don't pollute the org.
+5. **Mojibake** — RSC chunks ship as Latin-1-mis-decoded UTF-8. Round-trip with `s.encode('latin-1').decode('utf-8')` and `codecs.decode(body, 'unicode_escape')` on the chunk body.
+
+For headshot crops, **prefer the post's own `api.atomgrants.com/storage/...` URL** — the blog already hosts the right image. Apply the same grayscale + square crop as webinar speakers (see "Grayscale + crop to square" below). For banner-style sources (wide composite images, e.g. Cristina Flowerday's 6868×970 banner), find the dark-pixel centroid in the left third and crop a square around it rather than centering naively.
+
+Reference implementation: `Blog_Tiles/Blog_Tiles.html` (67 tiles).
 
 ## Workflow — building a webinar tile end-to-end
 
@@ -177,6 +314,8 @@ python3 .claude/skills/html-screenshot/shoot.py \
 
 Output is 2400 × 1260 PNG (2× retina). The 1× equivalent is the OG-spec 1200 × 630.
 
+**Then render the YouTube twin** (required — see "YouTube version" above): add a `<section class="tile yt" id="tile-NN-yt">` with the same inner markup and screenshot it to `Webinar_Tiles/tile_NN_yt@2x.png` (2560 × 1440 = 1280 × 720 at 2×).
+
 ## File layout
 
 ```
@@ -184,9 +323,10 @@ Resource_Tiles/
 ├── Resource_Tiles.html         ← all tiles in one file, one <section class="tile" id="tile-NN">
 ├── tile_01@2x.png … tile_NN@2x.png
 Webinar_Tiles/
-├── Webinar_Tiles.html
+├── Webinar_Tiles.html         ← each webinar = an OG `#tile-NN` + a YouTube `#tile-NN-yt` twin
 ├── <speaker>_gray.jpg          ← grayscale square portraits, one per unique speaker
-├── tile_01@2x.png … tile_NN@2x.png
+├── tile_01@2x.png … tile_NN@2x.png       ← OG 1200×630 (@2x)
+├── tile_01_yt@2x.png … tile_NN_yt@2x.png ← YouTube 1280×720 (@2x), one per webinar
 ```
 
 Keep one master HTML per family — easier to keep typography and spacing consistent than separate files per tile.
