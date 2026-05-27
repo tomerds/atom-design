@@ -9,9 +9,9 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 
 ## When to use which
 
-- **Resource OG** — downloadable assets from `atomgrants.com/resources` (playbooks, guides, templates, calculators, brochures). Single hero title, no people. Bottom 10px accent bar.
+- **Resource OG** — downloadable assets from `atomgrants.com/resources` (playbooks, guides, templates, calculators, brochures). Single hero title, no people.
 - **Webinar OG** — events from `atomgrants.com/webinars` (upcoming or past). Title + subtitle + grayscale presenter portraits.
-- **Blog OG** — articles from `atomgrants.com/blog`. Two variants: **featured** (external interviewee/guest writer — bottom collab strip with grayscale headshot) and **general** (Atom-authored — bottom accent bar).
+- **Blog OG** — articles from `atomgrants.com/blog`. Two variants: **featured** (external interviewee/guest writer — bottom collab strip with grayscale headshot) and **general** (Atom-authored — title only, no footer).
 
 ## Shared brand system (must match in all three)
 
@@ -25,7 +25,6 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 | Logo | `../assets/newredlogowordmarkhighres.png` (height: 44–52px in tiles) |
 | **Tile padding** | **`64px 144px`** (universal — matches the website card padding) |
 | Headshot frame | Square + `border-radius: 18px` + grayscale + `box-shadow: 0 0 0 1px rgba(0,0,0,0.04)` (the inset shadow keeps the avatar legible against the gray tile bg) |
-| Bottom accent bar | 10px solid `#ff4227`, full-width — **resource tiles + general blog tiles** (not webinars, not featured blog tiles) |
 
 Wrap in a `:root` CSS-variables block so all three layouts share tokens (`--accent`, `--tile-bg`, `--text`, `--gray-light`, `--font-title`, `--font-body`). Always set `width: 1200px; height: 630px;` on the `.tile` element so the screenshot crop is exact.
 
@@ -43,7 +42,6 @@ The `#fafafa` tile-on-white treatment matches how cards appear on the live atomg
 │  Title Word Two (accent)                    │     bottom-left, hero treatment
 │                                             │
 └─────────────────────────────────────────────┘
-  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔   ← 10px accent bar
 ```
 
 Key rules:
@@ -52,7 +50,7 @@ Key rules:
 - **No subtitle, no description.** Title only — meant to be readable in a small social preview.
 - Category pill top-right: outlined `#ff4227`, uppercase 16px DM Sans 600, letter-spacing `0.18em`, padding `10px 20px`, border-radius `999px`.
 - Use size variants `.title.sm` (76px) and `.title.xs` (64px) for longer titles to keep them on 2–3 lines.
-- The 10px accent bar at the bottom is the visual signature of resource tiles.
+- **No bottom bar.** The tile ends flush; the accent word in the title is the only color hit besides the logo and category pill.
 
 Reference implementation: `Resource_Tiles/Resource_Tiles.html` (12 tiles, all variants).
 
@@ -80,7 +78,7 @@ Key rules:
 - Presenter row sits above a 1px `#d9d9d9` top border. 24px top padding inside the border.
 - Presenter avatars: square with **`border-radius: 18px`** (not circles), 96 × 96px. `background-size: cover; background-position: center top` so the face anchors high.
 - Presenter name: Cal Sans 600 22px, role: DM Sans 400 14px gray, org: DM Sans 600 14px black (use `<span class="org">` to bold the affiliation).
-- **No bottom accent bar** on webinar tiles (that's resource-only).
+- **No bottom accent bar.** None of the tile families carry one anymore (see "Don't" section).
 
 ### Speaker count variants
 
@@ -175,7 +173,7 @@ Key shell rules:
 - **Size variants** (length-based):
   - Featured: 88px default, `.sm` (76px) if `len > 20`, `.xs` (64px) if `len > 28`.
   - General: 88px default, `.sm` (76px) if `len > 22`, `.xs` (64px) if `len > 32`.
-- **No subtitle** — title only, like resource tiles. The deck below the title (collab strip or accent bar) is the only thing under the headline.
+- **No subtitle** — title only, like resource tiles. The only thing that can sit under the headline is the featured variant's collab strip; the general variant is title-only.
 
 ### Featured variant
 
@@ -191,17 +189,18 @@ Key shell rules:
 - 96 × 96 grayscale **square with `border-radius: 18px`** headshot — same crop/grayscale rules as webinar speakers (`object-fit: cover; object-position: center 18%` for portrait sources, plus an inset shadow `0 0 0 1px rgba(0,0,0,0.04)` since the headshot sits on the gray tile).
 - Eyebrow: `IN COLLABORATION WITH` — DM Sans 700, 13px, `0.22em` tracking, `#666`.
 - Name: Cal Sans 600 26px black. Role/org line: DM Sans 500 16px gray with `<span class="org">` wrapping the organization in black 600.
-- **No bottom accent bar** on featured (the collab strip is the anchor).
+- **Collab strip is the only footer.** No accent bar under it.
 
 ### General variant
 
 ```
 │                                             │
-│  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔  │  ← 10px accent bar
+│  (title-only — no footer, no bar)           │
+└─────────────────────────────────────────────┘
 ```
 
-- No collab strip. Title block uses `align-self: end; padding-bottom: 12px;` to sit just above the bar.
-- 10px solid `#ff4227` flush against the tile's bottom edge (same treatment as resource tiles — but on `#fafafa` instead of white).
+- No collab strip, no bottom bar. Title block uses `align-self: end;` so the headline sits anchored near the bottom of the tile padding, with the lower half of the card empty for breathing room.
+- The accent word in the title is the only color hit besides the header eyebrow and logo.
 
 ### Workflow — fetching blog metadata + featured headshots
 
@@ -336,6 +335,6 @@ Keep one master HTML per family — easier to keep typography and spacing consis
 - Don't add gradients, drop shadows on type, secondary colors, or off-brand fonts.
 - Don't add descriptions/subtitles to **resource** tiles. Title only.
 - Don't use circular avatars in webinar tiles (resource tiles don't have avatars at all). Square + 18px radius is the signature.
-- Don't add the bottom accent bar to webinar tiles. It's a resource-tile signal.
+- **Don't add a bottom accent bar to any tile.** The 10px `#ff4227` bottom-bar treatment is retired across all three families — resources, blogs, webinars. The accent word in the title (and the category pill / blog eyebrow / collab strip where applicable) is the only color load.
 - Don't use full-color speaker photos. Always grayscale — keeps the speaker row visually unified across webinars even when source photos vary in lighting/background.
 - Don't invent a category for resources or a date format for webinars without checking the source page.
