@@ -5,7 +5,7 @@ description: Build Atom Grants Open Graph (OG) social-share images at 1200×630 
 
 # Atom Grants OG Tiles
 
-Three layouts, same brand system. **Resource** tiles (downloadable resources), **Webinar** tiles (event share cards), and **Blog** tiles (article share cards) all render at **1200 × 630 px** (OG standard), exported via the `html-screenshot` skill at 2× retina.
+Three layouts, same brand system. **Resource** tiles (downloadable resources), **Webinar** tiles (event share cards), and **Blog** tiles (article share cards) all render at **1200 × 630 px** (OG standard — aspect ratio 40/21 ≈ 1.905, which matches the card frame on atomgrants.com exactly, so no content is cropped on the website). Exported via the `html-screenshot` skill at 2× retina (final image: 2400 × 1260).
 
 ## When to use which
 
@@ -18,7 +18,7 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 | Token | Value |
 |---|---|
 | Accent | `#ff4227` (the only brand color — no gradients, no secondary red) |
-| **Tile background** | **`#fafafa`** (light gray — applied to all three families; page background stays `#ffffff`) |
+| **Tile background** | **`#F9FAFB`** (cool light gray — applied to all three families; page background stays `#ffffff`) |
 | Text | `#000000`, secondary `#333`, tertiary `#666` |
 | Title font | Cal Sans (loaded from `https://fonts.cdnfonts.com/css/cal-sans`) |
 | Body font | DM Sans 400/500/600/700 (Google Fonts) |
@@ -28,7 +28,7 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 
 Wrap in a `:root` CSS-variables block so all three layouts share tokens (`--accent`, `--tile-bg`, `--text`, `--gray-light`, `--font-title`, `--font-body`). Always set `width: 1200px; height: 630px;` on the `.tile` element so the screenshot crop is exact.
 
-The `#fafafa` tile-on-white treatment matches how cards appear on the live atomgrants.com pages — keeps the tiles visually unified across the three families and consistent with the website chrome.
+The `#F9FAFB` tile-on-white treatment matches how cards appear on the live atomgrants.com pages — keeps the tiles visually unified across the three families and consistent with the website chrome. The website card frame matches the 1200 × 630 (40/21) OG aspect, so the full canvas is visible on-site within the universal `64px 144px` safe padding.
 
 ## Layout 1 — Resource OG
 
@@ -72,7 +72,7 @@ Reference implementation: `Resource_Tiles/Resource_Tiles.html` (12 tiles, all va
 ```
 
 Key rules:
-- Padding: `64px 144px` (the universal tile padding). Three-row grid: header / title (1fr, vertically centered) / presenter footer.
+- Padding: `64px 144px`. Three-row grid: header / title (1fr, vertically centered) / presenter footer. The Webinar listing page on atomgrants.com doesn't crop OG images to 4:3, so the wider content band is fine here.
 - Header right side: small `#ff4227` dot + `WEBINAR` (accent) + `·` separator + date (e.g. `MAY 19, 2026`). All uppercase, DM Sans 700, 18px, letter-spacing `0.18em`. **No pill** — that's the resource tile's treatment.
 - **Subtitle is required** (event tagline). Gray `#666`, DM Sans 500, 22px.
 - Presenter row sits above a 1px `#d9d9d9` top border. 24px top padding inside the border.
@@ -166,8 +166,8 @@ Two variants share the same shell and header signature. Pick **featured** when t
 ```
 
 Key shell rules:
-- **Tile background:** `#fafafa` (universal — shared with resource & webinar tiles). Page background stays white; the gray fills the 1200×630 card.
-- **Padding:** `64px 144px` (universal — matches the website card padding).
+- **Tile background:** `#F9FAFB` (universal — shared with resource & webinar tiles). Page background stays white; the cool light gray fills the 1200×630 card.
+- **Padding:** `64px 144px`. The Blog listing page doesn't crop OG images to 4:3, so no safe-zone constraint applies here.
 - **Header right side:** small `#ff4227` dot + `BLOG` (accent) + `·` separator + uppercase date (`APR 22, 2026` — month abbreviated to 3 letters, no leading zero on day). Same DM Sans 700 18px / `0.18em` tracking as webinar tiles. Reuse the `.date-tag` pattern.
 - **Title split:** find the word boundary closest to the character midpoint; first half stays black on line 1, second half goes to accent on line 2. For 1-word titles, accent the whole word; for 2-word titles, accent the second word.
 - **Size variants** (length-based):
