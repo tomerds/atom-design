@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | SUNY Cortland 30-Day Check-In
+  Single-file HTML deck for the June 3, 2026 first-month review with SUNY Cortland.
+
+  First check-in — no prior period to compare against. Adaptations vs. the
+  canonical sequence: the period-comparison and cohort-flow slides (which need a
+  prior cycle) are replaced by an engagement funnel and a search-themes slide.
+
+  Structured around the meeting agenda:
+    Progress recap → Your objectives → Usage highlights → Feedback → Next 60 days
+
+  Data window: Apr 13 – Jun 3, 2026 (pilot access mid-April; campus launch the
+  week of May 4). All figures pulled from the five Supabase exports.
+
+  Denominators:
+    Roster ................ 284 researchers provisioned in Atom
+    Activated ............. 143 loaded >=1 page
+    Explored grants ....... 87 opened a grant detail page
+    Searched .............. 32 ran >=1 search
+    Favorited ............. 13 saved >=1 grant (44 favorites, 44 distinct grants)
+    AI chat ............... 11 used the assistant (11 chats)
+    Page views ............ 2,196   Grant page visits ... 476 (230 grants, 115 funders)
+
+  Navigation: ArrowLeft/ArrowRight, Space, Shift+Space, click to advance, f fullscreen, Esc.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SUNY Cortland: 30-Day Check-In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --accent-soft: #ffe7e3;
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --rule-soft: #e6e6e6;
+      --rule-mid:  #d9d9d9;
+      --rule-strong: #333333;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6.5vw, 112px);
+      --pad-y: clamp(48px, 5.5vw, 88px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 180ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .brand {
+      position: absolute;
+      top: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      display: flex; align-items: center;
+      height: clamp(28px, 2.4vw, 36px);
+    }
+    .brand img { height: 100%; width: auto; display: block; }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      right: var(--pad-x);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .counter span.sep { color: var(--rule-mid); margin: 0 6px; }
+    .counter span.now { color: var(--accent); font-weight: 500; }
+
+    .footer-meta {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      font-size: clamp(11px, 0.85vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: clamp(20px, 1.6vw, 28px);
+    }
+    .eyebrow .muted { color: var(--rule-mid); margin-left: 12px; }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-title);
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.04;
+      letter-spacing: -0.015em;
+    }
+
+    .lede {
+      font-size: clamp(18px, 1.4vw, 22px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 62ch;
+      margin-top: clamp(16px, 1.4vw, 24px);
+    }
+
+    .headline {
+      font-size: clamp(44px, 5vw, 80px);
+      max-width: 22ch;
+      text-wrap: balance;
+    }
+    .headline .accent { color: var(--accent); }
+
+    .content-wrap {
+      margin-top: clamp(40px, 4vw, 64px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============ COVER ============ */
+    .cover { justify-content: center; align-items: flex-start; }
+    .cover .row {
+      display: flex; align-items: center;
+      gap: clamp(28px, 3.4vw, 64px);
+      margin-bottom: clamp(36px, 3.4vw, 56px);
+    }
+    .cover-logo { height: clamp(64px, 5.6vw, 84px); width: auto; display: block; }
+    .cover-logo.partner { height: clamp(58px, 5.0vw, 76px); }
+    .cover-x {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 4vw, 60px);
+      color: var(--rule-mid);
+      line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      height: clamp(64px, 5.6vw, 84px);
+    }
+    .cover-headline {
+      font-family: var(--font-title);
+      font-size: clamp(72px, 9vw, 148px);
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      max-width: 12ch;
+    }
+    .cover-headline .accent { color: var(--accent); }
+    .cover-meta { display: flex; gap: clamp(24px, 3vw, 64px); margin-top: clamp(40px, 4vw, 72px); flex-wrap: wrap; }
+    .cover-meta .col .k {
+      display: block; font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+    }
+    .cover-meta .col .v { color: var(--text); font-weight: 500; font-size: clamp(15px, 1.15vw, 18px); }
+
+    /* ============ AGENDA (Slide 2) ============ */
+    .agenda { display: flex; flex-direction: column; margin-top: clamp(24px, 2.2vw, 40px); flex: 1; justify-content: center; }
+    .agenda-row {
+      display: grid; grid-template-columns: 72px 1fr; gap: clamp(20px, 2vw, 40px);
+      align-items: baseline; padding: clamp(12px, 1.2vw, 20px) 0; border-bottom: 1px solid var(--rule-soft);
+    }
+    .agenda-row:last-child { border-bottom: none; }
+    .agenda-row .n { font-family: var(--font-title); font-size: clamp(26px, 2.4vw, 40px); color: var(--accent); letter-spacing: -0.02em; }
+    .agenda-row .t { display: flex; flex-direction: column; gap: 4px; }
+    .agenda-row .t .lbl { font-family: var(--font-title); font-size: clamp(26px, 2.6vw, 42px); line-height: 1.05; letter-spacing: -0.015em; }
+    .agenda-row .t .d { font-size: clamp(13px, 1.05vw, 16px); color: var(--text-muted); }
+
+    /* ============ HEADLINE METRICS (Slide 3) ============ */
+    .big-stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: clamp(20px, 2vw, 40px); margin-top: clamp(36px, 3vw, 56px);
+    }
+    .big-stat { border-top: 1px solid var(--rule-strong); padding-top: clamp(16px, 1.4vw, 24px); }
+    .big-stat .num { font-family: var(--font-title); font-size: clamp(48px, 5vw, 84px); line-height: 0.96; letter-spacing: -0.02em; }
+    .big-stat .label { margin-top: clamp(10px, 0.9vw, 16px); font-size: clamp(14px, 1.05vw, 17px); color: var(--text); line-height: 1.3; font-weight: 500; }
+    .big-stat .note { margin-top: 6px; font-size: clamp(12px, 0.85vw, 14px); color: var(--text-muted); line-height: 1.4; }
+
+    /* ============ ACTIVATION (Slide 4) ============ */
+    .activation-wrap { display: flex; flex-direction: column; gap: clamp(20px, 1.8vw, 32px); margin-top: clamp(28px, 2.4vw, 44px); flex: 1; justify-content: center; }
+    .activation-total { display: flex; justify-content: space-between; font-size: clamp(12px, 0.95vw, 14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .activation-total b { color: var(--text); font-weight: 500; }
+    .activation-bar { display: flex; width: 100%; height: clamp(48px, 4.4vw, 72px); border-radius: 8px; overflow: hidden; background: var(--rule-soft); }
+    .activation-bar-fill { height: 100%; display: flex; align-items: center; padding: 0 clamp(14px, 1.2vw, 20px); font-family: var(--font-title); font-size: clamp(18px, 1.6vw, 24px); letter-spacing: -0.01em; color: #fff; white-space: nowrap; }
+    .activation-bar-fill.silent { background: var(--rule-mid); color: var(--text); justify-content: flex-end; }
+    .activation-bar-fill.engaged { background: var(--accent); }
+    .activation-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 2.6vw, 48px); margin-top: clamp(8px, 0.8vw, 16px); }
+    .activation-stat { border-top: 1px solid var(--rule-strong); padding-top: clamp(14px, 1.2vw, 20px); display: flex; flex-direction: column; gap: 6px; }
+    .activation-stat.accent { border-top-color: var(--accent); }
+    .activation-stat .lbl { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; }
+    .activation-stat.accent .lbl { color: var(--accent); }
+    .activation-stat .v { font-family: var(--font-title); font-size: clamp(40px, 3.8vw, 60px); line-height: 0.96; letter-spacing: -0.02em; }
+    .activation-stat.accent .v { color: var(--accent); }
+    .activation-stat .d { font-size: clamp(13px, 1vw, 16px); color: var(--text-muted); line-height: 1.4; max-width: 32ch; }
+
+    /* ============ OBJECTIVES (Slide 5) ============ */
+    .objectives { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 2.4vw, 40px); margin-top: clamp(32px, 2.8vw, 52px); flex: 1; align-content: center; }
+    .objective { border: 1px solid var(--rule-soft); border-radius: 14px; padding: clamp(22px, 2vw, 32px); display: flex; flex-direction: column; gap: clamp(12px, 1vw, 16px); }
+    .objective .n { font-family: var(--font-title); font-size: clamp(22px, 1.8vw, 28px); color: var(--accent); letter-spacing: -0.01em; }
+    .objective h3 { font-size: clamp(22px, 2vw, 30px); line-height: 1.12; }
+    .objective p { font-size: clamp(14px, 1.1vw, 17px); color: var(--text-muted); line-height: 1.45; margin: 0; }
+    .objective .signal { margin-top: auto; padding-top: clamp(12px, 1vw, 16px); border-top: 1px solid var(--rule-soft); }
+    .objective .signal .k { font-size: clamp(10px, 0.8vw, 12px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 5px; }
+    .objective .signal .v { font-size: clamp(13px, 1vw, 15px); color: var(--text); line-height: 1.4; }
+
+    /* ============ TREND CHART (Slide 6) ============ */
+    .chart-wrap { flex: 1; display: flex; flex-direction: column; margin-top: clamp(24px, 2vw, 36px); }
+    .chart-svg { width: 100%; flex: 1; min-height: 0; }
+    .chart-foot { display: flex; justify-content: space-between; margin-top: 14px; font-size: clamp(11px, 0.85vw, 13px); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    .chart-callouts { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 2vw, 36px); margin-top: clamp(24px, 2vw, 32px); }
+    .callout { border-left: 2px solid var(--accent); padding-left: clamp(14px, 1.2vw, 20px); }
+    .callout .v { font-family: var(--font-title); font-size: clamp(22px, 2vw, 30px); line-height: 1; }
+    .callout .l { margin-top: 6px; font-size: clamp(13px, 1vw, 15px); color: var(--text-muted); line-height: 1.4; }
+
+    /* ============ FUNNEL (Slide 7) ============ */
+    .funnel { display: flex; flex-direction: column; gap: clamp(12px, 1.2vw, 20px); margin-top: clamp(28px, 2.4vw, 40px); flex: 1; justify-content: center; }
+    .funnel-row { display: grid; grid-template-columns: 240px 1fr 64px; gap: clamp(20px, 2vw, 40px); align-items: center; }
+    .funnel-row .step { display: flex; align-items: baseline; gap: 14px; }
+    .funnel-row .step .n { font-family: var(--font-title); font-size: clamp(34px, 3.2vw, 50px); line-height: 0.9; letter-spacing: -0.02em; }
+    .funnel-row .step .l { font-size: clamp(13px, 1vw, 16px); color: var(--text-muted); line-height: 1.2; }
+    .funnel-row .ftrack { height: clamp(26px, 2.4vw, 38px); background: var(--rule-soft); border-radius: 6px; overflow: hidden; }
+    .funnel-row .ffill { height: 100%; background: var(--rule-strong); border-radius: 6px; }
+    .funnel-row .fpct { text-align: right; font-variant-numeric: tabular-nums; color: var(--text-muted); font-size: clamp(13px, 1vw, 16px); }
+    .funnel-foot { margin-top: clamp(18px, 1.6vw, 28px); font-size: clamp(14px, 1.1vw, 18px); color: var(--text-muted); line-height: 1.5; max-width: 70ch; }
+    .funnel-foot b { color: var(--text); font-weight: 700; }
+
+    /* ============ TABLES (Depts, Researchers) ============ */
+    .table { width: 100%; border-collapse: collapse; margin-top: clamp(28px, 2.4vw, 40px); }
+    .table th, .table td { text-align: left; padding: clamp(10px, 0.9vw, 14px) clamp(8px, 0.8vw, 14px); border-bottom: 1px solid var(--rule-soft); font-size: clamp(13px, 1.05vw, 16px); vertical-align: middle; }
+    .table th { font-weight: 500; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--rule-strong); }
+    .table td.dept { font-weight: 500; }
+    .table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .table td .bar { display: inline-block; height: 6px; background: var(--rule-strong); border-radius: 2px; vertical-align: middle; }
+    .table-note { margin-top: clamp(12px, 1vw, 18px); font-size: clamp(12px, 0.9vw, 14px); color: var(--text-muted); line-height: 1.4; }
+
+    /* ============ FUNDERS (Slide 9) ============ */
+    .funders { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(36px, 3.6vw, 64px); margin-top: clamp(24px, 2.4vw, 40px); flex: 1; }
+    .funders .col-title { font-size: clamp(12px, 0.95vw, 14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: clamp(12px, 1vw, 18px); }
+    .funder-rows { display: flex; flex-direction: column; }
+    .funder-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: clamp(9px, 0.85vw, 13px) 0; border-bottom: 1px solid var(--rule-soft); font-size: clamp(14px, 1.05vw, 16px); }
+    .funder-row .name { font-weight: 500; }
+    .funder-row .v { font-variant-numeric: tabular-nums; color: var(--text); font-weight: 700; font-size: clamp(14px, 1.05vw, 16px); }
+    .callout-box { margin-top: clamp(20px, 1.6vw, 32px); padding: clamp(18px, 1.4vw, 24px); border: 1px solid var(--rule-soft); border-radius: 12px; background: var(--bg-alt); }
+    .callout-box .k { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 8px; }
+    .callout-box .v { font-family: var(--font-title); font-size: clamp(28px, 2.6vw, 40px); line-height: 1; letter-spacing: -0.01em; }
+    .callout-box .d { margin-top: 8px; font-size: clamp(13px, 1vw, 15px); color: var(--text-muted); line-height: 1.4; }
+
+    /* ============ SEARCH THEMES (Slide 10) ============ */
+    .themes { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 2vw, 36px); margin-top: clamp(24px, 2vw, 36px); flex: 1; }
+    .theme { border: 1px solid var(--rule-soft); border-radius: 14px; padding: clamp(20px, 1.8vw, 30px); display: flex; flex-direction: column; gap: clamp(12px, 1vw, 16px); }
+    .theme .t { font-size: clamp(13px, 1.05vw, 16px); font-weight: 700; letter-spacing: 0.02em; color: var(--text); }
+    .theme .t .accent { color: var(--accent); }
+    .theme .d { font-size: clamp(13px, 1vw, 16px); color: var(--text-muted); line-height: 1.45; margin: 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { background: var(--bg-alt); border: 1px solid var(--rule-soft); border-radius: 999px; padding: 6px 13px; font-size: clamp(12px, 0.95vw, 14px); color: var(--text); }
+    .themes-note { margin-top: clamp(14px, 1.2vw, 20px); font-size: clamp(12px, 0.9vw, 14px); color: var(--text-muted); }
+
+    /* ============ CHANNELS (Slide 11) ============ */
+    .channels { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 4vw, 80px); margin-top: clamp(28px, 2.4vw, 40px); align-items: center; }
+    .channel-list { display: flex; flex-direction: column; gap: clamp(14px, 1.2vw, 22px); }
+    .channel { display: grid; grid-template-columns: 130px 1fr 110px; gap: 16px; align-items: center; font-size: clamp(13px, 1.05vw, 16px); }
+    .channel .name { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(12px, 0.95vw, 14px); color: var(--text-muted); }
+    .channel .bartrack { background: var(--rule-soft); height: 16px; border-radius: 3px; position: relative; overflow: hidden; }
+    .channel .barfill { height: 100%; background: var(--rule-mid); border-radius: 3px; }
+    .channel .barfill.accent { background: var(--accent); }
+    .channel .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+    .channel .v small { color: var(--text-muted); font-weight: 400; }
+    .channel-takeaway { font-size: clamp(20px, 1.8vw, 30px); font-family: var(--font-title); line-height: 1.1; max-width: 20ch; letter-spacing: -0.01em; }
+    .channel-takeaway .accent { color: var(--accent); }
+    .channel-takeaway + .lede { margin-top: clamp(20px, 1.6vw, 28px); }
+
+    /* ============ FEEDBACK (Slide 13) ============ */
+    .feedback { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(20px, 2vw, 32px); margin-top: clamp(28px, 2.4vw, 44px); flex: 1; }
+    .fb-card { border: 1px solid var(--rule-soft); border-radius: 14px; padding: clamp(22px, 2vw, 34px); display: flex; flex-direction: column; gap: clamp(10px, 0.9vw, 14px); justify-content: center; }
+    .fb-card .q-lbl { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+    .fb-card .q { font-family: var(--font-title); font-size: clamp(20px, 1.7vw, 28px); line-height: 1.15; letter-spacing: -0.01em; }
+
+    /* ============ NEXT 60 DAYS (Slide 14) ============ */
+    .takeaway-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 2.6vw, 48px); margin-top: clamp(36px, 3vw, 56px); flex: 1; align-content: center; }
+    .take { border-top: 1px solid var(--rule-strong); padding-top: clamp(16px, 1.4vw, 24px); display: flex; flex-direction: column; gap: clamp(10px, 0.9vw, 16px); }
+    .take .num { font-family: var(--font-title); font-size: clamp(22px, 1.8vw, 28px); color: var(--accent); letter-spacing: -0.01em; }
+    .take h3 { font-size: clamp(22px, 2vw, 30px); line-height: 1.1; }
+    .take p { font-size: clamp(14px, 1.1vw, 17px); color: var(--text-muted); line-height: 1.45; margin: 0; }
+
+    /* ============ NAV ============ */
+    .nav-hint { position: absolute; bottom: clamp(28px, 3.2vw, 48px); left: 50%; transform: translateX(-50%); font-size: clamp(10px, 0.75vw, 12px); color: var(--rule-mid); letter-spacing: 0.14em; text-transform: uppercase; }
+
+    /* === Density overrides for content-heavy slides (screen) === */
+    .slide[data-slide="8"] .headline { font-size: clamp(38px, 4.2vw, 60px); max-width: 28ch; }
+    .slide[data-slide="8"] .table { margin-top: clamp(18px, 1.6vw, 26px); }
+    .slide[data-slide="8"] .table th, .slide[data-slide="8"] .table td { padding: clamp(7px, 0.7vw, 11px) clamp(8px, 0.8vw, 14px); font-size: clamp(12px, 0.95vw, 15px); }
+    .slide[data-slide="9"] .headline { font-size: clamp(36px, 3.8vw, 54px); max-width: 28ch; }
+    .slide[data-slide="9"] .funder-row { padding: clamp(7px, 0.7vw, 11px) 0; font-size: clamp(12px, 0.95vw, 15px); }
+    .slide[data-slide="11"] .headline { font-size: clamp(36px, 3.8vw, 56px); max-width: 26ch; }
+    .slide[data-slide="12"] .headline { font-size: clamp(38px, 4.2vw, 60px); }
+
+    @media print {
+      :root { --pad-x: 60px; --pad-y: 56px; }
+      .brand { top: 28px; height: 22px; }
+      .counter, .footer-meta { bottom: 28px; }
+      html, body { background: #fff; margin: 0; padding: 0; overflow: visible; width: 13.333in; height: auto; }
+      .deck { position: static; width: 13.333in; height: auto; }
+      .slide {
+        display: flex !important; position: relative !important; inset: auto !important;
+        top: auto !important; left: auto !important;
+        width: 13.333in !important; height: 7.5in !important;
+        page-break-after: always; break-after: page; page-break-inside: avoid; break-inside: avoid; overflow: hidden;
+      }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .nav-hint { display: none; }
+
+      .content-wrap { margin-top: 28px; }
+      .headline { font-size: 44px; }
+      .eyebrow { margin-bottom: 14px; }
+
+      .slide[data-slide="2"] .agenda-row .n { font-size: 32px; }
+      .slide[data-slide="2"] .agenda-row .t .lbl { font-size: 34px; }
+      .slide[data-slide="2"] .agenda-row { padding: 14px 0; }
+
+      .slide[data-slide="4"] .headline { font-size: 38px; max-width: 30ch; }
+      .slide[data-slide="4"] .activation-wrap { gap: 18px; margin-top: 18px; }
+      .slide[data-slide="4"] .activation-bar { height: 56px; }
+      .slide[data-slide="4"] .activation-bar-fill { font-size: 18px; padding: 0 18px; }
+      .slide[data-slide="4"] .activation-stat .v { font-size: 42px; }
+      .slide[data-slide="4"] .activation-stat .d { font-size: 12px; }
+
+      .slide[data-slide="5"] .headline { font-size: 40px; }
+      .slide[data-slide="5"] .objectives { gap: 24px; margin-top: 26px; }
+      .slide[data-slide="5"] .objective { padding: 22px; }
+      .slide[data-slide="5"] .objective h3 { font-size: 24px; }
+      .slide[data-slide="5"] .objective p { font-size: 14px; }
+      .slide[data-slide="5"] .objective .signal .v { font-size: 13px; }
+
+      .slide[data-slide="6"] .headline { font-size: 40px; }
+      .slide[data-slide="6"] .chart-svg { max-height: 320px; }
+
+      .slide[data-slide="7"] .headline { font-size: 42px; }
+      .slide[data-slide="7"] .funnel { gap: 12px; margin-top: 22px; }
+      .slide[data-slide="7"] .funnel-row .step .n { font-size: 38px; }
+      .slide[data-slide="7"] .funnel-row .ftrack { height: 30px; }
+      .slide[data-slide="7"] .funnel-foot { font-size: 14px; }
+
+      .slide[data-slide="8"] .headline { font-size: 36px; max-width: 30ch; }
+      .slide[data-slide="8"] .table { margin-top: 16px; }
+      .slide[data-slide="8"] .table th, .slide[data-slide="8"] .table td { padding: 7px 10px; font-size: 12px; }
+
+      .slide[data-slide="9"] .headline { font-size: 32px; max-width: 32ch; }
+      .slide[data-slide="9"] .funders { gap: 36px; margin-top: 16px; }
+      .slide[data-slide="9"] .funder-row { padding: 7px 0; font-size: 12px; }
+      .slide[data-slide="9"] .lede { font-size: 13px; }
+      .slide[data-slide="9"] .callout-box .v { font-size: 30px; }
+
+      .slide[data-slide="10"] .headline { font-size: 36px; max-width: 30ch; }
+      .slide[data-slide="10"] .themes { gap: 18px; margin-top: 18px; }
+      .slide[data-slide="10"] .theme { padding: 18px; gap: 12px; }
+      .slide[data-slide="10"] .chip { font-size: 12px; padding: 5px 11px; }
+
+      .slide[data-slide="11"] .headline { font-size: 36px; }
+      .slide[data-slide="11"] .channel-takeaway { font-size: 24px; }
+
+      .slide[data-slide="12"] .headline { font-size: 38px; }
+      .slide[data-slide="12"] .table th, .slide[data-slide="12"] .table td { padding: 8px 10px; font-size: 13px; }
+
+      .slide[data-slide="13"] .headline { font-size: 40px; }
+      .slide[data-slide="13"] .fb-card { padding: 24px; }
+      .slide[data-slide="13"] .fb-card .q { font-size: 24px; }
+
+      .slide[data-slide="14"] .headline { font-size: 40px; }
+    }
+    @page { size: 13.333in 7.5in; margin: 0; }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ============ 01 COVER ============ -->
+  <section class="slide cover active" data-slide="1">
+    <div class="row">
+      <img class="cover-logo" src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      <div class="cover-x">×</div>
+      <img class="cover-logo partner" src="cortlandlogo.png" alt="SUNY Cortland">
+    </div>
+    <h1 class="cover-headline"><span class="accent">30-Day</span><br>Check-In.</h1>
+    <div class="cover-meta">
+      <div class="col"><span class="k">Period</span><span class="v">Apr 13 — Jun 3, 2026</span></div>
+      <div class="col"><span class="k">Milestone</span><span class="v">First month live</span></div>
+      <div class="col"><span class="k">Prepared</span><span class="v">June 3, 2026</span></div>
+    </div>
+    <div class="counter"><span class="now">01</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 02 AGENDA ============ -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Agenda</div>
+      <h2 class="headline">What we'll cover today.</h2>
+      <div class="agenda">
+        <div class="agenda-row">
+          <div class="n">01</div>
+          <div class="t"><span class="lbl">Progress recap</span><span class="d">Where the first 30 days landed</span></div>
+        </div>
+        <div class="agenda-row">
+          <div class="n">02</div>
+          <div class="t"><span class="lbl">Your objectives</span><span class="d">What we set out to do together</span></div>
+        </div>
+        <div class="agenda-row">
+          <div class="n">03</div>
+          <div class="t"><span class="lbl">Usage highlights</span><span class="d">How faculty are engaging, in detail</span></div>
+        </div>
+        <div class="agenda-row">
+          <div class="n">04</div>
+          <div class="t"><span class="lbl">Feedback</span><span class="d">What's working, what's missing</span></div>
+        </div>
+        <div class="agenda-row">
+          <div class="n">05</div>
+          <div class="t"><span class="lbl">Next 60 days</span><span class="d">Where we focus from here</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">02</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 03 PROGRESS RECAP — HEADLINES ============ -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Progress recap <span class="muted">first 30 days</span></div>
+      <h2 class="headline">A strong first month — <span class="accent">143 active researchers</span> and 476 grants opened.</h2>
+      <div class="big-stats">
+        <div class="big-stat">
+          <div class="num">2,196</div>
+          <div class="label">Page views</div>
+          <div class="note">Across 143 active researchers</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">476</div>
+          <div class="label">Grant page visits</div>
+          <div class="note">230 distinct grants explored</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">134</div>
+          <div class="label">Searches run</div>
+          <div class="note">By 32 distinct researchers</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">44</div>
+          <div class="label">Favorites</div>
+          <div class="note">44 grants saved by 13 researchers</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">03</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 04 PROGRESS RECAP — ACTIVATION ============ -->
+  <section class="slide" data-slide="4">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Progress recap <span class="muted">activation</span></div>
+      <h2 class="headline"><span class="accent">Half the Cortland roster</span> engaged with Atom in month one.</h2>
+      <div class="activation-wrap">
+        <div>
+          <div class="activation-total">
+            <span><b>284</b> Cortland researchers in Atom</span>
+            <span>50% activation</span>
+          </div>
+          <div class="activation-bar" style="margin-top: 12px;">
+            <div class="activation-bar-fill engaged" style="width:50.4%">143 active</div>
+            <div class="activation-bar-fill silent" style="width:49.6%">141 not yet</div>
+          </div>
+        </div>
+        <div class="activation-stats">
+          <div class="activation-stat accent">
+            <div class="lbl">Activated</div>
+            <div class="v">143</div>
+            <div class="d">Loaded at least one page in the first month — half the provisioned roster.</div>
+          </div>
+          <div class="activation-stat">
+            <div class="lbl">Explored grants</div>
+            <div class="v">87</div>
+            <div class="d">Opened at least one grant detail page, not just the dashboard. The high-intent core.</div>
+          </div>
+          <div class="activation-stat">
+            <div class="lbl">Yet to activate</div>
+            <div class="v">141</div>
+            <div class="d">Have a profile but no recorded activity yet. The clearest month-two opportunity.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">04</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 05 YOUR OBJECTIVES ============ -->
+  <section class="slide" data-slide="5">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Your objectives</div>
+      <h2 class="headline">What we set out to do together.</h2>
+      <div class="objectives">
+        <div class="objective">
+          <div class="n">01</div>
+          <h3>Improve grant matching quality</h3>
+          <p>Use Atom's AI to understand meaning and intent, rather than keyword matching or manual filtering.</p>
+          <div class="signal">
+            <div class="k">Month-one signal</div>
+            <div class="v">230 grants explored across 115 funders — broad, intent-driven discovery.</div>
+          </div>
+        </div>
+        <div class="objective">
+          <div class="n">02</div>
+          <h3>Increase faculty engagement</h3>
+          <p>Drive engagement with funding opportunities through automation — especially the weekly personalized digest and proactive outreach.</p>
+          <div class="signal">
+            <div class="k">Month-one signal</div>
+            <div class="v">143 active in month one; the weekly digest is the channel to scale next.</div>
+          </div>
+        </div>
+        <div class="objective">
+          <div class="n">03</div>
+          <h3>Demonstrate ROI in year one</h3>
+          <p>Build engagement and outcomes data so any pricing increase beyond the year-one price match to SPIN can be justified.</p>
+          <div class="signal">
+            <div class="k">Month-one signal</div>
+            <div class="v">First data point logged; the next 60 days build the case.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">05</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 06 USAGE — WEEKLY TREND ============ -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">weekly trend</span></div>
+      <h2 class="headline">Launch drove a surge — engagement is settling into a <span class="accent">steady weekly rhythm.</span></h2>
+      <div class="chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 1400 320" preserveAspectRatio="none">
+          <!-- gridlines -->
+          <g stroke="#e6e6e6" stroke-width="1">
+            <line x1="0" y1="300" x2="1400" y2="300"/>
+            <line x1="0" y1="225" x2="1400" y2="225" stroke-dasharray="2 4"/>
+            <line x1="0" y1="150" x2="1400" y2="150" stroke-dasharray="2 4"/>
+            <line x1="0" y1="75"  x2="1400" y2="75"  stroke-dasharray="2 4"/>
+          </g>
+          <!-- y axis labels (max 200) -->
+          <g font-family="DM Sans" font-size="11" fill="#6b6b6b">
+            <text x="6" y="304">0</text>
+            <text x="6" y="229">50</text>
+            <text x="6" y="154">100</text>
+            <text x="6" y="79">150</text>
+            <text x="6" y="14">200</text>
+          </g>
+          <!-- campus launch marker (between Apr 27 and May 4) -->
+          <g>
+            <line x1="555" y1="0" x2="555" y2="300" stroke="#ff4227" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="562" y="14" font-family="DM Sans" font-size="11" fill="#ff4227" font-weight="500">Campus launch · week of May 4</text>
+          </g>
+          <!-- bars: 8 weekly values, scale value/200*300 from baseline 300 -->
+          <g font-family="DM Sans" font-size="12">
+            <!-- Apr 13: 14 (pilot) -->
+            <rect x="75"   y="279.0" width="100" height="21.0" fill="#bfbfbf"/>
+            <text x="125" y="271" fill="#6b6b6b" text-anchor="middle">14</text>
+            <!-- Apr 20: 6 -->
+            <rect x="245"  y="291.0" width="100" height="9.0" fill="#bfbfbf"/>
+            <text x="295" y="283" fill="#6b6b6b" text-anchor="middle">6</text>
+            <!-- Apr 27: 24 -->
+            <rect x="415"  y="264.0" width="100" height="36.0" fill="#bfbfbf"/>
+            <text x="465" y="256" fill="#6b6b6b" text-anchor="middle">24</text>
+            <!-- May 4: 151 (launch) -->
+            <rect x="585"  y="73.5"  width="100" height="226.5" fill="#ff4227"/>
+            <text x="635" y="65" fill="#ff4227" text-anchor="middle" font-weight="500">151</text>
+            <!-- May 11: 156 -->
+            <rect x="755"  y="66.0"   width="100" height="234.0" fill="#ff4227"/>
+            <text x="805" y="58" fill="#ff4227" text-anchor="middle" font-weight="500">156</text>
+            <!-- May 18: 50 -->
+            <rect x="925"  y="225.0" width="100" height="75.0" fill="#ff4227"/>
+            <text x="975" y="217" fill="#ff4227" text-anchor="middle">50</text>
+            <!-- May 25: 45 -->
+            <rect x="1095" y="232.5" width="100" height="67.5" fill="#ff4227"/>
+            <text x="1145" y="224" fill="#ff4227" text-anchor="middle">45</text>
+            <!-- Jun 1: 30 (partial week) -->
+            <rect x="1265" y="255.0" width="100" height="45.0" fill="#ff4227" fill-opacity="0.45"/>
+            <text x="1315" y="247" fill="#6b6b6b" text-anchor="middle">30*</text>
+          </g>
+        </svg>
+        <div class="chart-foot">
+          <span>Apr 13</span>
+          <span>May 4 · launch</span>
+          <span>Jun 1*</span>
+        </div>
+        <div class="chart-callouts">
+          <div class="callout">
+            <div class="v">307 visits</div>
+            <div class="l">In the two launch weeks (May 4–17) — 64% of all month-one grant traffic</div>
+          </div>
+          <div class="callout">
+            <div class="v">~50 / week</div>
+            <div class="l">Steady rate once the launch spike settled (weeks of May 18 on)</div>
+          </div>
+          <div class="callout">
+            <div class="v">*partial</div>
+            <div class="l">Week of Jun 1 covers 3 days (through Jun 3) — already 30 visits</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">Weekly grant page visits · SUNY Cortland</div>
+    <div class="counter"><span class="now">06</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 07 USAGE — ENGAGEMENT FUNNEL ============ -->
+  <section class="slide" data-slide="7">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">depth of engagement</span></div>
+      <h2 class="headline">Researchers are going deeper at <span class="accent">every step</span>, from browse to save.</h2>
+      <div class="funnel">
+        <div class="funnel-row">
+          <div class="step"><span class="n">284</span><span class="l">On the roster</span></div>
+          <div class="ftrack"><div class="ffill" style="width:100%"></div></div>
+          <div class="fpct">100%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="step"><span class="n">143</span><span class="l">Viewed a page</span></div>
+          <div class="ftrack"><div class="ffill" style="width:50.4%"></div></div>
+          <div class="fpct">50%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="step"><span class="n">87</span><span class="l">Opened a grant</span></div>
+          <div class="ftrack"><div class="ffill" style="width:30.6%"></div></div>
+          <div class="fpct">31%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="step"><span class="n">32</span><span class="l">Ran a search</span></div>
+          <div class="ftrack"><div class="ffill" style="width:11.3%"></div></div>
+          <div class="fpct">11%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="step"><span class="n">13</span><span class="l">Saved a favorite</span></div>
+          <div class="ftrack"><div class="ffill" style="width:4.6%"></div></div>
+          <div class="fpct">5%</div>
+        </div>
+      </div>
+      <p class="funnel-foot">Each step is a stronger signal of intent. <b>87 researchers</b> went past browsing to open a specific grant, and 13 have already saved opportunities to return to. <b>11 have tried Atom's AI assistant</b> — the newest surface and the clearest place to grow in the next 60 days.</p>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">07</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 08 USAGE — TOP DEPARTMENTS ============ -->
+  <section class="slide" data-slide="8">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">departments</span></div>
+      <h2 class="headline">Adoption is <span class="accent">broad</span> — a dozen-plus departments active in month one.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:34%">Department</th>
+            <th class="num">Active users</th>
+            <th class="num">% of dept</th>
+            <th class="num">Page views</th>
+            <th style="width:26%">Engagement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dept">Health</td><td class="num">9</td><td class="num">64%</td><td class="num">164</td><td><span class="bar" style="width:100%"></span></td></tr>
+          <tr><td class="dept">Academic Affairs</td><td class="num">3</td><td class="num">75%</td><td class="num">111</td><td><span class="bar" style="width:68%"></span></td></tr>
+          <tr><td class="dept">Kinesiology</td><td class="num">11</td><td class="num">55%</td><td class="num">107</td><td><span class="bar" style="width:65%"></span></td></tr>
+          <tr><td class="dept">Economics</td><td class="num">7</td><td class="num">44%</td><td class="num">94</td><td><span class="bar" style="width:57%"></span></td></tr>
+          <tr><td class="dept">Psychology</td><td class="num">9</td><td class="num">56%</td><td class="num">89</td><td><span class="bar" style="width:54%"></span></td></tr>
+          <tr><td class="dept">Physical Education</td><td class="num">9</td><td class="num">60%</td><td class="num">75</td><td><span class="bar" style="width:46%"></span></td></tr>
+          <tr><td class="dept">Foundations &amp; Social Advocacy</td><td class="num">7</td><td class="num">70%</td><td class="num">62</td><td><span class="bar" style="width:38%"></span></td></tr>
+          <tr><td class="dept">Political Science</td><td class="num">3</td><td class="num">50%</td><td class="num">58</td><td><span class="bar" style="width:35%"></span></td></tr>
+          <tr><td class="dept">English</td><td class="num">5</td><td class="num">28%</td><td class="num">51</td><td><span class="bar" style="width:31%"></span></td></tr>
+          <tr><td class="dept">Biology</td><td class="num">9</td><td class="num">64%</td><td class="num">42</td><td><span class="bar" style="width:26%"></span></td></tr>
+        </tbody>
+      </table>
+      <p class="table-note">Faculty departments only. The Office of Research &amp; Sponsored Programs (the team driving rollout) is shown separately on the researchers slide.</p>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">08</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 09 USAGE — FUNDERS ============ -->
+  <section class="slide" data-slide="9">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">funder discovery</span></div>
+      <h2 class="headline">Researchers are casting a wide net — <span class="accent">115 funders</span> explored in month one.</h2>
+      <div class="funders">
+        <div>
+          <div class="col-title">Most-viewed funders · first 30 days</div>
+          <div class="funder-rows">
+            <div class="funder-row"><span class="name">U.S. National Science Foundation</span><span class="v">48</span></div>
+            <div class="funder-row"><span class="name">Russell Sage Foundation</span><span class="v">43</span></div>
+            <div class="funder-row"><span class="name">National Council of Teachers of English</span><span class="v">15</span></div>
+            <div class="funder-row"><span class="name">American College of Sports Medicine Fdn.</span><span class="v">14</span></div>
+            <div class="funder-row"><span class="name">Health Resources &amp; Services Admin.</span><span class="v">14</span></div>
+            <div class="funder-row"><span class="name">Henry Luce Foundation</span><span class="v">13</span></div>
+            <div class="funder-row"><span class="name">Anthropic</span><span class="v">13</span></div>
+            <div class="funder-row"><span class="name">National Academies (NASEM)</span><span class="v">12</span></div>
+            <div class="funder-row"><span class="name">National Institutes of Health</span><span class="v">10</span></div>
+            <div class="funder-row"><span class="name">Office of Elementary &amp; Secondary Education</span><span class="v">10</span></div>
+            <div class="funder-row"><span class="name">Campus Compact</span><span class="v">10</span></div>
+            <div class="funder-row"><span class="name">Society for the Teaching of Psychology</span><span class="v">8</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">What the mix shows</div>
+          <p class="lede" style="margin-top:0; max-width:none;">No single funder dominates. Researchers spread <b>476 visits across 115 funders</b> — a wide, exploratory pattern that's healthy for a first month.</p>
+          <p class="lede" style="max-width:none;">The mix reflects Cortland's breadth: federal science (NSF, NIH, HRSA, Dept. of Education), major foundations (Russell Sage, Luce), disciplinary societies (NCTE, ACSM, APA), and newer industry funders like Anthropic.</p>
+          <div class="callout-box">
+            <div class="k">Breadth of discovery</div>
+            <div class="v">230 grants</div>
+            <div class="d">Distinct opportunities opened across those 115 funders in 30 days.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">09</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 10 USAGE — SEARCH THEMES ============ -->
+  <section class="slide" data-slide="10">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">what researchers search for</span></div>
+      <h2 class="headline">Searches map directly to Cortland's <span class="accent">research strengths.</span></h2>
+      <div class="themes">
+        <div class="theme">
+          <div class="t">Aging, health &amp; caregiving</div>
+          <div class="chips">
+            <span class="chip">older adults</span>
+            <span class="chip">rural maternal health</span>
+            <span class="chip">caregiving</span>
+            <span class="chip">hospice care</span>
+            <span class="chip">health disparity</span>
+          </div>
+          <p class="d">The most-searched cluster — aging populations, maternal and rural health, and end-of-life care.</p>
+        </div>
+        <div class="theme">
+          <div class="t">Kinesiology &amp; sport science</div>
+          <div class="chips">
+            <span class="chip">athletic training</span>
+            <span class="chip">resistance training</span>
+            <span class="chip">musculoskeletal</span>
+            <span class="chip">recreation &amp; community</span>
+          </div>
+          <p class="d">Athletic training, exercise physiology, and community recreation — a strong Kinesiology signal.</p>
+        </div>
+        <div class="theme">
+          <div class="t">Education &amp; the humanities</div>
+          <div class="chips">
+            <span class="chip">adjunct development</span>
+            <span class="chip">literacy</span>
+            <span class="chip">community arts (NYS)</span>
+            <span class="chip">NYS archaeology</span>
+          </div>
+          <p class="d">Faculty development, literacy, the arts, and New York State heritage and history.</p>
+        </div>
+        <div class="theme">
+          <div class="t">Social &amp; behavioral science</div>
+          <div class="chips">
+            <span class="chip">voting behavior in America</span>
+            <span class="chip">STEAM research in Japan</span>
+            <span class="chip">toxicology / zebrafish</span>
+          </div>
+          <p class="d">Political behavior, international STEAM education, and environmental toxicology.</p>
+        </div>
+      </div>
+      <p class="themes-note">134 searches from 32 researchers · queries lightly edited for clarity.</p>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">10</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 11 USAGE — CHANNELS ============ -->
+  <section class="slide" data-slide="11">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">how researchers arrive</span></div>
+      <h2 class="headline">Traffic is dashboard-led — the email digest is <span class="accent">just ramping.</span></h2>
+      <div class="channels">
+        <div>
+          <div class="col-title" style="font-size:clamp(11px,0.85vw,13px); letter-spacing:0.16em; color:var(--accent); font-weight:500; margin-bottom:clamp(14px,1.2vw,20px); text-transform:uppercase;">Visit source · first 30 days</div>
+          <div class="channel-list">
+            <div class="channel"><span class="name">Dashboard</span><div class="bartrack"><div class="barfill" style="width:100%"></div></div><span class="v">220 <small>· 46%</small></span></div>
+            <div class="channel"><span class="name">Email digest</span><div class="bartrack"><div class="barfill accent" style="width:65%"></div></div><span class="v">144 <small>· 30%</small></span></div>
+            <div class="channel"><span class="name">Search</span><div class="bartrack"><div class="barfill" style="width:30%"></div></div><span class="v">65 <small>· 14%</small></span></div>
+            <div class="channel"><span class="name">Direct</span><div class="bartrack"><div class="barfill" style="width:19%"></div></div><span class="v">42 <small>· 9%</small></span></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="channel-takeaway">The <span class="accent">email digest</span> is the lever for the next 60 days.</h3>
+          <p class="lede">Month-one traffic is dashboard-led — researchers are logging in and browsing on their own. Email already drives 30% of visits, and it's the channel that compounds: at mature deployments the weekly match digest becomes the majority of all traffic.</p>
+          <p class="lede">Turning on a consistent weekly digest cadence is the single biggest lever on sustained engagement.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">11</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 12 USAGE — MOST ACTIVE RESEARCHERS ============ -->
+  <section class="slide" data-slide="12">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Usage highlights <span class="muted">most active researchers</span></div>
+      <h2 class="headline">The ten most active researchers on Atom so far.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:24%">Name</th>
+            <th style="width:32%">Department</th>
+            <th class="num">Page views</th>
+            <th class="num">Grant visits</th>
+            <th class="num">Searches</th>
+            <th class="num">Favorites</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="dept">Matthew Trail</td><td>Research &amp; Sponsored Programs</td><td class="num">465</td><td class="num">109</td><td class="num">17</td><td class="num">0</td></tr>
+          <tr><td class="num">2</td><td class="dept">Dominick Fantacone</td><td>Research &amp; Sponsored Programs</td><td class="num">334</td><td class="num">18</td><td class="num">3</td><td class="num">0</td></tr>
+          <tr><td class="num">3</td><td class="dept">Jennifer Hall</td><td>Academic Affairs</td><td class="num">72</td><td class="num">12</td><td class="num">17</td><td class="num">0</td></tr>
+          <tr><td class="num">4</td><td class="dept">Geunhye Park</td><td>Health</td><td class="num">58</td><td class="num">11</td><td class="num">14</td><td class="num">5</td></tr>
+          <tr><td class="num">5</td><td class="dept">Nancy Kane</td><td>Physical Education</td><td class="num">54</td><td class="num">2</td><td class="num">3</td><td class="num">0</td></tr>
+          <tr><td class="num">6</td><td class="dept">Jill Murphy</td><td>Health</td><td class="num">51</td><td class="num">17</td><td class="num">11</td><td class="num">0</td></tr>
+          <tr><td class="num">7</td><td class="dept">Kim Nguyen-Nalpas</td><td>Psychology</td><td class="num">51</td><td class="num">27</td><td class="num">1</td><td class="num">6</td></tr>
+          <tr><td class="num">8</td><td class="dept">Mason Kim</td><td>Political Science</td><td class="num">45</td><td class="num">6</td><td class="num">5</td><td class="num">0</td></tr>
+          <tr><td class="num">9</td><td class="dept">Rob Haggar</td><td>Economics</td><td class="num">43</td><td class="num">12</td><td class="num">0</td><td class="num">0</td></tr>
+          <tr><td class="num">10</td><td class="dept">Katie Ducett</td><td>Foundations &amp; Social Advocacy</td><td class="num">38</td><td class="num">25</td><td class="num">0</td><td class="num">0</td></tr>
+        </tbody>
+      </table>
+      <p class="table-note">The top two are the Office of Research &amp; Sponsored Programs team driving campus rollout; the rest are faculty across eight departments.</p>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">12</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 13 FEEDBACK ============ -->
+  <section class="slide" data-slide="13">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Feedback</div>
+      <h2 class="headline">Where are we getting it right — and <span class="accent">what's missing?</span></h2>
+      <div class="feedback">
+        <div class="fb-card">
+          <div class="q-lbl">Matching quality</div>
+          <div class="q">Are the grants Atom surfaces genuinely relevant to your faculty's work?</div>
+        </div>
+        <div class="fb-card">
+          <div class="q-lbl">The weekly digest</div>
+          <div class="q">Is the cadence and content right — and where would you tune it?</div>
+        </div>
+        <div class="fb-card">
+          <div class="q-lbl">Gaps</div>
+          <div class="q">What funders, features, or departments still feel missing?</div>
+        </div>
+        <div class="fb-card">
+          <div class="q-lbl">Rollout</div>
+          <div class="q">What would help bring the other half of the roster on board?</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants</div>
+    <div class="counter"><span class="now">13</span><span class="sep">/</span>14</div>
+  </section>
+
+  <!-- ============ 14 NEXT 60 DAYS ============ -->
+  <section class="slide" data-slide="14">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Next 60 days</div>
+      <h2 class="headline">Three priorities for the next 60 days.</h2>
+      <div class="takeaway-grid">
+        <div class="take">
+          <div class="num">01</div>
+          <h3>Activate the other 141.</h3>
+          <p>Half the roster hasn't opened a page yet. Department-targeted first-touch emails — one high-relevance grant each — are the highest-leverage move. Start where rosters are large but penetration is low: English, Sociology, Biology.</p>
+        </div>
+        <div class="take">
+          <div class="num">02</div>
+          <h3>Lean on us for rollout support.</h3>
+          <p>We'll provide whatever helps adoption — a live faculty demo or webinar, department-specific one-pagers, ready-to-send outreach email templates, and office hours for your team. Tell us which formats land best at Cortland.</p>
+        </div>
+        <div class="take">
+          <div class="num">03</div>
+          <h3>Drive AI assistant adoption.</h3>
+          <p>Only 11 researchers have tried Atom's AI chat — the surface where intent-based matching shines. A short faculty demo plus a digest feature can move it from a handful of users to a habit, and start building the year-one ROI story.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">SUNY Cortland · Atom Grants · June 3, 2026</div>
+    <div class="counter"><span class="now">14</span><span class="sep">/</span>14</div>
+  </section>
+
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let idx = 0;
+  function go(n) {
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  }
+  const m = new URLSearchParams(location.search).get('slide');
+  if (m) { const n = parseInt(m, 10); if (!isNaN(n)) go(n - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || (e.key === ' ' && !e.shiftKey)) { e.preventDefault(); go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || (e.key === ' ' && e.shiftKey)) { e.preventDefault(); go(idx - 1); }
+    else if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen?.(); }
+    else if (e.key === 'Escape') { document.exitFullscreen?.(); }
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    go(idx + 1);
+  });
+</script>
+</body>
+</html>

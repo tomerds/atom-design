@@ -21,3 +21,14 @@
 !/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.html
 !/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.pdf
 !/Intro_Call_Deck/v4/img/
+
+# Exception: the SUNY Cortland 30-day check-in is the checkin-deck skill's
+# house reference (agenda + objectives + feedback structure), so track its
+# source, PDF, and logo. The regenerable per-slide PNGs stay local.
+!/SUNY_Cortland_30_Day_Checkin/
+/SUNY_Cortland_30_Day_Checkin/*
+!/SUNY_Cortland_30_Day_Checkin/v1/
+/SUNY_Cortland_30_Day_Checkin/v1/*
+!/SUNY_Cortland_30_Day_Checkin/v1/SUNY_Cortland_30_Day_Checkin.html
+!/SUNY_Cortland_30_Day_Checkin/v1/SUNY_Cortland_30_Day_Checkin.pdf
+!/SUNY_Cortland_30_Day_Checkin/v1/cortlandlogo.png
