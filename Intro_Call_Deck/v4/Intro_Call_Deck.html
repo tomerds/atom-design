@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | Intro Call Deck (v4 — FINALIZED TEMPLATE)
+  Single-file HTML deck for the FIRST call (~30 min: discovery + intro).
+  This is NOT the full demo: the in-depth, customized product demo happens
+  on call 2, with leadership in the room.
+
+  Slides (8 total):
+    01 Cover ................. Hero line + presenter / date / institution
+    02 Why now .............. The squeeze: rising workload, flat budgets
+    03 A different category . Teammate, not a search tool (+ partner quote)
+    04 How it works ......... Six-step research development workflow
+    05 Case study ........... University of Memphis (dark slide)
+    06 Partners ............. Logo strip + customer quotes + "and 45+ more"
+    07 For leadership ....... Analytics dashboard (shown when leadership joins)
+    08 Next steps & Q&A ..... Steer to the full demo + contact
+
+  PERSONALIZE PER PROSPECT — only the cover and the close slide change.
+  Replace these five tokens (or use the intro-call-deck skill, which does it):
+    [Your name]  [Title]  [Month YYYY]  [Institution name]  [your.email@atomgrants.com]
+  Helper: .claude/skills/intro-call-deck/personalize.py
+
+  Navigation: ArrowLeft/ArrowRight, Space, click to advance, f fullscreen, #N deep-link.
+  Print/PDF:  @page 13.333in x 7.5in, one slide per page.
+              python3 .claude/skills/html-to-pdf/export.py <file> --size 13.333x7.5
+
+  Brand/copy rules: single accent (#ff4227), white bg, black text; Cal Sans
+  titles, DM Sans body; headshots grayscale + square-rounded; no em dashes.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atom Grants: Intro Call</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --rule-soft: #d9d9d9;
+      --rule-strong: #333333;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6.5vw, 112px);
+      --pad-y: clamp(48px, 5.5vw, 88px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 180ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Persistent brand lockup (real logo, not a dot) */
+    .brand {
+      position: absolute;
+      top: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      display: flex;
+      align-items: center;
+      height: clamp(28px, 2.4vw, 36px);
+    }
+    .brand img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      right: var(--pad-x);
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    .counter span.sep { color: var(--rule-soft); margin: 0 6px; }
+    .counter span.now { color: var(--accent); font-weight: 500; }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: clamp(20px, 1.6vw, 28px);
+    }
+    .eyebrow .muted { color: var(--text-muted); margin-left: 12px; letter-spacing: 0.18em; }
+
+    h1, h2, h3 { font-family: var(--font-title); font-weight: 400; margin: 0; line-height: 1.04; letter-spacing: -0.015em; }
+
+    .lede {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.5vw, 24px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 58ch;
+    }
+
+    /* Content scaffolds */
+    .content-wrap {
+      margin-top: clamp(48px, 5vw, 80px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .headline {
+      font-size: clamp(44px, 5.6vw, 88px);
+      max-width: 22ch;
+    }
+    .headline.tight { max-width: 18ch; }
+    .headline .accent { color: var(--accent); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: clamp(40px, 5vw, 96px);
+      align-items: start;
+      margin-top: clamp(32px, 3vw, 56px);
+    }
+
+    /* Slide 3 — category + bridge quote */
+    .split-right {
+      position: absolute;
+      top: calc(-1 * var(--pad-y));
+      bottom: calc(-1 * var(--pad-y));
+      right: calc(-1 * var(--pad-x));
+      width: 52%;
+      background: lab(98.2596 -0.247031 -0.706708);
+      z-index: 0;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(40px, 5vw, 88px);
+      align-items: center;
+    }
+    .bridge-quote {
+      background: #ffffff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 20px;
+      padding: clamp(28px, 2.4vw, 40px);
+    }
+    .bq-text {
+      font-family: var(--font-title);
+      font-weight: 400;
+      font-size: clamp(22px, 1.95vw, 31px);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .bq-attrib {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: clamp(20px, 1.8vw, 28px);
+    }
+    .bq-avatar {
+      width: clamp(54px, 4vw, 64px);
+      height: clamp(54px, 4vw, 64px);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f0f0f0;
+      flex: none;
+    }
+    .bq-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      filter: grayscale(100%);
+    }
+    .bq-who { display: flex; flex-direction: column; font-family: var(--font-body); line-height: 1.3; }
+    .bq-who strong { font-weight: 600; font-size: clamp(15px, 1.1vw, 17px); }
+    .bq-who span { color: var(--text-muted); font-size: clamp(13px, 0.95vw, 15px); margin-top: 2px; }
+
+    /* Cover slide */
+    .cover-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(24px, 2.4vw, 36px);
+    }
+    .cover-eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 15px);
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .cover-logo {
+      height: clamp(48px, 4.2vw, 64px);
+      width: auto;
+      align-self: flex-start;
+      margin-bottom: clamp(20px, 2vw, 32px);
+    }
+    .cover-headline {
+      font-family: var(--font-title);
+      font-size: clamp(56px, 7vw, 112px);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      max-width: 16ch;
+    }
+    .cover-sub {
+      font-family: var(--font-body);
+      font-size: clamp(22px, 2vw, 32px);
+      line-height: 1.3;
+      color: var(--text-muted);
+      max-width: 26ch;
+      margin-top: clamp(8px, 1vw, 16px);
+    }
+    .cover-meta {
+      display: flex;
+      gap: clamp(20px, 3vw, 56px);
+      margin-top: clamp(32px, 3.5vw, 64px);
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.15vw, 18px);
+      color: var(--text-muted);
+    }
+    .cover-meta .col .k {
+      display: block;
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .cover-meta .col .v { color: var(--text); font-weight: 500; }
+
+    /* Six-step overview grid */
+    .six-grid {
+      margin-top: clamp(40px, 4vw, 64px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: clamp(20px, 1.6vw, 28px);
+      flex: 1;
+    }
+    .cell {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(20px, 1.8vw, 32px);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 120ms;
+    }
+    .cell .num {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.6vw, 40px);
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .cell h3 {
+      font-size: clamp(22px, 2vw, 32px);
+      margin-top: clamp(12px, 1vw, 20px);
+      line-height: 1.1;
+    }
+    .cell p {
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: clamp(10px, 0.8vw, 14px) 0 0;
+    }
+
+    /* Proof slide */
+    .proof-grid {
+      margin-top: clamp(40px, 4vw, 60px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(24px, 2.4vw, 40px) clamp(40px, 4vw, 64px);
+      flex: 1;
+      align-content: center;
+    }
+    .inst {
+      border-top: 1px solid var(--rule-soft);
+      padding-top: clamp(14px, 1.2vw, 20px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .inst .name {
+      font-family: var(--font-title);
+      font-size: clamp(22px, 1.9vw, 30px);
+      line-height: 1.1;
+      color: var(--text);
+    }
+    .inst .outcome {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .inst.more .name { color: var(--accent); }
+
+    /* Partners — logo strip + quote cards */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(24px, 3vw, 56px);
+      margin-top: clamp(28px, 2.6vw, 42px);
+    }
+    .logo-row img {
+      height: clamp(30px, 3vw, 44px);
+      max-width: 156px;
+      width: auto;
+      object-fit: contain;
+    }
+    .quote-wall {
+      margin-top: clamp(24px, 2.2vw, 34px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 1.4vw, 22px);
+    }
+    .qcard {
+      background: lab(98.2596 -0.247031 -0.706708);
+      border: 1px solid var(--rule-soft);
+      border-radius: 16px;
+      padding: clamp(20px, 1.7vw, 28px);
+      display: flex;
+      flex-direction: column;
+    }
+    .qcard .q {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      line-height: 1.45;
+      color: var(--gray-dark, #333);
+      flex: 1;
+    }
+    .qcard .who { margin-top: clamp(14px, 1.2vw, 18px); display: flex; align-items: center; gap: 12px; }
+    .qhead { width: clamp(40px, 3.4vw, 48px); height: clamp(40px, 3.4vw, 48px); border-radius: 11px; overflow: hidden; flex: none; background: #f0f0f0; }
+    .qhead img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(100%); display: block; }
+    .qhead.zoom img { transform: scale(1.42); }
+    .qcard .who .meta { display: flex; flex-direction: column; line-height: 1.25; }
+    .qcard .who .meta strong { font-family: var(--font-body); font-weight: 600; font-size: clamp(12px, 0.92vw, 14px); color: var(--text); }
+    .qcard .who .meta span { font-family: var(--font-body); font-size: clamp(10.5px, 0.8vw, 12px); color: var(--text-muted); margin-top: 2px; }
+    .qcard.more { justify-content: flex-start; }
+    .qcard.more .mtitle { font-family: var(--font-title); font-size: clamp(22px, 1.9vw, 30px); line-height: 1.1; color: var(--accent); }
+    .qcard.more .mlist { font-family: var(--font-body); font-size: clamp(13px, 1vw, 16px); color: var(--text-muted); line-height: 1.4; margin-top: 10px; }
+
+    /* Engagement */
+    .engage-list { display: flex; flex-direction: column; gap: clamp(16px, 1.4vw, 22px); }
+    .engage-row {
+      display: grid;
+      grid-template-columns: clamp(48px, 4.5vw, 64px) 1fr;
+      align-items: baseline;
+      border-top: 1px solid var(--rule-soft);
+      padding-top: clamp(14px, 1.2vw, 20px);
+    }
+    .engage-row .n {
+      font-family: var(--font-title);
+      font-size: clamp(20px, 1.6vw, 26px);
+      color: var(--accent);
+    }
+    .engage-row .t {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.5vw, 26px);
+      line-height: 1.35;
+    }
+    .engage-row .t strong { font-weight: 700; }
+
+    /* Pricing anchors */
+    .anchor-stack {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+      margin-top: clamp(36px, 3.5vw, 56px);
+    }
+    .anchor {
+      border-left: 2px solid var(--accent);
+      padding: clamp(16px, 1.4vw, 24px) clamp(18px, 1.5vw, 26px);
+      background: var(--bg-alt);
+      border-radius: 0 10px 10px 0;
+    }
+    .anchor .label {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .anchor .val {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.4vw, 38px);
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .anchor .note {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.05vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Next steps */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+      margin-top: clamp(40px, 4vw, 56px);
+    }
+    .next-card {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(24px, 2.2vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1.2vw, 18px);
+    }
+    .next-card .badge {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-size: 16px;
+    }
+    .next-card h3 {
+      font-size: clamp(22px, 1.9vw, 30px);
+      line-height: 1.1;
+    }
+    .next-card p {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .focus { margin-top: clamp(30px, 2.8vw, 46px); }
+    .focus-label { font-family: var(--font-body); font-size: clamp(13px, 1vw, 15px); letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: clamp(14px, 1.2vw, 18px); }
+    .chips { display: flex; flex-wrap: wrap; gap: clamp(10px, 0.9vw, 14px); }
+    .chip {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text);
+      border: 1px solid var(--rule-soft);
+      border-radius: 999px;
+      padding: clamp(9px, 0.8vw, 13px) clamp(16px, 1.4vw, 22px);
+      background: #fff;
+    }
+
+    .close-line {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 40px;
+      padding-top: clamp(24px, 2.5vw, 40px);
+      border-top: 1px solid var(--rule-soft);
+    }
+    .close-line .q {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.8vw, 44px);
+      color: var(--accent);
+    }
+    .close-line .contact {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .close-line .contact strong { color: var(--text); font-weight: 500; }
+
+    /* Gap slide: two-column contrast */
+    .contrast {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(32px, 3vw, 56px);
+      margin-top: clamp(40px, 4vw, 60px);
+    }
+    .contrast .col {
+      padding: clamp(24px, 2.2vw, 36px);
+      border-radius: 14px;
+      background: var(--bg-alt);
+    }
+    .contrast .col.neg { background: var(--bg-alt); }
+    .contrast .col.pos {
+      background: var(--text);
+      color: var(--bg);
+    }
+    .contrast .col .tag {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: clamp(12px, 1vw, 18px);
+    }
+    .contrast .col.neg .tag { color: var(--text-muted); }
+    .contrast .col.pos .tag { color: var(--accent); }
+    .contrast .col h3 {
+      font-family: var(--font-title);
+      font-size: clamp(26px, 2.4vw, 38px);
+      line-height: 1.1;
+      margin-bottom: clamp(16px, 1.4vw, 22px);
+    }
+    .contrast .col ul { list-style: none; margin: 0; padding: 0; }
+    .contrast .col li {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.25vw, 20px);
+      line-height: 1.4;
+      padding: clamp(8px, 0.7vw, 10px) 0;
+      border-top: 1px solid rgba(107, 107, 107, 0.22);
+    }
+    .contrast .col.pos li { border-top-color: rgba(255, 255, 255, 0.14); }
+    .contrast .col li:first-child { border-top: none; padding-top: 0; }
+
+    /* Case study stats */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 1.5vw, 24px);
+      margin-top: clamp(20px, 2vw, 32px);
+    }
+    .stat {
+      background: oklab(0.999994 0.0000455678 0.0000200868 / 0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: clamp(16px, 1.6vw, 26px);
+    }
+    .stat .v {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 4.4vw, 64px);
+      line-height: 0.95;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .stat .l {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.15vw, 18px);
+      color: var(--text);
+      line-height: 1.4;
+      margin-top: clamp(10px, 0.9vw, 14px);
+      max-width: 22ch;
+    }
+    .pull-quote {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.8vw, 44px);
+      line-height: 1.15;
+      color: var(--text);
+      max-width: 28ch;
+      margin-top: clamp(16px, 1.6vw, 24px);
+    }
+    .pull-quote .accent { color: var(--accent); }
+    .pull-attrib {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 16px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: clamp(12px, 1vw, 18px);
+    }
+    .pull-attrib strong { color: var(--text); font-weight: 500; letter-spacing: 0.04em; text-transform: none; font-size: clamp(14px, 1.1vw, 18px); }
+
+    /* Case study — attribution with portrait */
+    .pull-attrib-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: clamp(20px, 1.8vw, 28px);
+    }
+    .cs-avatar {
+      width: clamp(56px, 4.4vw, 68px);
+      height: clamp(56px, 4.4vw, 68px);
+      border-radius: 14px;
+      overflow: hidden;
+      flex: none;
+    }
+    .cs-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; filter: grayscale(100%); }
+    .cs-who { display: flex; flex-direction: column; font-family: var(--font-body); line-height: 1.3; }
+    .cs-who strong { font-weight: 600; font-size: clamp(15px, 1.1vw, 18px); }
+    .cs-who span { font-size: clamp(13px, 0.95vw, 15px); margin-top: 2px; }
+
+    /* Dark slide variant */
+    .slide.dark { background: #0a0a0a; }
+    .cs-quote-card {
+      background: oklab(0.999994 0.0000455678 0.0000200868 / 0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: clamp(20px, 1.8vw, 30px);
+      margin-top: clamp(18px, 1.6vw, 24px);
+    }
+    .cs-quote-card .pull-quote { margin-top: 0; max-width: 46ch; }
+    .slide.dark .headline { color: #ffffff; }
+    .slide.dark .eyebrow .muted { color: #8a8a8a; }
+    .slide.dark .pull-quote { color: #ffffff; }
+    .slide.dark .stat .l { color: #e6e6e6; }
+    .slide.dark .stat-row { border-top-color: rgba(255,255,255,0.18); }
+    .slide.dark .cs-who strong { color: #ffffff; }
+    .slide.dark .cs-who span { color: #b0b0b0; }
+
+    /* Voices grid */
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(24px, 2.2vw, 40px);
+      margin-top: clamp(36px, 3.5vw, 56px);
+    }
+    .voice {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(20px, 1.8vw, 32px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1vw, 16px);
+    }
+    .voice .q {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.25vw, 20px);
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .voice .who {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+    .voice .who strong { color: var(--text); font-weight: 500; }
+
+    /* Leadership two-column */
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 4vw, 80px);
+      margin-top: clamp(32px, 3vw, 48px);
+      align-items: start;
+    }
+    .lead-grid p.lede { max-width: 30ch; }
+    ul.lead-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(14px, 1.2vw, 20px);
+    }
+    ul.lead-list li {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.4vw, 24px);
+      line-height: 1.35;
+      color: var(--text);
+      padding-left: 28px;
+      position: relative;
+    }
+    ul.lead-list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.65em;
+      width: 14px; height: 2px;
+      background: var(--accent);
+    }
+
+    /* Leadership analytics dashboard */
+    .lead-layout {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: clamp(36px, 3.6vw, 64px);
+      align-items: center;
+      margin-top: clamp(28px, 2.6vw, 44px);
+      flex: 1;
+    }
+    .lead-copy .lede { max-width: 34ch; }
+    .lead-copy ul.lead-list { margin-top: clamp(22px, 2vw, 32px); }
+    .lead-copy ul.lead-list li { font-size: clamp(15px, 1.15vw, 19px); }
+    .dash {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 20px;
+      padding: clamp(20px, 1.8vw, 30px);
+      box-shadow: 0 24px 60px -34px rgba(0,0,0,0.28);
+    }
+    .dash-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(16px, 1.4vw, 22px); }
+    .dash-head .t { font-family: var(--font-title); font-size: clamp(16px, 1.3vw, 21px); color: var(--text); }
+    .dash-head .chip { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--rule-soft); border-radius: 999px; padding: 5px 12px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 1vw, 18px); margin-bottom: clamp(18px, 1.6vw, 24px); }
+    .kpi .v { font-family: var(--font-title); font-size: clamp(20px, 1.9vw, 30px); line-height: 1; color: var(--text); }
+    .kpi .v.accent { color: var(--accent); }
+    .kpi .l { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text-muted); margin-top: 6px; line-height: 1.25; }
+    .chart-wrap { border-top: 1px solid var(--rule-soft); padding-top: clamp(14px, 1.2vw, 20px); }
+    .chart-wrap .ct { font-family: var(--font-body); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .chart-wrap .ct strong { color: var(--text); font-weight: 600; }
+    .chart-wrap svg { width: 100%; height: auto; display: block; }
+    .deps { margin-top: clamp(16px, 1.4vw, 20px); display: flex; flex-direction: column; gap: clamp(7px, 0.7vw, 10px); }
+    .dep { display: grid; grid-template-columns: 104px 1fr 34px; align-items: center; gap: 12px; font-family: var(--font-body); font-size: 12px; color: var(--text); }
+    .dep .bar { height: 8px; border-radius: 4px; background: var(--bg-alt); border: 1px solid var(--rule-soft); position: relative; overflow: hidden; }
+    .dep .bar span { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 4px; }
+    .dep .pct { color: var(--text-muted); font-size: 11px; text-align: right; }
+
+    /* Print */
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { overflow: visible; background: white; }
+      .deck { height: auto; width: auto; }
+      .slide {
+        display: flex !important;
+        position: relative;
+        width: 13.333in; height: 7.5in;
+        page-break-after: always;
+        break-after: page;
+      }
+      .counter { display: none; }
+      .slide.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 01 Cover -->
+  <section class="slide" data-slide="1">
+    <div class="cover-inner">
+      <img class="cover-logo" src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      <h1 class="cover-headline">
+        The AI platform for research development teams.
+      </h1>
+      <p class="cover-sub">
+        Win more proposals, with the team you already have.
+      </p>
+      <div class="cover-meta">
+        <div class="col">
+          <span class="k">Presented by</span>
+          <span class="v">[Your name], [Title]</span>
+        </div>
+        <div class="col">
+          <span class="k">Date</span>
+          <span class="v">[Month YYYY]</span>
+        </div>
+        <div class="col">
+          <span class="k">For</span>
+          <span class="v">[Institution name]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 The gap -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">01 <span class="muted">/ Why now</span></div>
+      <h2 class="headline">
+        The job of research development keeps growing. The team doesn&rsquo;t.
+      </h2>
+      <div class="contrast">
+        <div class="col neg">
+          <div class="tag">What teams are up against</div>
+          <h3>The squeeze is real.</h3>
+          <ul>
+            <li>Budgets are flat or shrinking, and the team isn&rsquo;t growing.</li>
+            <li>The workload keeps climbing: more faculty, more proposals, more compliance.</li>
+            <li>Less visibility into where funding is actually moving.</li>
+          </ul>
+        </div>
+        <div class="col pos">
+          <div class="tag">What institutions actually need</div>
+          <h3>Outcomes. Submitted proposals. Awarded dollars.</h3>
+          <ul>
+            <li>More faculty reached, without more staff.</li>
+            <li>Stronger proposals, not just more of them.</li>
+            <li>Capacity that scales with the pipeline.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 A different category -->
+  <section class="slide" data-slide="3">
+    <div class="split-right"></div>
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="position: relative; z-index: 1;">
+      <div class="eyebrow">02 <span class="muted">/ A different category</span></div>
+      <div class="cat-grid">
+        <div class="cat-left">
+          <h2 class="headline tight" style="font-size: clamp(34px, 3.7vw, 58px);">
+            Atom is a <span class="accent">teammate</span>, purpose-built for research development.
+          </h2>
+          <p class="lede" style="margin-top: clamp(24px, 2.2vw, 36px); max-width: 44ch;">
+            Not a search tool. Not a generic AI. Not a years-long internal project. A team of AI agents and research development experts, working alongside your staff on discovery, eligibility, collaborators, drafting, and review.
+          </p>
+        </div>
+        <div class="bridge-quote">
+          <div class="bq-text">
+            &ldquo;Atom is taking the burden away from our pre-award unit because they&rsquo;re guiding the PIs in the submission process.&rdquo;
+          </div>
+          <div class="bq-attrib">
+            <div class="bq-avatar"><img src="img/lydia.png" alt="Lydia Perry"></div>
+            <div class="bq-who">
+              <strong>Lydia Perry</strong>
+              <span>Grant Writer &middot; UA at Little Rock</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 How it works: the six-step workflow -->
+  <section class="slide" data-slide="4">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: flex-start;">
+      <div class="eyebrow">03 <span class="muted">/ How it works</span></div>
+      <h2 class="headline" style="font-size: clamp(38px, 4.4vw, 64px); max-width: 32ch;">
+        Atom runs your entire research development workflow. <span style="color: lab(66.128 -0.0000298023 0.0000119209);">Your team is freed to do the work only they can do.</span>
+      </h2>
+      <div class="six-grid">
+        <div class="cell">
+          <div>
+            <div class="num">01</div>
+            <h3>Automated Profiles</h3>
+          </div>
+          <p>Living profiles of every researcher, tailored to their actual work.</p>
+        </div>
+        <div class="cell">
+          <div>
+            <div class="num">02</div>
+            <h3>Grant Discovery</h3>
+          </div>
+          <p>Relevant opportunities surfaced and automatically distributed to the right faculty.</p>
+        </div>
+        <div class="cell">
+          <div>
+            <div class="num">03</div>
+            <h3>Eligibility Checks</h3>
+          </div>
+          <p>Gate criteria verified before anything reaches a faculty inbox.</p>
+        </div>
+        <div class="cell">
+          <div>
+            <div class="num">04</div>
+            <h3>Collaborator Identification</h3>
+          </div>
+          <p>The right co-PIs, internal and external, for team-based calls.</p>
+        </div>
+        <div class="cell">
+          <div>
+            <div class="num">05</div>
+            <h3>Proposal Guide</h3>
+          </div>
+          <p>Every RFP turned into a section-by-section drafting guide.</p>
+        </div>
+        <div class="cell">
+          <div>
+            <div class="num">06</div>
+            <h3>AI Proposal Review</h3>
+          </div>
+          <p>Drafts stress-tested against reviewer criteria before submission.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Case study: University of Memphis -->
+  <section class="slide dark" data-slide="5">
+    <div class="brand"><img src="../../assets/newredlogowordmarkwhitehighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">04 <span class="muted">/ Case study, University of Memphis</span></div>
+      <h2 class="headline" style="font-size: clamp(36px, 4vw, 56px); max-width: 28ch;">
+        Universities are using Atom to set submission records.
+      </h2>
+      <div class="cs-quote-card">
+        <p class="pull-quote">
+          &ldquo;This fiscal year we have set <span class="accent">records for submissions</span>, and I attribute that to the fact people are engaging with Atom.&rdquo;
+        </p>
+        <div class="pull-attrib-row">
+          <div class="cs-avatar"><img src="img/brian.jpg" alt="Brian Evans"></div>
+          <div class="cs-who">
+            <strong>Brian Evans, PhD</strong>
+            <span>Assistant Director &middot; University of Memphis</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="v">600+</div>
+          <div class="l">Faculty engaged across the university in one year.</div>
+        </div>
+        <div class="stat">
+          <div class="v">10&times;</div>
+          <div class="l">Lift in faculty engagement vs. prior platform.</div>
+        </div>
+        <div class="stat">
+          <div class="v">Record</div>
+          <div class="l">Year for proposal submissions at Memphis.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Partners + voices -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">05 <span class="muted">/ Partners</span></div>
+      <h2 class="headline" style="font-size: clamp(34px, 3.7vw, 54px); max-width: 26ch;">
+        Trusted by 50+ research institutions, from R1 universities to specialized institutes.
+      </h2>
+      <div class="logo-row">
+        <img src="img/logos/memphis.png" alt="University of Memphis">
+        <img src="img/logos/ndsu.webp" alt="North Dakota State University">
+        <img src="img/logos/usf-colored-1777427407949.webp" alt="University of South Florida">
+        <img src="img/logos/denverhealth.png" alt="Denver Health">
+        <img src="img/logos/auburn-colored-1-1777428408791.webp" alt="Auburn University">
+        <img src="img/logos/nyu-langone-colored-1777427401019.svg" alt="NYU Langone Health">
+      </div>
+      <div class="quote-wall">
+        <div class="qcard">
+          <div class="q">&ldquo;It was about the low barrier to entry, quick implementation and low burden on faculty. That was a big deal for me. This is a no brainer.&rdquo;</div>
+          <div class="who">
+            <span class="qhead"><img src="img/headshots/heidi.png" alt="Heidi Grunwald"></span>
+            <div class="meta"><strong>Heidi Grunwald, PhD</strong><span>AVP of Research &middot; North Dakota State University</span></div>
+          </div>
+        </div>
+        <div class="qcard">
+          <div class="q">&ldquo;I just saw our uptake numbers compared to the old system and we are seeing 3x engagement uptick already!&rdquo;</div>
+          <div class="who">
+            <span class="qhead zoom"><img src="img/headshots/amanda.png" alt="Amanda Breeden"></span>
+            <div class="meta"><strong>Amanda Breeden, CRA</strong><span>Associate Chief, Research &middot; Denver Health</span></div>
+          </div>
+        </div>
+        <div class="qcard more">
+          <div class="mtitle">and 45+ more</div>
+          <div class="mlist">Auburn, Kansas State, Franklin &amp; Marshall, Middlebury, Slippery Rock, and dozens of research teams nationwide.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 For Leadership -->
+  <section class="slide" data-slide="7">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">06 <span class="muted">/ For leadership</span></div>
+      <div class="lead-layout">
+        <div class="lead-copy">
+          <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 50px); max-width: 18ch;">
+            See where your institution stands.
+          </h2>
+          <p class="lede" style="margin-top: clamp(20px, 1.8vw, 30px);">
+            Atom tracks every interaction and reports it back: agent activity, faculty engagement, pipeline health, and submission trends.
+          </p>
+          <ul class="lead-list">
+            <li>Reviewed with your named team at each check-in.</li>
+            <li>A shared data room for every report and deliverable.</li>
+            <li>Spot funder priorities and momentum shifts early.</li>
+          </ul>
+        </div>
+        <div class="dash">
+          <div class="dash-head">
+            <div class="t">Leadership dashboard</div>
+            <div class="chip">Last 180 days</div>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi"><div class="v">68%</div><div class="l">Profiles engaged</div></div>
+            <div class="kpi"><div class="v">12.4k</div><div class="l">Grant page views</div></div>
+            <div class="kpi"><div class="v">3,180</div><div class="l">AI chats with Atom</div></div>
+            <div class="kpi"><div class="v accent">+51%</div><div class="l">Daily engagement</div></div>
+          </div>
+          <div class="chart-wrap">
+            <div class="ct"><span>Weekly engagement</span><strong>Trending up</strong></div>
+            <svg viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,74 L29,69 L58,75 L87,60 L116,63 L145,52 L174,55 L203,43 L232,47 L261,34 L290,29 L320,22 L320,96 L0,96 Z" fill="#ff4227" fill-opacity="0.08"/>
+              <path d="M0,74 L29,69 L58,75 L87,60 L116,63 L145,52 L174,55 L203,43 L232,47 L261,34 L290,29 L320,22" fill="none" stroke="#ff4227" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="deps">
+            <div class="dep"><span>Medicine</span><div class="bar"><span style="width:92%"></span></div><span class="pct">92%</span></div>
+            <div class="dep"><span>Engineering</span><div class="bar"><span style="width:74%"></span></div><span class="pct">74%</span></div>
+            <div class="dep"><span>Public Health</span><div class="bar"><span style="width:61%"></span></div><span class="pct">61%</span></div>
+            <div class="dep"><span>Arts &amp; Sciences</span><div class="bar"><span style="width:48%"></span></div><span class="pct">48%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Next steps & Q&A -->
+  <section class="slide" data-slide="8">
+    <div class="brand"><img src="../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Next <span class="muted">/ The next conversation</span></div>
+      <h2 class="headline" style="font-size: clamp(38px, 4.4vw, 66px); max-width: 17ch;">
+        Next: a full demo, on the things you care about most.
+      </h2>
+      <p class="lede" style="margin-top: clamp(20px, 1.8vw, 30px); max-width: 50ch;">
+        We&rsquo;ll walk through the product live and go deep on the workflows that matter most to your team.
+      </p>
+      <div class="focus">
+        <div class="focus-label">What should we focus on?</div>
+        <div class="chips">
+          <span class="chip">Automated Profiles</span>
+          <span class="chip">Grant Discovery</span>
+          <span class="chip">Eligibility Checks</span>
+          <span class="chip">Collaborator Identification</span>
+          <span class="chip">Proposal Guide</span>
+          <span class="chip">AI Proposal Review</span>
+        </div>
+      </div>
+      <div class="close-line">
+        <div class="q">Questions?</div>
+        <div class="contact">
+          <strong>[Your name]</strong><br>
+          [your.email@atomgrants.com] &nbsp;&middot;&nbsp; atomgrants.com
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="counter" id="counter" aria-live="polite">
+  <span class="now">01</span><span class="sep">/</span><span class="total">10</span>
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const nowEl = counter.querySelector('.now');
+  const totalEl = counter.querySelector('.total');
+  let current = 0;
+  const total = slides.length;
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function show(i) {
+    current = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    nowEl.textContent = String(current + 1).padStart(2, '0');
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case ' ':
+        e.preventDefault();
+        if (e.shiftKey) prev(); else next();
+        break;
+      case 'Home':
+        e.preventDefault(); show(0); break;
+      case 'End':
+        e.preventDefault(); show(total - 1); break;
+      case 'f':
+      case 'F':
+        e.preventDefault(); toggleFullscreen(); break;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#counter')) return;
+    next();
+  });
+
+  // Deep link via hash (#5 jumps to slide 5)
+  function syncFromHash() {
+    const n = parseInt((location.hash || '').replace('#', ''), 10);
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+
+  show(0);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>

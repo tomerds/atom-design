@@ -9,3 +9,15 @@
 /*/
 !/assets/
 !/.claude/
+
+# Exception: the finalized intro-call-deck template + its assets and worked
+# example are shared (the intro-call-deck skill points at them), so track
+# those specifically. One-off prospect decks and v1-v3 stay local.
+!/Intro_Call_Deck/
+/Intro_Call_Deck/*
+!/Intro_Call_Deck/v4/
+/Intro_Call_Deck/v4/*
+!/Intro_Call_Deck/v4/Intro_Call_Deck.html
+!/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.html
+!/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.pdf
+!/Intro_Call_Deck/v4/img/
