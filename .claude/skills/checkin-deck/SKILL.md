@@ -1,11 +1,15 @@
 ---
 name: checkin-deck
-description: Build periodic check-in decks for Atom Grants partner institutions (30/60/90/180/270-day reviews, annual QBRs, renewal-conversation decks). Encodes the slide order, comparison framing, copy register, chart conventions, brand system, and data-interpretation gotchas so every check-in deck across every customer reads as one consistent product. Trigger when the user asks for a "check-in deck", "QBR", "90-day / 180-day / 270-day review", "renewal deck", "customer review deck", or any periodic metrics review for a partner institution. The reference implementation lives at `NYULH_180_Day_Checkin/v1/`.
+description: Build periodic check-in decks for Atom Grants partner institutions (30/60/90/180/270-day reviews, annual QBRs, renewal-conversation decks). Every deck is agenda-driven (Progress recap → Your objectives → Usage highlights → Feedback → Next 60 days), always carries a required objectives slide and a feedback slide, and follows a fixed slide order, comparison framing, copy register, chart conventions, brand system, and data-interpretation gotchas so every check-in deck across every customer reads as one consistent product. Trigger when the user asks for a "check-in deck", "QBR", "90-day / 180-day / 270-day review", "renewal deck", "customer review deck", or any periodic metrics review for a partner institution. Reference implementations: `SUNY_Cortland_30_Day_Checkin/v1/` (agenda + objectives + feedback structure, first check-in) and `NYULH_180_Day_Checkin/v1/` (period-comparison / cohort / funder-shift components).
 ---
 
 # Atom Grants Partner Check-In Decks
 
-Decks reviewing a partner institution's engagement with Atom over a defined period. Used in renewal conversations, internal QBRs, and milestone reviews with the customer's research-development leadership. Reference: `NYULH_180_Day_Checkin/v1/`.
+Decks reviewing a partner institution's engagement with Atom over a defined period. Used in renewal conversations, internal QBRs, and milestone reviews with the customer's research-development leadership.
+
+**Two reference implementations — copy components from whichever fits:**
+- `SUNY_Cortland_30_Day_Checkin/v1/` — the **current house structure**: agenda-driven, with the required objectives slide, the feedback slide, section-labeled eyebrows, and the first-check-in component set (engagement funnel, search themes). Start here.
+- `NYULH_180_Day_Checkin/v1/` — the components that need a **prior** check-in to compare against: period comparison, cohort flow, funder-mix-shift with `NEW` pills. Use these once a deck has a previous cycle to compare to.
 
 ## When to use
 
@@ -36,28 +40,57 @@ Skip this skill for: one-off pitch decks (use `Intro_Call_Deck` patterns), webin
 
 **Asset paths.** Inside a `vN/` folder, the deck is two levels deep relative to `/Design/`. Reference shared assets with `../../assets/...` (not `../assets/...`). The partner logo sits *inside* the `vN/` folder and is referenced as a sibling (`nyulogo.png`).
 
-## Slide order (canonical sequence)
+## Deck structure (agenda-driven)
 
-**Default 12 slides** for a 180-day check-in. Drop slides 11-12 if there's no module/renewal story to tell yet. Always keep the relative order — never reshuffle.
+Every check-in deck is built around a **fixed five-part agenda**, stated on slide 02 and then carried through the deck via section-labeled eyebrows. The agenda sections never change; the slides *inside* "Usage highlights" flex with the data and the check-in stage.
 
-| # | Slide | One-line job |
-|---|---|---|
-| 01 | **Cover** | Logo lockup + "{N}-Day Check-In" + period meta block |
-| 02 | **All-time headlines** | 4 big stat tiles: total volume metrics (page views, AI chats, favorites, searches) |
-| 03 | **Activation** | Donut showing engaged-vs-roster, plus 3 supporting numbers (engaged / active recent / yet to activate) |
-| 04 | **Period comparison** | 4 stat tiles: before vs since the prior check-in, with daily rates |
-| 05 | **Weekly engagement trend** | Bar chart, full timeline, dashed accent marker at the prior check-in date |
-| 06 | **Cohort flow** | Three numbers — retained / new / lapsed — with a takeaway line |
-| 07 | **Top departments** | Table: department, active users, page visits, engagement bar, growth % vs prior period. **Does the volume *and* growth job in one slide** — don't add a separate "fastest-growing" slide, it duplicates this one |
-| 08 | **Funder mix shift** | Horizontal bars of top 12 funders since the check-in, with `NEW` pills on first-time funders. Right column = "what's changing" commentary + one big callout (e.g. "+910 views across industry/foundation funders") |
-| 09 | **Channels** | Stacked bar lists (P1 vs P2) showing where visits originate (email, dashboard, search, direct) + a takeaway headline |
-| 10 | **Top active researchers** | Ranked table of top 10: #, name, department, page views, AI chats, searches, favorites. No accent on rows — table speaks for itself. Eyebrow does the framing |
-| 11 | **Next steps** | 3 priorities for the next quarter — number, headline, paragraph. Point 03 = renewal conversation when contract end is within 90-120 days |
-| 12 | **Modules / what's coming** | 2 cards teasing roadmap (currently Researcher Search + Proposals), only when there's a real renewal story |
+**The agenda (slide 02 — always these five, in this order):**
 
-**Slide 03 (Activation) is non-negotiable** even on early check-ins — it sets the context for every other metric.
+1. **Progress recap**
+2. **Your objectives**
+3. **Usage highlights**
+4. **Feedback**
+5. **Next 60 days** *(rename to "Next 90 days" / "Next quarter" to match the cadence)*
 
-**Don't add a separate "fastest-growing departments" slide.** It feels duplicative with slide 07 because slide 07 already accent-highlights the >50% growth rows in its growth column. We removed it from the canonical sequence after the first NYULH iteration.
+**Four slides are non-negotiable on every deck, no matter the stage:** the **Agenda** (02), the **Objectives** slide (see "Objectives slide" below — *required*, ask the user for them if not supplied), the **Activation** slide (sets context for every other metric), and the **Feedback** slide. Never ship a check-in deck missing any of these.
+
+### Canonical slide order
+
+Default **~14 slides**. Keep the relative order — never reshuffle. Drop the optional rows (and the modules teaser) when there's no story for them yet.
+
+| # | Slide | Agenda section | One-line job |
+|---|---|---|---|
+| 01 | **Cover** | — | Logo lockup + "{N}-Day Check-In" + period meta block |
+| 02 | **Agenda** | — | The five-part agenda as a numbered list. **Required.** |
+| 03 | **All-time headlines** | Progress recap | 4 big stat tiles: total volume metrics (page views, grant visits, searches, favorites) |
+| 04 | **Activation** | Progress recap | Engaged-vs-roster bar + 3 supporting numbers (activated / explored / yet to activate). **Required.** |
+| 05 | **Your objectives** | Your objectives | 3 objective cards, each with a "month-N signal" tie-in. **Required.** |
+| 06 | **Period comparison** | Usage highlights | 4 stat tiles: before vs since the prior check-in, with daily rates. *Only if a prior check-in exists — skip on a first check-in.* |
+| 07 | **Weekly engagement trend** | Usage highlights | Bar chart, full timeline. Dashed accent marker at the prior check-in date, or at the launch week on a first check-in |
+| 08 | **Cohort flow** *or* **Engagement funnel** | Usage highlights | Prior check-in → cohort flow (retained / new / lapsed). First check-in → engagement funnel (roster → viewed → opened → searched → favorited) |
+| 09 | **Top departments** | Usage highlights | Table: department, active users, page visits, engagement bar, + growth % (prior period) or % of dept active (first check-in). Does volume *and* growth in one slide |
+| 10 | **Funder mix** | Usage highlights | Top ~12 funders. Prior check-in → "shift" view with `NEW` pills + what's-changing commentary. First check-in → top funders + breadth callout |
+| 11 | **Search themes** | Usage highlights | *Optional.* 2×2 theme cards of representative real queries — strong on early check-ins with rich query data |
+| 12 | **Channels** | Usage highlights | Where visits originate (email, dashboard, search, direct) + a takeaway headline |
+| 13 | **Top active researchers** | Usage highlights | Ranked table of top 10. No accent on rows — eyebrow + headline frame it |
+| 14 | **Feedback** | Feedback | 2×2 of open discussion prompts (matching quality, the digest, gaps, rollout). **Required.** |
+| 15 | **Next 60 days** | Next 60 days | 3 priorities, each tied back to an objective. Point 03 = renewal conversation when contract end is within 90-120 days |
+| — | **Modules / what's coming** | (add-on) | 2 cards teasing roadmap (Researcher Search + Proposals) — *only* when there's a real renewal story. Drop on early check-ins |
+
+**Section-labeled eyebrows.** Every "Usage highlights" slide's eyebrow reads `Usage highlights <span class="muted">topic</span>` (e.g. "Usage highlights · weekly trend"). The recap slides use `Progress recap`, the objectives slide `Your objectives`, etc. This reinforces the agenda as the reader moves through the deck. See the SUNY Cortland deck for the exact eyebrow markup.
+
+**Don't add a separate "fastest-growing departments" slide.** Slide 09 already accent-highlights the >50% growth rows in its growth column — a second slide duplicates it. Removed after the first NYULH iteration.
+
+### First check-in (no prior period)
+
+A first check-in has nothing to compare against, so two canonical slides have no data and are **swapped, not left empty**:
+
+- **Period comparison (06) → drop entirely.** There's no prior period.
+- **Cohort flow (08) → engagement funnel.** Roster → viewed a page → opened a grant → searched → favorited, as descending bars. The funnel is the "depth of engagement" story when there's no retained/lapsed cohort yet.
+- **Funder mix (10)** loses its `NEW` pills and "shift" framing — show top funders by visits + a breadth callout ("N funders across M grants") instead.
+- The **search-themes** slide (11) is especially valuable here: it's qualitative color about what the faculty actually want, which carries an early deck.
+
+Copy components for all four first-check-in variants from `SUNY_Cortland_30_Day_Checkin/v1/`.
 
 ## Cover slide (slide 01)
 
@@ -78,6 +111,39 @@ Oct 2025 — May 2026   90-day check-in (Jan 21) May 13, 2026
 - Keep meta block short: Period · Compared to · Prepared.
 - **No subhead.** No "found its audience" tagline — the user asked us to remove flowery framing on the cover.
 - **Partner logo** lives inside the deck's `vN/` folder (e.g. `nyulogo.png`). Reference as a sibling: `src="nyulogo.png"`. Use the partner's published wordmark logo — do not recreate or stylize.
+- **"Compared to" → "Milestone" on a first check-in.** With no prior cycle, the cover meta reads `Period · Milestone · Prepared` (e.g. "First month live") rather than naming a prior check-in.
+
+## Agenda slide (slide 02 — required)
+
+A numbered list of the five agenda sections. Each row: an accent Cal Sans number (`01`–`05`), a Cal Sans label, and a one-line muted descriptor. Headline: "What we'll cover today." The numbers are the lone accent moment. Copy the `.agenda` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
+
+```
+01  Progress recap     Where the first 30 days landed
+02  Your objectives    What we set out to do together
+03  Usage highlights   How faculty are engaging, in detail
+04  Feedback           What's working, what's missing
+05  Next 60 days       Where we focus from here
+```
+
+## Objectives slide (required)
+
+**Every check-in deck states the partner's original objectives** — the 2-4 goals agreed during the sales/onboarding conversation. This slide anchors the whole review: every metric should ladder back to one of these.
+
+- **Never invent objectives.** If the user hasn't supplied them, **ask** for the objectives agreed during onboarding before building the deck. Pull from CRM/onboarding notes if available.
+- Lay them out as 3 cards (or 2-4): an accent number, a Cal Sans `<h3>` objective title, a one-line plain-language restatement, and a bottom **"Month-N signal"** line that ties the objective to a number already in this deck (e.g. "230 grants across 115 funders — broad, intent-driven discovery"). The signal line is what makes objectives feel measured, not decorative.
+- Place it at slide 05, **after** the progress recap and before the usage detail (matches the agenda order: recap → objectives → usage).
+- Headline: "What we set out to do together." Eyebrow: "Your objectives." Copy the `.objectives` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
+
+## Feedback slide (required)
+
+A live-discussion slide near the end (before Next steps) inviting the partner to react. A 2×2 grid of open prompt cards — each an accent `q-lbl` label + a Cal Sans question. Default prompts, tuned per partner:
+
+- **Matching quality** — "Are the grants Atom surfaces genuinely relevant to your faculty's work?"
+- **The weekly digest** — "Is the cadence and content right — and where would you tune it?"
+- **Gaps** — "What funders, features, or departments still feel missing?"
+- **Rollout** — "What would help bring the rest of the roster on board?"
+
+Headline: "Where are we getting it right — and what's missing?" (accent on "what's missing?"). Copy the `.feedback` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
 
 ## Brand system
 
@@ -148,7 +214,7 @@ When in doubt, run the deck and ask: "What is my eye drawn to first on this slid
 
 **Periods are rarely equal in length.** A 180-day check-in compared to a 90-day check-in has 146 days of P1 data and 112 days of P2 data (the prior cycle had a ramp-up). Be honest about this:
 
-- **Show both absolute totals and daily rates.** On the period-comparison slide (typically 04), label each tile with both: `9,401 / Through Jan 21 / 64 / day` next to `10,893 / Since Jan 21 / 97 / day`.
+- **Show both absolute totals and daily rates.** On the period-comparison slide (~06), label each tile with both: `9,401 / Through Jan 21 / 64 / day` next to `10,893 / Since Jan 21 / 97 / day`.
 - **Lead the headline with the daily rate** — that's the fair comparison. "Daily engagement up 51%" beats "Visits up 16%."
 - **Disclose period lengths in the legend** of every period-comparison chart: `Through Jan 21 (146 days)` vs `Since Jan 21 (112 days)`.
 - **Don't compute "%" deltas on absolute totals when the periods differ.** It silently undersells real growth and a sharp reader will catch it.
@@ -165,22 +231,24 @@ When in doubt, run the deck and ask: "What is my eye drawn to first on this slid
 - Big stat numbers: Cal Sans, `clamp(48px, 5vw, 84px)`, letter-spacing -0.02em.
 - Numerals in tables: tabular nums, right-aligned.
 
-### Weekly trend (slide 05)
-- Vertical bars, one per week. ~37 weeks total for a 180-day check-in.
-- **Dashed accent vertical line** marking the previous check-in date (Jan 21), labeled inline.
+### Weekly trend (~slide 07)
+- Vertical bars, one per week. ~37 weeks total for a 180-day check-in; ~8 for a 30-day.
+- **Dashed accent vertical line** marking the previous check-in date — or, on a first check-in, the launch week. Label it inline.
 - Gray bars before the line, accent bars after.
-- Y-axis: 0, 250, 500, 750, 1000 with dashed soft gridlines.
-- Three callouts beneath the chart: avg-per-day current, % change vs prior, weeks above floor.
+- Y-axis gridlines scaled to the data (e.g. 0/250/500/750/1000 for a mature deck; 0/50/100/150/200 for a small one). **Leave headroom above the tallest bar** so value labels above bars don't clip — on the SUNY deck the y-max was raised from 160 to 200 for exactly this reason.
+- Mark a partial trailing week (data through the prep date, not a full 7 days) with reduced fill-opacity and a `*` note.
+- Three callouts beneath the chart: avg-per-day / per-week current, % change vs prior (or launch-weeks share on a first check-in), weeks above floor.
 
-### Funder mix (slide 08)
+### Funder mix (~slide 10)
 - Two-column layout: left = list of top 12 funders (since the check-in), right = commentary panel + one big callout box.
 - `NEW` pill in accent-soft background for funders with zero pre-check-in views.
 - Numbers in tabular DM Mono / DM Sans, right-aligned. Current-period number bold; prior number muted.
 
-### Top active researchers (slide 10)
+### Top active researchers (~slide 13)
 - **Ranked table, not cards.** Cards were the first iteration but the user replaced them with a table to show a fuller activity profile per person.
-- Columns: `#`, `Name`, `Department`, `Page views`, `AI chats`, `Searches`, `Favorites`.
+- Columns: `#`, `Name`, `Department`, `Page views`, `AI chats`, `Searches`, `Favorites`. **If AI chats are ~0 across the board (common on a new deployment), swap that column for `Grant visits`** — an all-zero column looks broken. The SUNY deck did this.
 - Sort descending by page views, top 10.
+- **Watch for admin/champion accounts at the top.** The Office of Sponsored Programs staff driving the rollout often out-use every faculty member. Keep them in the table (it's a good sign), but add a `table-note` clarifying that the top rows are the rollout team, and exclude them from the *departments* slide so they don't crush the engagement-bar scale.
 - No accent on rows — let the numbers do the work. The eyebrow ("Most active researchers · all-time") and the headline ("The 10 most active researchers on Atom.") frame the slide; no editorial claim like "X researchers drove Y% of traffic" since that ties the slide to a single message instead of letting the reader read.
 - Department names: trim long lists. Use the first or most relevant department; replace ", " separator with " · " when keeping two.
 
@@ -208,7 +276,7 @@ html = Path("<Partner>_<N>_Day_Checkin/<Partner>_<N>_Day_Checkin.html").resolve(
 out = html.parent
 with sync_playwright() as p:
     b = p.chromium.launch()
-    for i in range(1, 13):  # adjust to your slide count
+    for i in range(1, 15):  # adjust to your slide count (~14 in the current structure)
         c = b.new_context(viewport={"width": 1920, "height": 1080}, device_scale_factor=2.0)
         page = c.new_page(); page.goto(f"file://{html}?slide={i}")
         page.wait_for_load_state("networkidle"); page.evaluate("document.fonts.ready")
@@ -348,7 +416,9 @@ Copy this scaffolding to start a new deck. Fill in headline, eyebrow, content bo
 </html>
 ```
 
-For component-specific markup (donut, stat tiles, sankey, weekly-trend chart, power-user cards, etc.), copy directly from `NYULH_180_Day_Checkin/v1/NYULH_180_Day_Checkin.html` — that file is the canonical reference.
+For component-specific markup, copy directly from whichever reference has the component:
+- `SUNY_Cortland_30_Day_Checkin/v1/` — agenda, objectives cards, feedback grid, engagement funnel, search-theme cards, section-labeled eyebrows, top-funders (no-shift) list, single-period channels, first-check-in weekly trend. **The current house structure — start here.**
+- `NYULH_180_Day_Checkin/v1/` — period-comparison stat tiles, cohort flow, funder-mix-shift with `NEW` pills, the long (~37-week) weekly trend with a prior-check-in marker.
 
 ## When the user iterates
 
