@@ -7,6 +7,11 @@ just swaps five placeholder tokens in the template, writes a per-prospect HTML
 next to the template (so the relative img/ and ../../assets paths still
 resolve), and optionally renders a print-ready PDF.
 
+The PDF is always produced with the screenshot-and-stitch method: each slide is
+captured as a 2x PNG (by stepping the deck through its .active states) and the
+PNGs are merged into a 13.333x7.5 PDF. We never use html-to-pdf for this deck —
+its print renderer mis-paginates these full-viewport 16:9 slides.
+
 Usage:
   python3 .claude/skills/intro-call-deck/personalize.py \
       --institution "University of Iowa" \
@@ -28,7 +33,7 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SKILL_DIR.parents[2]                      # .../Design
 TEMPLATE = REPO_ROOT / "Intro_Call_Deck" / "v4" / "Intro_Call_Deck.html"
-EXPORT = SKILL_DIR.parents[0] / "html-to-pdf" / "export.py"
+MERGE = SKILL_DIR.parents[0] / "png-to-pdf" / "merge.py"
 PAGE_SIZE = "13.333x7.5"                               # 16:9 slide, in inches
 
 # Token in template  ->  argparse attribute holding the replacement
@@ -43,6 +48,66 @@ TOKENS = {
 
 def slug(text):
     return re.sub(r"_+", "_", re.sub(r"[^A-Za-z0-9]+", "_", text)).strip("_")
+
+
+def ensure_playwright():
+    try:
+        import playwright  # noqa: F401
+    except ImportError:
+        print("Installing playwright...", file=sys.stderr)
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", "playwright"])
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            try:
+                p.chromium.launch().close()
+            except Exception:
+                print("Installing chromium...", file=sys.stderr)
+                subprocess.check_call([sys.executable, "-m", "playwright", "install", "chromium"])
+    except Exception:
+        subprocess.check_call([sys.executable, "-m", "playwright", "install", "chromium"])
+
+
+def render_pdf(html_path, pdf_path, title):
+    """Capture each slide as a 2x PNG, then stitch into a 13.333x7.5 PDF.
+
+    Slides are full-viewport 16:9 sections toggled by an .active class, so we
+    step through them by toggling that class on the DOM directly (the deck's
+    show() helper is module-scoped and not reachable from page.evaluate).
+    """
+    ensure_playwright()
+    from playwright.sync_api import sync_playwright
+
+    html_path = Path(html_path).resolve()
+    pngs = []
+    with sync_playwright() as p:
+        ctx = p.chromium.launch().new_context(
+            viewport={"width": 1920, "height": 1080},
+            device_scale_factor=2.0,
+        )
+        page = ctx.new_page()
+        page.goto(f"file://{html_path}")
+        page.wait_for_load_state("networkidle")
+        page.evaluate("document.fonts.ready")
+        page.wait_for_timeout(1000)
+        total = page.evaluate("document.querySelectorAll('.slide').length")
+        for i in range(total):
+            page.evaluate(
+                "(idx) => document.querySelectorAll('.slide')"
+                ".forEach((s,k)=>s.classList.toggle('active',k===idx))",
+                i,
+            )
+            page.wait_for_timeout(350)
+            out = html_path.with_name(f"{html_path.stem}_slide_{i+1:02d}@2x.png")
+            page.locator(".slide.active").screenshot(path=str(out), type="png")
+            pngs.append(out)
+        ctx.browser.close()
+
+    cmd = [sys.executable, str(MERGE), *map(str, pngs),
+           "-o", str(pdf_path), "--size", PAGE_SIZE, "--title", title]
+    subprocess.run(cmd, check=True)
+    for png in pngs:                       # tidy up the intermediate frames
+        png.unlink(missing_ok=True)
 
 
 def main():
@@ -79,9 +144,9 @@ def main():
     if args.no_pdf:
         return
     pdf = out.with_suffix(".pdf")
-    cmd = [sys.executable, str(EXPORT), str(out), "--size", PAGE_SIZE, "--wait", "1200", "-o", str(pdf)]
-    print("Rendering PDF ...")
-    subprocess.run(cmd, check=True)
+    print("Rendering PDF (screenshot-and-stitch) ...")
+    render_pdf(out, pdf, f"Atom Grants — {args.institution}")
+    print(f"Saved: {pdf}")
 
 
 if __name__ == "__main__":

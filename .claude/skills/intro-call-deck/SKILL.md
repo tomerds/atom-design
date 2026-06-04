@@ -52,13 +52,40 @@ Output lands next to the template as `Intro_Call_Deck_<Slug>.html` + `.pdf`. Fla
 
 > Keep personalized copies **inside `Intro_Call_Deck/v4/`** so the relative `img/` and `../../assets` paths resolve. The script defaults there.
 
-## Rendering manually
+## Rendering the PDF — always screenshot-and-stitch, never html-to-pdf
+
+**Do not use `html-to-pdf` for this deck.** Its print renderer mis-paginates the full-viewport 16:9 slides and the formatting comes out wrong. Always render by capturing each slide as a 2× PNG and stitching the PNGs into the PDF.
+
+`personalize.py` does this for you (it's the only render path the script supports). To render an existing HTML manually, capture each slide then merge:
 
 ```bash
-python3 .claude/skills/html-to-pdf/export.py Intro_Call_Deck/v4/<file>.html --size 13.333x7.5
+# 1) Step the deck through its 8 .active slides, capturing each at 2×.
+#    Slides are toggled by the .active class; the show() helper is module-scoped
+#    and not reachable from page.evaluate, so toggle the class on the DOM directly.
+python3 - "Intro_Call_Deck/v4/<file>.html" << 'PY'
+import sys
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+html = Path(sys.argv[1]).resolve()
+with sync_playwright() as p:
+    page = p.chromium.launch().new_context(
+        viewport={"width":1920,"height":1080}, device_scale_factor=2.0).new_page()
+    page.goto(f"file://{html}"); page.wait_for_load_state("networkidle")
+    page.evaluate("document.fonts.ready"); page.wait_for_timeout(1000)
+    for i in range(page.evaluate("document.querySelectorAll('.slide').length")):
+        page.evaluate("(idx)=>document.querySelectorAll('.slide').forEach((s,k)=>s.classList.toggle('active',k===idx))", i)
+        page.wait_for_timeout(350)
+        page.locator(".slide.active").screenshot(
+            path=str(html.with_name(f"{html.stem}_slide_{i+1:02d}@2x.png")), type="png")
+PY
+
+# 2) Stitch into a 13.333×7.5 (16:9) PDF.
+python3 .claude/skills/png-to-pdf/merge.py \
+    Intro_Call_Deck/v4/<file>_slide_*@2x.png \
+    -o Intro_Call_Deck/v4/<file>.pdf --size 13.333x7.5 --title "<Title>"
 ```
 
-The deck's print CSS sets `@page` to 13.333in × 7.5in with one slide per page; always pass `--size 13.333x7.5`.
+The PDF is raster: pixel-perfect to the HTML, but text isn't selectable and links aren't clickable. That tradeoff is intentional and accepted for this deck.
 
 ## When editing the deck itself (not just personalizing)
 
