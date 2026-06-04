@@ -10,17 +10,13 @@
 !/assets/
 !/.claude/
 
-# Exception: the finalized intro-call-deck template + its assets and worked
-# example are shared (the intro-call-deck skill points at them), so track
-# those specifically. One-off prospect decks and v1-v3 stay local.
+# Exception: the finalized intro-call-deck template + its assets are shared
+# (the intro-call-deck skill points at them), so track those specifically.
+# One-off per-prospect decks stay local.
 !/Intro_Call_Deck/
 /Intro_Call_Deck/*
-!/Intro_Call_Deck/v4/
-/Intro_Call_Deck/v4/*
-!/Intro_Call_Deck/v4/Intro_Call_Deck.html
-!/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.html
-!/Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.pdf
-!/Intro_Call_Deck/v4/img/
+!/Intro_Call_Deck/Intro_Call_Deck.html
+!/Intro_Call_Deck/img/
 
 # Exception: the SUNY Cortland 30-day check-in is the checkin-deck skill's
 # house reference (agenda + objectives + feedback structure), so track its

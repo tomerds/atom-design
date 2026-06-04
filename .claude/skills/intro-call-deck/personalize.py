@@ -4,7 +4,7 @@ Personalize the finalized Atom Grants intro call deck for one prospect.
 
 Only the cover and the close slide change between prospects, so this script
 just swaps five placeholder tokens in the template, writes a per-prospect HTML
-next to the template (so the relative img/ and ../../assets paths still
+next to the template (so the relative img/ and ../assets paths still
 resolve), and optionally renders a print-ready PDF.
 
 The PDF is always produced with the screenshot-and-stitch method: each slide is
@@ -32,7 +32,7 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SKILL_DIR.parents[2]                      # .../Design
-TEMPLATE = REPO_ROOT / "Intro_Call_Deck" / "v4" / "Intro_Call_Deck.html"
+TEMPLATE = REPO_ROOT / "Intro_Call_Deck" / "Intro_Call_Deck.html"
 MERGE = SKILL_DIR.parents[0] / "png-to-pdf" / "merge.py"
 PAGE_SIZE = "13.333x7.5"                               # 16:9 slide, in inches
 
@@ -125,7 +125,7 @@ def main():
     missing = [tok for tok in TOKENS if tok not in html]
     if missing:
         sys.exit("Template is missing expected placeholder(s): " + ", ".join(missing) +
-                 "\nIs Intro_Call_Deck/v4/Intro_Call_Deck.html still the clean template?")
+                 "\nIs Intro_Call_Deck/Intro_Call_Deck.html still the clean template?")
 
     for tok, attr in TOKENS.items():
         html = html.replace(tok, getattr(args, attr))

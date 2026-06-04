@@ -1,6 +1,6 @@
 ---
 name: intro-call-deck
-description: Create and personalize the Atom Grants intro / first-call sales deck for a specific prospect institution. Trigger when the user asks to "make an intro deck", "first call deck", "demo deck for [institution]", "customize the intro call deck", "spin up a deck for [University]", or render that deck to PDF. The finalized 8-slide template lives at Intro_Call_Deck/v4/Intro_Call_Deck.html.
+description: Create and personalize the Atom Grants intro / first-call sales deck for a specific prospect institution. Trigger when the user asks to "make an intro deck", "first call deck", "demo deck for [institution]", "customize the intro call deck", "spin up a deck for [University]", or render that deck to PDF. The finalized 8-slide template lives at Intro_Call_Deck/Intro_Call_Deck.html.
 ---
 
 # Intro Call Deck
@@ -9,8 +9,7 @@ The finalized template for Atom Grants' **first-call** deck. This is the deck us
 
 ## Where it lives
 
-- **Template (source of truth):** `Intro_Call_Deck/v4/Intro_Call_Deck.html`
-- **Worked example:** `Intro_Call_Deck/v4/Intro_Call_Deck_University_of_Iowa.html` (+ `.pdf`)
+- **Template (source of truth):** `Intro_Call_Deck/Intro_Call_Deck.html`
 - **Personalizer:** `.claude/skills/intro-call-deck/personalize.py`
 
 Single self-contained HTML file. 16:9 slides, presented in-browser or exported to PDF. Navigate with arrow keys / Space / click; `f` fullscreen; `#N` deep-links to slide N.
@@ -50,7 +49,7 @@ python3 .claude/skills/intro-call-deck/personalize.py \
 
 Output lands next to the template as `Intro_Call_Deck_<Slug>.html` + `.pdf`. Flags: `--title` (cover org/title, default "Atom Grants"), `--out`, `--no-pdf`.
 
-> Keep personalized copies **inside `Intro_Call_Deck/v4/`** so the relative `img/` and `../../assets` paths resolve. The script defaults there.
+> Keep personalized copies **inside `Intro_Call_Deck/`** so the relative `img/` and `../assets` paths resolve. The script defaults there.
 
 ## Rendering the PDF — always screenshot-and-stitch, never html-to-pdf
 
@@ -63,7 +62,7 @@ Output lands next to the template as `Intro_Call_Deck_<Slug>.html` + `.pdf`. Fla
 #    Navigate via the deck's hash deep-link (#N) so its show() runs — this
 #    updates BOTH the .active slide and the page-number counter. (Toggling the
 #    .active class directly leaves every slide stuck on 1/N.)
-python3 - "Intro_Call_Deck/v4/<file>.html" << 'PY'
+python3 - "Intro_Call_Deck/<file>.html" << 'PY'
 import sys
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -82,15 +81,15 @@ PY
 
 # 2) Stitch into a 13.333×7.5 (16:9) PDF.
 python3 .claude/skills/png-to-pdf/merge.py \
-    Intro_Call_Deck/v4/<file>_slide_*@2x.png \
-    -o Intro_Call_Deck/v4/<file>.pdf --size 13.333x7.5 --title "<Title>"
+    Intro_Call_Deck/<file>_slide_*@2x.png \
+    -o Intro_Call_Deck/<file>.pdf --size 13.333x7.5 --title "<Title>"
 ```
 
 The PDF is raster: pixel-perfect to the HTML, but text isn't selectable and links aren't clickable. That tradeoff is intentional and accepted for this deck.
 
 ## When editing the deck itself (not just personalizing)
 
-- Edit the **template** (`Intro_Call_Deck/v4/Intro_Call_Deck.html`), then regenerate any prospect copies from it — don't hand-edit per-prospect files.
+- Edit the **template** (`Intro_Call_Deck/Intro_Call_Deck.html`), then regenerate any prospect copies from it — don't hand-edit per-prospect files.
 - Keep the five placeholder tokens intact in the template.
 - Brand: single accent `#ff4227`, white bg, black text; Cal Sans titles, DM Sans body; headshots grayscale + square-rounded; no em dashes; no "modules" language (sell as one package).
 - Content-heavy slides must fit a 7.5in page in print — preview the PDF after layout changes (the case-study stats and the leadership dashboard are the tight ones).
