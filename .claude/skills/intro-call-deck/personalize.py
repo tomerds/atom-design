@@ -71,9 +71,10 @@ def ensure_playwright():
 def render_pdf(html_path, pdf_path, title):
     """Capture each slide as a 2x PNG, then stitch into a 13.333x7.5 PDF.
 
-    Slides are full-viewport 16:9 sections toggled by an .active class, so we
-    step through them by toggling that class on the DOM directly (the deck's
-    show() helper is module-scoped and not reachable from page.evaluate).
+    Slides are full-viewport 16:9 sections shown one at a time. We navigate via
+    the deck's own hash deep-link (#N), which fires its hashchange listener and
+    runs show() — so the .active slide AND the page-number counter both update.
+    (Toggling .active directly would leave the counter stuck on 1/N.)
     """
     ensure_playwright()
     from playwright.sync_api import sync_playwright
@@ -92,11 +93,7 @@ def render_pdf(html_path, pdf_path, title):
         page.wait_for_timeout(1000)
         total = page.evaluate("document.querySelectorAll('.slide').length")
         for i in range(total):
-            page.evaluate(
-                "(idx) => document.querySelectorAll('.slide')"
-                ".forEach((s,k)=>s.classList.toggle('active',k===idx))",
-                i,
-            )
+            page.evaluate("(n) => { location.hash = '#' + n; }", i + 1)
             page.wait_for_timeout(350)
             out = html_path.with_name(f"{html_path.stem}_slide_{i+1:02d}@2x.png")
             page.locator(".slide.active").screenshot(path=str(out), type="png")

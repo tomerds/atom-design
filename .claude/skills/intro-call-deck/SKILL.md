@@ -59,9 +59,10 @@ Output lands next to the template as `Intro_Call_Deck_<Slug>.html` + `.pdf`. Fla
 `personalize.py` does this for you (it's the only render path the script supports). To render an existing HTML manually, capture each slide then merge:
 
 ```bash
-# 1) Step the deck through its 8 .active slides, capturing each at 2×.
-#    Slides are toggled by the .active class; the show() helper is module-scoped
-#    and not reachable from page.evaluate, so toggle the class on the DOM directly.
+# 1) Step the deck through its 8 slides, capturing each at 2×.
+#    Navigate via the deck's hash deep-link (#N) so its show() runs — this
+#    updates BOTH the .active slide and the page-number counter. (Toggling the
+#    .active class directly leaves every slide stuck on 1/N.)
 python3 - "Intro_Call_Deck/v4/<file>.html" << 'PY'
 import sys
 from pathlib import Path
@@ -73,7 +74,7 @@ with sync_playwright() as p:
     page.goto(f"file://{html}"); page.wait_for_load_state("networkidle")
     page.evaluate("document.fonts.ready"); page.wait_for_timeout(1000)
     for i in range(page.evaluate("document.querySelectorAll('.slide').length")):
-        page.evaluate("(idx)=>document.querySelectorAll('.slide').forEach((s,k)=>s.classList.toggle('active',k===idx))", i)
+        page.evaluate("(n)=>{location.hash='#'+n;}", i+1)
         page.wait_for_timeout(350)
         page.locator(".slide.active").screenshot(
             path=str(html.with_name(f"{html.stem}_slide_{i+1:02d}@2x.png")), type="png")
