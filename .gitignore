@@ -18,13 +18,6 @@
 !/Intro_Call_Deck/Intro_Call_Deck.html
 !/Intro_Call_Deck/img/
 
-# Exception: the SUNY Cortland 30-day check-in is the checkin-deck skill's
-# house reference (agenda + objectives + feedback structure), so track its
-# source, PDF, and logo. The regenerable per-slide PNGs stay local.
-!/SUNY_Cortland_30_Day_Checkin/
-/SUNY_Cortland_30_Day_Checkin/*
-!/SUNY_Cortland_30_Day_Checkin/v1/
-/SUNY_Cortland_30_Day_Checkin/v1/*
-!/SUNY_Cortland_30_Day_Checkin/v1/SUNY_Cortland_30_Day_Checkin.html
-!/SUNY_Cortland_30_Day_Checkin/v1/SUNY_Cortland_30_Day_Checkin.pdf
-!/SUNY_Cortland_30_Day_Checkin/v1/cortlandlogo.png
+# The checkin-deck skill's reference component library lives inside the skill
+# at .claude/skills/checkin-deck/references/ (tracked via the !/.claude/ rule
+# above). Built partner check-in decks are deliverables and stay local.

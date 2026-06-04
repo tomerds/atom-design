@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | NYU Langone Health 180-Day Check-In
+  Single-file HTML deck for the May 13, 2026 review with NYULH.
+
+  Periods compared:
+    Through Jan 21, 2026 ......... before the 90-day check-in (146 active days of data)
+    Since   Jan 21, 2026 ......... after  the 90-day check-in (112 days through May 13)
+
+  Slides:
+    01 Cover
+    02 Where we stand (all-time headlines)
+    03 Period comparison (4 stat tiles)
+    04 Weekly engagement trend
+    05 Cohort flow (retained / new / lapsed)
+    06 Top engaged departments
+    07 Fastest-growing departments
+    08 Funder discovery is broadening
+    09 Email is doing the work
+    10 Power users
+    11 What this means / next 90 days
+
+  Navigation: ArrowLeft/ArrowRight, Space (advance), Shift+Space (back),
+              click anywhere to advance, f toggles fullscreen, Esc exits.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NYU Langone Health: 180-Day Check-In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --accent-soft: #ffe7e3;
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --rule-soft: #e6e6e6;
+      --rule-mid:  #d9d9d9;
+      --rule-strong: #333333;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6.5vw, 112px);
+      --pad-y: clamp(48px, 5.5vw, 88px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 180ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .brand {
+      position: absolute;
+      top: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      display: flex; align-items: center;
+      height: clamp(28px, 2.4vw, 36px);
+    }
+    .brand img { height: 100%; width: auto; display: block; }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      right: var(--pad-x);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .counter span.sep { color: var(--rule-mid); margin: 0 6px; }
+    .counter span.now { color: var(--accent); font-weight: 500; }
+
+    .footer-meta {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      font-size: clamp(11px, 0.85vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: clamp(20px, 1.6vw, 28px);
+    }
+    .eyebrow .muted { color: var(--rule-mid); margin-left: 12px; }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-title);
+      font-weight: 400;
+      margin: 0;
+      line-height: 1.04;
+      letter-spacing: -0.015em;
+    }
+
+    .lede {
+      font-size: clamp(18px, 1.4vw, 22px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 62ch;
+      margin-top: clamp(16px, 1.4vw, 24px);
+    }
+
+    .headline {
+      font-size: clamp(44px, 5vw, 80px);
+      max-width: 22ch;
+      text-wrap: balance;
+    }
+    .headline .accent { color: var(--accent); }
+
+    .content-wrap {
+      margin-top: clamp(40px, 4vw, 64px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============ COVER ============ */
+    .cover {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .cover .row {
+      display: flex;
+      align-items: center;
+      gap: clamp(28px, 3.4vw, 64px);
+      margin-bottom: clamp(36px, 3.4vw, 56px);
+    }
+    .cover-logo {
+      height: clamp(72px, 6.4vw, 96px);
+      width: auto;
+      display: block;
+    }
+    .cover-x {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 4vw, 60px);
+      color: var(--rule-mid);
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: clamp(72px, 6.4vw, 96px);
+    }
+    .cover-headline {
+      font-family: var(--font-title);
+      font-size: clamp(72px, 9vw, 148px);
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      max-width: 12ch;
+    }
+    .cover-headline .accent { color: var(--accent); }
+    .cover-meta {
+      display: flex;
+      gap: clamp(24px, 3vw, 64px);
+      margin-top: clamp(40px, 4vw, 72px);
+      flex-wrap: wrap;
+    }
+    .cover-meta .col .k {
+      display: block;
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .cover-meta .col .v {
+      color: var(--text);
+      font-weight: 500;
+      font-size: clamp(15px, 1.15vw, 18px);
+    }
+
+    /* ============ HEADLINE METRICS (Slide 2) ============ */
+    .big-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(20px, 2vw, 40px);
+      margin-top: clamp(36px, 3vw, 56px);
+    }
+    .big-stat {
+      border-top: 1px solid var(--rule-strong);
+      padding-top: clamp(16px, 1.4vw, 24px);
+    }
+    .big-stat .num {
+      font-family: var(--font-title);
+      font-size: clamp(48px, 5vw, 84px);
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+    }
+    .big-stat .label {
+      margin-top: clamp(10px, 0.9vw, 16px);
+      font-size: clamp(14px, 1.05vw, 17px);
+      color: var(--text);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+    .big-stat .note {
+      margin-top: 6px;
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ============ ACTIVATION (Slide 3) ============ */
+    .activation-wrap {
+      display: flex; flex-direction: column;
+      gap: clamp(20px, 1.8vw, 32px);
+      margin-top: clamp(28px, 2.4vw, 44px);
+      flex: 1;
+      justify-content: center;
+    }
+    .activation-total {
+      display: flex; justify-content: space-between;
+      font-size: clamp(12px, 0.95vw, 14px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .activation-total b { color: var(--text); font-weight: 500; }
+    .activation-bar {
+      display: flex;
+      width: 100%;
+      height: clamp(48px, 4.4vw, 72px);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--rule-soft);
+    }
+    .activation-bar-fill {
+      height: 100%;
+      display: flex; align-items: center;
+      padding: 0 clamp(14px, 1.2vw, 20px);
+      font-family: var(--font-title);
+      font-size: clamp(18px, 1.6vw, 24px);
+      letter-spacing: -0.01em;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .activation-bar-fill.silent {
+      background: var(--rule-mid);
+      color: var(--text);
+      justify-content: flex-end;
+    }
+    .activation-bar-fill.engaged { background: var(--accent); }
+    .activation-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(28px, 2.6vw, 48px);
+      margin-top: clamp(8px, 0.8vw, 16px);
+    }
+    .activation-stat {
+      border-top: 1px solid var(--rule-strong);
+      padding-top: clamp(14px, 1.2vw, 20px);
+      display: flex; flex-direction: column;
+      gap: 6px;
+    }
+    .activation-stat.accent { border-top-color: var(--accent); }
+    .activation-stat .lbl {
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .activation-stat.accent .lbl { color: var(--accent); }
+    .activation-stat .v {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 3.8vw, 60px);
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+    }
+    .activation-stat.accent .v { color: var(--accent); }
+    .activation-stat .d {
+      font-size: clamp(13px, 1vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-width: 32ch;
+    }
+
+    /* ============ PERIOD COMPARISON (Slide 4) ============ */
+    .compare-key {
+      display: flex; gap: clamp(20px, 2vw, 36px);
+      margin-top: clamp(24px, 1.6vw, 32px);
+      font-size: clamp(12px, 0.95vw, 14px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .compare-key .k { display: flex; align-items: center; gap: 8px; }
+    .compare-key .sq {
+      display: inline-block; width: 14px; height: 14px; border-radius: 3px;
+    }
+    .compare-key .sq.g { background: var(--rule-mid); }
+    .compare-key .sq.r { background: var(--accent); }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(24px, 2.4vw, 48px);
+      margin-top: clamp(36px, 3vw, 56px);
+      flex: 1;
+    }
+    .compare-tile {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(24px, 2.4vw, 40px);
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+    }
+    .compare-tile .name {
+      font-size: clamp(14px, 1.05vw, 17px);
+      color: var(--text);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .compare-tile .bars {
+      display: flex; align-items: flex-end; gap: clamp(16px, 1.6vw, 24px);
+      margin-top: clamp(20px, 1.6vw, 28px);
+    }
+    .bar-col { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; flex: 1; }
+    .bar-col .v {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 4vw, 64px);
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+    }
+    .bar-col.then .v { color: var(--text-muted); }
+    .bar-col.now .v { color: var(--accent); }
+    .bar-col .lbl {
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .bar-col .perday {
+      font-size: clamp(12px, 0.9vw, 14px);
+      color: var(--text-muted);
+    }
+    .delta {
+      margin-top: clamp(16px, 1.2vw, 22px);
+      font-size: clamp(13px, 1vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .delta .up { color: var(--text); font-weight: 700; }
+    .delta .down { color: var(--text); font-weight: 700; }
+
+    /* ============ TREND CHART (Slide 4) ============ */
+    .chart-wrap {
+      flex: 1;
+      display: flex; flex-direction: column;
+      margin-top: clamp(24px, 2vw, 36px);
+    }
+    .chart-svg { width: 100%; flex: 1; min-height: 0; }
+    .chart-foot {
+      display: flex; justify-content: space-between;
+      margin-top: 14px;
+      font-size: clamp(11px, 0.85vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .chart-callouts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 36px);
+      margin-top: clamp(24px, 2vw, 32px);
+    }
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding-left: clamp(14px, 1.2vw, 20px);
+    }
+    .callout .v {
+      font-family: var(--font-title);
+      font-size: clamp(22px, 2vw, 30px);
+      line-height: 1;
+    }
+    .callout .l {
+      margin-top: 6px;
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ============ COHORT FLOW (Slide 5) ============ */
+    .cohort-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(28px, 2.6vw, 48px);
+      flex: 1;
+      align-content: center;
+      margin-top: clamp(36px, 3vw, 56px);
+    }
+    .cohort {
+      display: flex; flex-direction: column; gap: 14px;
+      border-top: 2px solid var(--rule-mid);
+      padding-top: clamp(16px, 1.4vw, 24px);
+    }
+    .cohort.accent { border-top-color: var(--accent); }
+    .cohort .lbl {
+      font-size: clamp(12px, 0.95vw, 14px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .cohort.accent .lbl { color: var(--accent); }
+    .cohort .num {
+      font-family: var(--font-title);
+      font-size: clamp(72px, 8vw, 140px);
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+    }
+    .cohort.accent .num { color: var(--accent); }
+    .cohort .desc {
+      font-size: clamp(15px, 1.15vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-width: 28ch;
+    }
+    .cohort-takeaway {
+      margin-top: clamp(20px, 1.6vw, 32px);
+      font-size: clamp(15px, 1.2vw, 20px);
+      color: var(--text);
+      line-height: 1.45;
+      max-width: 60ch;
+    }
+    .cohort-takeaway b { color: var(--text); font-weight: 700; }
+
+    /* ============ TABLES (Depts, Funders, Channels) ============ */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: clamp(28px, 2.4vw, 40px);
+    }
+    .table th, .table td {
+      text-align: left;
+      padding: clamp(10px, 0.9vw, 14px) clamp(8px, 0.8vw, 14px);
+      border-bottom: 1px solid var(--rule-soft);
+      font-size: clamp(13px, 1.05vw, 16px);
+      vertical-align: middle;
+    }
+    .table th {
+      font-weight: 500;
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .table td.dept { font-weight: 500; }
+    .table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .table td.delta-cell { text-align: right; font-variant-numeric: tabular-nums; }
+    .table td .up { color: var(--text); font-weight: 700; }
+    .table td .up.strong { color: var(--accent); font-weight: 700; }
+    .table td .flat { color: var(--text-muted); }
+    .table td .down { color: var(--text-muted); }
+    .table td .bar {
+      display: inline-block; height: 6px; background: var(--rule-strong); border-radius: 2px;
+      vertical-align: middle; margin-right: 8px;
+    }
+    .table td .bar.strong { background: var(--accent); }
+
+    /* ============ FUNDERS (Slide 8) ============ */
+    .funders {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(36px, 3.6vw, 64px);
+      margin-top: clamp(24px, 2.4vw, 40px);
+      flex: 1;
+    }
+    .funders .col-title {
+      font-size: clamp(12px, 0.95vw, 14px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: clamp(12px, 1vw, 18px);
+    }
+    .funder-rows { display: flex; flex-direction: column; }
+    .funder-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 16px;
+      align-items: center;
+      padding: clamp(10px, 0.9vw, 14px) 0;
+      border-bottom: 1px solid var(--rule-soft);
+      font-size: clamp(14px, 1.05vw, 16px);
+    }
+    .funder-row .name { font-weight: 500; }
+    .funder-row .v {
+      font-variant-numeric: tabular-nums;
+      color: var(--text-muted);
+      font-size: clamp(13px, 0.95vw, 15px);
+    }
+    .funder-row .v.now { color: var(--text); font-weight: 700; }
+    .funder-row .tag {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    /* ============ CHANNELS (Slide 9) ============ */
+    .channels {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 4vw, 80px);
+      margin-top: clamp(28px, 2.4vw, 40px);
+      align-items: center;
+    }
+    .channel-list { display: flex; flex-direction: column; gap: clamp(12px, 1vw, 18px); }
+    .channel {
+      display: grid;
+      grid-template-columns: 120px 1fr 80px;
+      gap: 16px;
+      align-items: center;
+      font-size: clamp(13px, 1.05vw, 16px);
+    }
+    .channel .name { text-transform: uppercase; letter-spacing: 0.08em; font-size: clamp(12px, 0.95vw, 14px); color: var(--text-muted); }
+    .channel .bartrack { background: var(--rule-soft); height: 14px; border-radius: 3px; position: relative; overflow: hidden; }
+    .channel .barfill { height: 100%; background: var(--accent); border-radius: 3px; }
+    .channel .barfill.then { background: var(--rule-mid); }
+    .channel .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+    .channel-title {
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: clamp(14px, 1.2vw, 20px);
+    }
+    .channel-takeaway {
+      font-size: clamp(20px, 1.8vw, 30px);
+      font-family: var(--font-title);
+      line-height: 1.1;
+      max-width: 20ch;
+      letter-spacing: -0.01em;
+    }
+    .channel-takeaway .accent { color: var(--accent); }
+    .channel-takeaway + .lede { margin-top: clamp(20px, 1.6vw, 28px); }
+
+    /* ============ POWER USERS (Slide 10) ============ */
+    .power-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(20px, 2vw, 36px);
+      margin-top: clamp(28px, 2.4vw, 40px);
+      flex: 1;
+    }
+    .power-card {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(20px, 1.8vw, 32px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: clamp(16px, 1.4vw, 28px);
+    }
+    .power-card .who .name {
+      font-family: var(--font-title);
+      font-size: clamp(22px, 1.9vw, 30px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+    .power-card .who .dept {
+      font-size: clamp(13px, 0.95vw, 15px);
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .power-card .stats {
+      display: flex; gap: clamp(16px, 1.4vw, 28px);
+      align-items: flex-start;
+    }
+    .power-card .stat .v {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.6vw, 40px);
+      line-height: 0.96;
+      color: var(--text);
+    }
+    .power-card .stat .l {
+      font-size: clamp(11px, 0.8vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ============ TAKEAWAY (Slide 11) ============ */
+    .takeaway-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(28px, 2.6vw, 48px);
+      margin-top: clamp(36px, 3vw, 56px);
+      flex: 1;
+      align-content: center;
+    }
+    .take {
+      border-top: 1px solid var(--rule-strong);
+      padding-top: clamp(16px, 1.4vw, 24px);
+      display: flex; flex-direction: column; gap: clamp(10px, 0.9vw, 16px);
+    }
+    .take .num {
+      font-family: var(--font-title);
+      font-size: clamp(22px, 1.8vw, 28px);
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .take h3 {
+      font-size: clamp(22px, 2vw, 30px);
+      line-height: 1.1;
+    }
+    .take p {
+      font-size: clamp(14px, 1.1vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    /* ============ NAV ============ */
+    .nav-hint {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      left: 50%; transform: translateX(-50%);
+      font-size: clamp(10px, 0.75vw, 12px);
+      color: var(--rule-mid);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ============ MODULES (Slide 12) ============ */
+    .modules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 2.4vw, 40px);
+      margin-top: clamp(24px, 2vw, 36px);
+      flex: 1;
+    }
+    .module {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(22px, 2vw, 36px);
+      display: flex; flex-direction: column;
+      gap: clamp(10px, 0.9vw, 14px);
+    }
+    .module-tag {
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .module-name {
+      font-family: var(--font-title);
+      font-size: clamp(36px, 3.4vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .module-desc {
+      font-size: clamp(14px, 1.1vw, 17px);
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .module-list {
+      list-style: none;
+      padding: 0; margin: clamp(4px, 0.4vw, 8px) 0 0;
+      display: flex; flex-direction: column;
+      gap: clamp(6px, 0.6vw, 10px);
+    }
+    .module-list li {
+      font-size: clamp(13px, 1vw, 16px);
+      line-height: 1.4;
+      color: var(--text);
+      padding-left: 18px;
+      position: relative;
+    }
+    .module-list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.55em;
+      width: 8px; height: 2px;
+      background: var(--accent);
+    }
+    .module-list b { font-weight: 700; color: var(--text); }
+
+    /* Slide 9 one-line treatments */
+    .slide[data-slide="9"] .headline {
+      font-size: clamp(36px, 3.6vw, 56px);
+      max-width: none;
+      white-space: nowrap;
+    }
+    .slide[data-slide="9"] .channel-takeaway {
+      font-size: clamp(18px, 1.5vw, 26px);
+      max-width: none;
+      white-space: nowrap;
+    }
+
+    /* === Density overrides for content-heavy slides === */
+    .slide[data-slide="4"] .headline { font-size: clamp(38px, 4.2vw, 64px); max-width: 24ch; }
+    .slide[data-slide="4"] .compare-grid { gap: clamp(16px, 1.6vw, 28px); margin-top: clamp(24px, 2vw, 36px); }
+    .slide[data-slide="4"] .compare-tile { padding: clamp(18px, 1.6vw, 28px); }
+    .slide[data-slide="4"] .bar-col .v { font-size: clamp(32px, 3.2vw, 50px); }
+    .slide[data-slide="4"] .compare-tile .bars { margin-top: clamp(12px, 1vw, 18px); }
+    .slide[data-slide="4"] .delta { margin-top: clamp(10px, 0.9vw, 16px); }
+    .slide[data-slide="4"] .compare-key { margin-top: clamp(16px, 1.2vw, 20px); }
+
+    .slide[data-slide="6"] .headline { max-width: 34ch; }
+
+    .slide[data-slide="7"] .headline { font-size: clamp(38px, 4.2vw, 60px); max-width: 26ch; }
+    .slide[data-slide="7"] .table { margin-top: clamp(20px, 1.8vw, 28px); }
+    .slide[data-slide="7"] .table th,
+    .slide[data-slide="7"] .table td { padding: clamp(7px, 0.7vw, 11px) clamp(8px, 0.8vw, 14px); font-size: clamp(12px, 0.95vw, 15px); }
+
+    .slide[data-slide="8"] .headline { font-size: clamp(36px, 3.8vw, 54px); max-width: 28ch; }
+    .slide[data-slide="8"] .funders { gap: clamp(28px, 2.6vw, 48px); margin-top: clamp(20px, 1.6vw, 28px); }
+    .slide[data-slide="8"] .funder-row { padding: clamp(6px, 0.6vw, 10px) 0; font-size: clamp(12px, 0.95vw, 14px); }
+    .slide[data-slide="8"] .funder-row .v { font-size: clamp(11px, 0.85vw, 13px); }
+    .slide[data-slide="8"] .lede { font-size: clamp(14px, 1.15vw, 17px); }
+
+    @media print {
+      :root {
+        --pad-x: 60px;
+        --pad-y: 56px;
+      }
+      .brand { top: 28px; height: 22px; }
+      .counter, .footer-meta { bottom: 28px; }
+      html, body {
+        background: #fff;
+        margin: 0; padding: 0;
+        overflow: visible;
+        width: 13.333in;
+        height: auto;
+      }
+      .deck {
+        position: static;
+        width: 13.333in;
+        height: auto;
+      }
+      .slide {
+        display: flex !important;
+        position: relative !important;
+        inset: auto !important;
+        top: auto !important; left: auto !important;
+        width: 13.333in !important;
+        height: 7.5in !important;
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        overflow: hidden;
+      }
+      .slide:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+      .nav-hint { display: none; }
+
+      /* Print sizing — viewport is 1280×720 instead of 1920×1080, so vw-based
+         clamps fall to their middle values. Tighten margins and headlines so
+         content always fits within a 7.5in page. */
+      .content-wrap { margin-top: 28px; }
+      .headline { font-size: 44px; }
+      .eyebrow { margin-bottom: 14px; }
+
+      .slide[data-slide="3"] .headline { font-size: 36px; max-width: 30ch; }
+      .slide[data-slide="3"] .activation-wrap { gap: 18px; margin-top: 18px; }
+      .slide[data-slide="3"] .activation-bar { height: 56px; }
+      .slide[data-slide="3"] .activation-bar-fill { font-size: 18px; padding: 0 18px; }
+      .slide[data-slide="3"] .activation-stat .v { font-size: 42px; }
+      .slide[data-slide="3"] .activation-stat .d { font-size: 12px; }
+
+      .slide[data-slide="4"] .headline { font-size: 38px; max-width: 26ch; }
+      .slide[data-slide="4"] .compare-grid { gap: 18px; margin-top: 18px; }
+      .slide[data-slide="4"] .compare-tile { padding: 16px 20px; }
+      .slide[data-slide="4"] .bar-col .v { font-size: 34px; }
+      .slide[data-slide="4"] .compare-tile .bars { margin-top: 10px; }
+      .slide[data-slide="4"] .delta { margin-top: 10px; font-size: 12px; }
+      .slide[data-slide="4"] .compare-key { margin-top: 12px; }
+
+      .slide[data-slide="5"] .headline { font-size: 40px; }
+      .slide[data-slide="5"] .chart-svg { max-height: 320px; }
+
+      .slide[data-slide="6"] .headline { font-size: 44px; }
+      .slide[data-slide="6"] .cohort .num { font-size: 88px; }
+
+      .slide[data-slide="7"] .headline { font-size: 36px; max-width: 28ch; }
+      .slide[data-slide="7"] .table { margin-top: 16px; }
+      .slide[data-slide="7"] .table th,
+      .slide[data-slide="7"] .table td { padding: 7px 10px; font-size: 12px; }
+
+      .slide[data-slide="8"] .headline { font-size: 32px; max-width: 32ch; }
+      .slide[data-slide="8"] .funders { gap: 28px; margin-top: 16px; }
+      .slide[data-slide="8"] .funder-row { padding: 6px 0; font-size: 12px; }
+      .slide[data-slide="8"] .funder-row .v { font-size: 11px; }
+      .slide[data-slide="8"] .lede { font-size: 13px; }
+
+      .slide[data-slide="9"] .headline { font-size: 36px; white-space: nowrap; }
+      .slide[data-slide="9"] .channel-takeaway { font-size: 20px; white-space: nowrap; }
+
+      .slide[data-slide="10"] .headline { font-size: 38px; }
+      .slide[data-slide="10"] .table th,
+      .slide[data-slide="10"] .table td { padding: 8px 10px; font-size: 13px; }
+
+      .slide[data-slide="11"] .headline { font-size: 40px; }
+
+      .slide[data-slide="12"] .headline { font-size: 40px; }
+      .slide[data-slide="12"] .module { padding: 22px; }
+      .slide[data-slide="12"] .module-name { font-size: 36px; }
+      .slide[data-slide="12"] .module-desc { font-size: 13px; }
+      .slide[data-slide="12"] .module-list li { font-size: 13px; }
+    }
+    @page { size: 13.333in 7.5in; margin: 0; }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ============ 01 COVER ============ -->
+  <section class="slide cover active" data-slide="1">
+    <div class="row">
+      <img class="cover-logo" src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      <div class="cover-x">×</div>
+      <img class="cover-logo" src="nyulogo.png" alt="NYU Langone Health">
+    </div>
+    <h1 class="cover-headline"><span class="accent">180-Day</span><br>Check-In.</h1>
+    <div class="cover-meta">
+      <div class="col"><span class="k">Period</span><span class="v">Oct 2025 — May 2026</span></div>
+      <div class="col"><span class="k">Compared to</span><span class="v">90-day check-in (Jan 21)</span></div>
+      <div class="col"><span class="k">Prepared</span><span class="v">May 13, 2026</span></div>
+    </div>
+    <div class="counter"><span class="now">01</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 02 WHERE WE STAND ============ -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Where we stand <span class="muted">all-time, since launch</span></div>
+      <h2 class="headline">Six months, <span class="accent">1,645 researchers</span>, nearly 100K grant page views.</h2>
+      <div class="big-stats">
+        <div class="big-stat">
+          <div class="num">91.6K</div>
+          <div class="label">Grant page views</div>
+          <div class="note">Across 1,645 active NYULH researchers</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">207</div>
+          <div class="label">AI chats with Atom</div>
+          <div class="note">Across 92 distinct researchers</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">1,308</div>
+          <div class="label">Favorites</div>
+          <div class="note">780 distinct grants favorited by researchers</div>
+        </div>
+        <div class="big-stat">
+          <div class="num">1,656</div>
+          <div class="label">Searches performed</div>
+          <div class="note">370 distinct researchers actively querying</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">02</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 03 ACTIVATION ============ -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Activation</div>
+      <h2 class="headline tight">2 in 3 NYULH profiles have <span class="accent">engaged with Atom.</span></h2>
+      <div class="activation-wrap">
+        <div>
+          <div class="activation-total">
+            <span><b>2,567</b> NYULH researchers in Atom</span>
+            <span>64% activation</span>
+          </div>
+          <div class="activation-bar" style="margin-top: 12px;">
+            <div class="activation-bar-fill engaged" style="width:64.1%">1,645 engaged</div>
+            <div class="activation-bar-fill silent" style="width:35.9%">922 silent</div>
+          </div>
+        </div>
+        <div class="activation-stats">
+          <div class="activation-stat accent">
+            <div class="lbl">Activated</div>
+            <div class="v">1,645</div>
+            <div class="d">Have loaded at least one grant page since launch. Roughly two thirds of the addressable base.</div>
+          </div>
+          <div class="activation-stat">
+            <div class="lbl">Active in last 112 days</div>
+            <div class="v">1,062</div>
+            <div class="d">Visited a grant, searched, or saved at least once since the 90-day check-in. The recently engaged.</div>
+          </div>
+          <div class="activation-stat">
+            <div class="lbl">Yet to activate</div>
+            <div class="v">922</div>
+            <div class="d">Have an Atom profile but no recorded interaction. The clearest re-engagement opportunity for Q3.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">03</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 04 PERIOD COMPARISON ============ -->
+  <section class="slide" data-slide="4">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">90 vs 180 day comparison</div>
+      <h2 class="headline tight">Daily engagement up <span class="accent">51%</span>, even as the funnel matures.</h2>
+      <div class="compare-key">
+        <div class="k"><span class="sq g"></span>Through Jan 21 (146 days)</div>
+        <div class="k"><span class="sq r"></span>Since Jan 21 (112 days)</div>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-tile">
+          <div class="name">Grant page views</div>
+          <div class="bars">
+            <div class="bar-col then">
+              <div class="v">9,401</div>
+              <div class="lbl">Through Jan 21</div>
+              <div class="perday">64 / day</div>
+            </div>
+            <div class="bar-col now">
+              <div class="v">10,893</div>
+              <div class="lbl">Since Jan 21</div>
+              <div class="perday">97 / day</div>
+            </div>
+          </div>
+          <div class="delta"><span class="up">+16% volume · +51% daily rate.</span> Researchers are returning more often, on shorter cycles.</div>
+        </div>
+        <div class="compare-tile">
+          <div class="name">Unique active users</div>
+          <div class="bars">
+            <div class="bar-col then">
+              <div class="v">1,087</div>
+              <div class="lbl">Through Jan 21</div>
+              <div class="perday">any action</div>
+            </div>
+            <div class="bar-col now">
+              <div class="v">1,062</div>
+              <div class="lbl">Since Jan 21</div>
+              <div class="perday">any action</div>
+            </div>
+          </div>
+          <div class="delta"><span class="up">Flat headcount, deeper engagement.</span> Same researchers, returning more often per week.</div>
+        </div>
+        <div class="compare-tile">
+          <div class="name">Searches</div>
+          <div class="bars">
+            <div class="bar-col then">
+              <div class="v">1,009</div>
+              <div class="lbl">Through Jan 21</div>
+              <div class="perday">6.9 / day</div>
+            </div>
+            <div class="bar-col now">
+              <div class="v">647</div>
+              <div class="lbl">Since Jan 21</div>
+              <div class="perday">5.8 / day</div>
+            </div>
+          </div>
+          <div class="delta"><span class="down">−16% daily rate.</span> Email-delivered matches replace manual searching (see slide 9).</div>
+        </div>
+        <div class="compare-tile">
+          <div class="name">Grants favorited</div>
+          <div class="bars">
+            <div class="bar-col then">
+              <div class="v">828</div>
+              <div class="lbl">Through Jan 21</div>
+              <div class="perday">5.7 / day</div>
+            </div>
+            <div class="bar-col now">
+              <div class="v">480</div>
+              <div class="lbl">Since Jan 21</div>
+              <div class="perday">4.3 / day</div>
+            </div>
+          </div>
+          <div class="delta"><span class="down">−25% daily rate.</span> Repeat users have already favorited their core opportunities.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">04</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 04 WEEKLY TREND ============ -->
+  <section class="slide" data-slide="5">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Weekly trend</div>
+      <h2 class="headline tight">Engagement has held a higher floor through Q1.</h2>
+      <div class="chart-wrap">
+        <svg class="chart-svg" viewBox="0 0 1400 360" preserveAspectRatio="none">
+          <!-- gridlines -->
+          <g stroke="#e6e6e6" stroke-width="1">
+            <line x1="0" y1="300" x2="1400" y2="300"/>
+            <line x1="0" y1="225" x2="1400" y2="225" stroke-dasharray="2 4"/>
+            <line x1="0" y1="150" x2="1400" y2="150" stroke-dasharray="2 4"/>
+            <line x1="0" y1="75"  x2="1400" y2="75"  stroke-dasharray="2 4"/>
+          </g>
+          <!-- y axis labels -->
+          <g font-family="DM Sans" font-size="11" fill="#6b6b6b">
+            <text x="6" y="304">0</text>
+            <text x="6" y="229">250</text>
+            <text x="6" y="154">500</text>
+            <text x="6" y="79">750</text>
+            <text x="6" y="14">1,000</text>
+          </g>
+          <!-- 90-day check-in marker line (week of Jan 19) -->
+          <g>
+            <line x1="780" y1="0" x2="780" y2="300" stroke="#ff4227" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="786" y="14" font-family="DM Sans" font-size="11" fill="#ff4227" font-weight="500">90-day check-in · Jan 21</text>
+          </g>
+          <!-- bars: 37 weekly values, scale: 1024 max → 0..300 (inverted from 300 baseline) -->
+          <!-- bar width = (1400-40)/37 ≈ 36.7 per bar; bar gap of 4. We'll compute positions. -->
+          <g>
+            <!-- Period 1 (gray) — weeks before Jan 21 check-in (first 20 bars) -->
+            <!-- Sept 1: 2 -->     <rect x="40"   y="299.4" width="32" height="0.6" fill="#bfbfbf"/>
+            <!-- Sept 8: 19 -->    <rect x="76"   y="294.4" width="32" height="5.6" fill="#bfbfbf"/>
+            <!-- Sept 15: 72 -->   <rect x="112"  y="278.9" width="32" height="21.1" fill="#bfbfbf"/>
+            <!-- Sept 22: 177 -->  <rect x="148"  y="248.1" width="32" height="51.9" fill="#bfbfbf"/>
+            <!-- Sept 29: 113 -->  <rect x="184"  y="266.9" width="32" height="33.1" fill="#bfbfbf"/>
+            <!-- Oct 6: 72 -->     <rect x="220"  y="278.9" width="32" height="21.1" fill="#bfbfbf"/>
+            <!-- Oct 13: 906 -->   <rect x="256"  y="34.4"  width="32" height="265.6" fill="#bfbfbf"/>
+            <!-- Oct 20: 1024 -->  <rect x="292"  y="0"     width="32" height="300" fill="#bfbfbf"/>
+            <!-- Oct 27: 594 -->   <rect x="328"  y="125.9" width="32" height="174.1" fill="#bfbfbf"/>
+            <!-- Nov 3: 242 -->    <rect x="364"  y="229.0" width="32" height="71.0" fill="#bfbfbf"/>
+            <!-- Nov 10: 706 -->   <rect x="400"  y="93.2"  width="32" height="206.8" fill="#bfbfbf"/>
+            <!-- Nov 17: 588 -->   <rect x="436"  y="127.7" width="32" height="172.3" fill="#bfbfbf"/>
+            <!-- Nov 24: 545 -->   <rect x="472"  y="140.3" width="32" height="159.7" fill="#bfbfbf"/>
+            <!-- Dec 1: 513 -->    <rect x="508"  y="149.6" width="32" height="150.4" fill="#bfbfbf"/>
+            <!-- Dec 8: 694 -->    <rect x="544"  y="96.7"  width="32" height="203.3" fill="#bfbfbf"/>
+            <!-- Dec 15: 478 -->   <rect x="580"  y="159.8" width="32" height="140.2" fill="#bfbfbf"/>
+            <!-- Dec 22: 563 -->   <rect x="616"  y="135.1" width="32" height="164.9" fill="#bfbfbf"/>
+            <!-- Dec 29: 361 -->   <rect x="652"  y="194.2" width="32" height="105.8" fill="#bfbfbf"/>
+            <!-- Jan 5: 217 -->    <rect x="688"  y="236.4" width="32" height="63.6" fill="#bfbfbf"/>
+            <!-- Jan 12: 1008 -->  <rect x="724"  y="4.7"   width="32" height="295.3" fill="#bfbfbf"/>
+            <!-- Period 2 (accent) — Jan 19 onwards -->
+            <!-- Jan 19: 597 -->   <rect x="760"  y="125.0" width="32" height="175.0" fill="#ff4227"/>
+            <!-- Jan 26: 633 -->   <rect x="796"  y="114.5" width="32" height="185.5" fill="#ff4227"/>
+            <!-- Feb 2: 836 -->    <rect x="832"  y="55.0"  width="32" height="245.0" fill="#ff4227"/>
+            <!-- Feb 9: 573 -->    <rect x="868"  y="132.1" width="32" height="167.9" fill="#ff4227"/>
+            <!-- Feb 16: 636 -->   <rect x="904"  y="113.7" width="32" height="186.3" fill="#ff4227"/>
+            <!-- Feb 23: 642 -->   <rect x="940"  y="111.9" width="32" height="188.1" fill="#ff4227"/>
+            <!-- Mar 2: 686 -->    <rect x="976"  y="99.0"  width="32" height="201.0" fill="#ff4227"/>
+            <!-- Mar 9: 1025 -->   <rect x="1012" y="-0.3"  width="32" height="300.3" fill="#ff4227"/>
+            <!-- Mar 16: 453 -->   <rect x="1048" y="167.3" width="32" height="132.7" fill="#ff4227"/>
+            <!-- Mar 23: 883 -->   <rect x="1084" y="41.4"  width="32" height="258.6" fill="#ff4227"/>
+            <!-- Mar 30: 764 -->   <rect x="1120" y="76.2"  width="32" height="223.8" fill="#ff4227"/>
+            <!-- Apr 6: 803 -->    <rect x="1156" y="64.8"  width="32" height="235.2" fill="#ff4227"/>
+            <!-- Apr 13: 781 -->   <rect x="1192" y="71.2"  width="32" height="228.8" fill="#ff4227"/>
+            <!-- Apr 20: 546 -->   <rect x="1228" y="140.0" width="32" height="160.0" fill="#ff4227"/>
+            <!-- Apr 27: 491 -->   <rect x="1264" y="156.1" width="32" height="143.9" fill="#ff4227"/>
+            <!-- May 4: 591 -->    <rect x="1300" y="126.8" width="32" height="173.2" fill="#ff4227"/>
+            <!-- May 11: 460 -->   <rect x="1336" y="165.3" width="32" height="134.7" fill="#ff4227"/>
+          </g>
+        </svg>
+        <div class="chart-foot">
+          <span>Sept 2025</span>
+          <span>Dec 2025</span>
+          <span>Mar 2026</span>
+          <span>May 2026</span>
+        </div>
+        <div class="chart-callouts">
+          <div class="callout">
+            <div class="v">97 / day</div>
+            <div class="l">Average rate since the 90-day check-in (Jan 21 → May 13)</div>
+          </div>
+          <div class="callout">
+            <div class="v">+51%</div>
+            <div class="l">Vs. 64 / day before Jan 21 — the new floor is the old peak</div>
+          </div>
+          <div class="callout">
+            <div class="v">17 of 17</div>
+            <div class="l">Weeks since Jan 21 above 450 visits — no quiet weeks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">Weekly grant page visits · NYULH</div>
+    <div class="counter"><span class="now">05</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 05 COHORT FLOW ============ -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Cohort flow</div>
+      <h2 class="headline tight"><span class="accent">66% retention</span> on the early cohort, plus 347 new researchers.</h2>
+      <div class="cohort-grid">
+        <div class="cohort accent">
+          <div class="lbl">Retained</div>
+          <div class="num">715</div>
+          <div class="desc">Active in both the first 90 days and the last 112 days. The platform's habitual base.</div>
+        </div>
+        <div class="cohort">
+          <div class="lbl">New since Jan 21</div>
+          <div class="num">347</div>
+          <div class="desc">Researchers who took their first action on Atom after the 90-day check-in. The growth engine.</div>
+        </div>
+        <div class="cohort">
+          <div class="lbl">Lapsed</div>
+          <div class="num">372</div>
+          <div class="desc">Active in the first 90 days but silent since. Re-engagement priority for Q3.</div>
+        </div>
+      </div>
+      <p class="cohort-takeaway">Total active base is steady around <b>1,060 researchers per quarter</b>. Healthy retention plus new acquisition kept the headcount flat even as 372 early users went quiet — a normal pattern that's worth a targeted win-back.</p>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">06</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 06 TOP DEPARTMENTS ============ -->
+  <section class="slide" data-slide="7">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Departments · since Jan 21</div>
+      <h2 class="headline tight">Adoption is broad. <span class="accent">10 departments</span> with 25+ active researchers.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:38%">Department</th>
+            <th class="num">Active users</th>
+            <th class="num">Page visits</th>
+            <th style="width:22%">Engagement</th>
+            <th class="num">vs prior period</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="dept">Medicine</td><td class="num">140</td><td class="num">1,245</td><td><span class="bar" style="width:100%"></span></td><td class="delta-cell"><span class="up">+11%</span></td></tr>
+          <tr><td class="dept">Population Health</td><td class="num">96</td><td class="num">1,088</td><td><span class="bar" style="width:87%"></span></td><td class="delta-cell"><span class="down">−6%</span></td></tr>
+          <tr><td class="dept">Radiology</td><td class="num">61</td><td class="num">571</td><td><span class="bar" style="width:46%"></span></td><td class="delta-cell"><span class="up">+12%</span></td></tr>
+          <tr><td class="dept">Clinical Affairs</td><td class="num">61</td><td class="num">269</td><td><span class="bar" style="width:22%"></span></td><td class="delta-cell"><span class="up">+6%</span></td></tr>
+          <tr><td class="dept">Neurology</td><td class="num">57</td><td class="num">419</td><td><span class="bar strong" style="width:34%"></span></td><td class="delta-cell"><span class="up strong">+75%</span></td></tr>
+          <tr><td class="dept">Pediatrics</td><td class="num">46</td><td class="num">483</td><td><span class="bar strong" style="width:39%"></span></td><td class="delta-cell"><span class="up strong">+50%</span></td></tr>
+          <tr><td class="dept">Psychiatry</td><td class="num">42</td><td class="num">525</td><td><span class="bar" style="width:42%"></span></td><td class="delta-cell"><span class="up">+6%</span></td></tr>
+          <tr><td class="dept">Perlmutter Cancer Center</td><td class="num">38</td><td class="num">455</td><td><span class="bar strong" style="width:37%"></span></td><td class="delta-cell"><span class="up strong">+52%</span></td></tr>
+          <tr><td class="dept">Orthopaedic Surgery</td><td class="num">30</td><td class="num">187</td><td><span class="bar" style="width:15%"></span></td><td class="delta-cell"><span class="flat">flat</span></td></tr>
+          <tr><td class="dept">Surgery</td><td class="num">30</td><td class="num">213</td><td><span class="bar" style="width:17%"></span></td><td class="delta-cell"><span class="up">+1%</span></td></tr>
+          <tr><td class="dept">Pathology</td><td class="num">26</td><td class="num">291</td><td><span class="bar" style="width:23%"></span></td><td class="delta-cell"><span class="down">−7%</span></td></tr>
+          <tr><td class="dept">Emergency Medicine</td><td class="num">24</td><td class="num">273</td><td><span class="bar strong" style="width:22%"></span></td><td class="delta-cell"><span class="up strong">+72%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">07</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 08 FUNDER BROADENING ============ -->
+  <section class="slide" data-slide="8">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Funder discovery</div>
+      <h2 class="headline tight">NIH share is falling — researchers are exploring <span class="accent">11 new funders</span> at meaningful volume.</h2>
+      <div class="funders">
+        <div>
+          <div class="col-title">Most-viewed funders, since Jan 21</div>
+          <div class="funder-rows">
+            <div class="funder-row"><span class="name">National Institutes of Health</span><span class="v">4,892 → </span><span class="v now">3,527</span></div>
+            <div class="funder-row"><span class="name">Military Health System Research Program</span><span class="v">0 → </span><span class="v now">328 <span class="tag">new</span></span></div>
+            <div class="funder-row"><span class="name">American Heart Association</span><span class="v">116 → </span><span class="v now">322</span></div>
+            <div class="funder-row"><span class="name">U.S. National Science Foundation</span><span class="v">365 → </span><span class="v now">280</span></div>
+            <div class="funder-row"><span class="name">SAMHSA</span><span class="v">159 → </span><span class="v now">269</span></div>
+            <div class="funder-row"><span class="name">Roche</span><span class="v">0 → </span><span class="v now">204 <span class="tag">new</span></span></div>
+            <div class="funder-row"><span class="name">U.S. Army (USAMRAA)</span><span class="v">5 → </span><span class="v now">198</span></div>
+            <div class="funder-row"><span class="name">Health Resources &amp; Services Admin.</span><span class="v">303 → </span><span class="v now">198</span></div>
+            <div class="funder-row"><span class="name">Gilead Sciences</span><span class="v">0 → </span><span class="v now">169 <span class="tag">new</span></span></div>
+            <div class="funder-row"><span class="name">Elevance Health Foundation</span><span class="v">55 → </span><span class="v now">169</span></div>
+            <div class="funder-row"><span class="name">The Mark Foundation for Cancer</span><span class="v">55 → </span><span class="v now">165</span></div>
+            <div class="funder-row"><span class="name">AcademyHealth</span><span class="v">0 → </span><span class="v now">122 <span class="tag">new</span></span></div>
+          </div>
+        </div>
+        <div>
+          <div class="col-title">What's changing</div>
+          <p class="lede" style="margin-top:0; max-width:none;">In the first 90 days, NIH accounted for <b>52% of all grant views</b>. Since Jan 21, that share has dropped to <b>32%</b> — not because NIH interest declined, but because everything else grew faster.</p>
+          <p class="lede" style="max-width:none;">Six funders that received zero views in the first period (DoD, Roche, Gilead, AcademyHealth, and others) are now in the top 12. This is the maturation signal: researchers trust the platform enough to discover unfamiliar funders, not just confirm the ones they already know.</p>
+          <div style="margin-top:clamp(20px,1.6vw,32px); padding:clamp(18px,1.4vw,24px); border:1px solid var(--rule-soft); border-radius:12px; background: var(--bg-alt);">
+            <div style="font-size:clamp(11px,0.85vw,13px); letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); font-weight:500; margin-bottom:8px;">Industry &amp; foundation activity</div>
+            <div style="font-family:var(--font-title); font-size:clamp(28px,2.6vw,40px); line-height:1; letter-spacing:-0.01em;">+910 views</div>
+            <div style="margin-top:8px; font-size:clamp(13px,1vw,15px); color:var(--text-muted); line-height:1.4;">Across Roche, Gilead, AHA, Mark Foundation, Elevance, and AcademyHealth alone.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">08</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 09 CHANNELS ============ -->
+  <section class="slide" data-slide="9">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">How researchers arrive</div>
+      <h2 class="headline tight">Email is now <span class="accent">73% of all grant traffic</span> — up from 55%.</h2>
+      <div class="channels">
+        <div>
+          <div class="channel-title">Visit source · through Jan 21</div>
+          <div class="channel-list">
+            <div class="channel"><span class="name">Email digest</span><div class="bartrack"><div class="barfill then" style="width:55%"></div></div><span class="v">5,217</span></div>
+            <div class="channel"><span class="name">Dashboard</span><div class="bartrack"><div class="barfill then" style="width:30%"></div></div><span class="v">2,843</span></div>
+            <div class="channel"><span class="name">Search</span><div class="bartrack"><div class="barfill then" style="width:7%"></div></div><span class="v">703</span></div>
+            <div class="channel"><span class="name">Direct</span><div class="bartrack"><div class="barfill then" style="width:0%"></div></div><span class="v">0</span></div>
+            <div class="channel"><span class="name">Deep research</span><div class="bartrack"><div class="barfill then" style="width:0.3%"></div></div><span class="v">32</span></div>
+          </div>
+          <div class="channel-title" style="margin-top:clamp(24px,2vw,36px);">Visit source · since Jan 21</div>
+          <div class="channel-list">
+            <div class="channel"><span class="name">Email digest</span><div class="bartrack"><div class="barfill" style="width:73%"></div></div><span class="v">7,966</span></div>
+            <div class="channel"><span class="name">Dashboard</span><div class="bartrack"><div class="barfill" style="width:14%"></div></div><span class="v">1,540</span></div>
+            <div class="channel"><span class="name">Search</span><div class="bartrack"><div class="barfill" style="width:5.4%"></div></div><span class="v">592</span></div>
+            <div class="channel"><span class="name">Direct</span><div class="bartrack"><div class="barfill" style="width:3%"></div></div><span class="v">331</span></div>
+            <div class="channel"><span class="name">Deep research</span><div class="bartrack"><div class="barfill" style="width:0.1%"></div></div><span class="v">12</span></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="channel-takeaway"><span class="accent">The newsletter is the product</span> for most NYULH researchers.</h3>
+          <p class="lede">Email-driven visits grew <b>+53%</b> in absolute terms. Researchers aren't logging in to search — they're getting curated matches in their inbox and clicking through. The dashboard's role has shifted to follow-up: reviewing favorites, drafting with Atom, and exploring funders surfaced by the newsletter.</p>
+          <p class="lede">This is why search and favorites volumes look down on slide 3: the email is doing the discovery work that searches used to do.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">09</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 11 MOST ACTIVE RESEARCHERS ============ -->
+  <section class="slide" data-slide="10">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Most active researchers · all-time</div>
+      <h2 class="headline tight">The 10 most active researchers on Atom.</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th style="width:4%">#</th>
+            <th style="width:22%">Name</th>
+            <th style="width:34%">Department</th>
+            <th class="num">Page views</th>
+            <th class="num">AI chats</th>
+            <th class="num">Searches</th>
+            <th class="num">Favorites</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="dept">Sherri Burda</td><td>Office of Science and Research</td><td class="num">15,522</td><td class="num">60</td><td class="num">161</td><td class="num">151</td></tr>
+          <tr><td class="num">2</td><td class="dept">Robert Kearns</td><td>MCIT Research and Education</td><td class="num">5,814</td><td class="num">1</td><td class="num">46</td><td class="num">0</td></tr>
+          <tr><td class="num">3</td><td class="dept">Ingrid McNamara</td><td>Office of Science and Research</td><td class="num">3,664</td><td class="num">11</td><td class="num">50</td><td class="num">152</td></tr>
+          <tr><td class="num">4</td><td class="dept">Adnan Rangwala</td><td>MCIT, NYU Langone Health</td><td class="num">2,150</td><td class="num">4</td><td class="num">15</td><td class="num">1</td></tr>
+          <tr><td class="num">5</td><td class="dept">Charlisa Garg</td><td>NYU Langone Health</td><td class="num">1,616</td><td class="num">0</td><td class="num">11</td><td class="num">50</td></tr>
+          <tr><td class="num">6</td><td class="dept">Abhimanyu Amarnani</td><td>Cell Biology · CTSI</td><td class="num">1,175</td><td class="num">1</td><td class="num">2</td><td class="num">30</td></tr>
+          <tr><td class="num">7</td><td class="dept">Molly Gale Hammell</td><td>Institute for Systems Genetics</td><td class="num">790</td><td class="num">0</td><td class="num">3</td><td class="num">0</td></tr>
+          <tr><td class="num">8</td><td class="dept">Teresa Herrera</td><td>Environmental Medicine</td><td class="num">700</td><td class="num">1</td><td class="num">5</td><td class="num">0</td></tr>
+          <tr><td class="num">9</td><td class="dept">Shoshana Ballew</td><td>Epidemiology · Medicine-Geriatrics</td><td class="num">693</td><td class="num">1</td><td class="num">4</td><td class="num">21</td></tr>
+          <tr><td class="num">10</td><td class="dept">Lily Pfeifer</td><td>Foundation Relations</td><td class="num">680</td><td class="num">0</td><td class="num">26</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants</div>
+    <div class="counter"><span class="now">10</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 11 NEXT STEPS ============ -->
+  <section class="slide" data-slide="11">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">Next steps</div>
+      <h2 class="headline tight">Three threads for the next quarter.</h2>
+      <div class="takeaway-grid">
+        <div class="take">
+          <div class="num">01</div>
+          <h3>Activate the 922.</h3>
+          <p>Nearly a thousand NYULH profiles have never opened a grant page. A targeted first-touch campaign — department-specific, single high-relevance grant per email — is the highest-leverage move for Q3.</p>
+        </div>
+        <div class="take">
+          <div class="num">02</div>
+          <h3>Publish the NYULH case study.</h3>
+          <p>The first six months are a strong public story, and we don't have one yet from NYULH. We'd draft it together — a short interview, the headline numbers, your sign-off — and run it alongside the other partner case studies on atomgrants.com.</p>
+        </div>
+        <div class="take">
+          <div class="num">03</div>
+          <h3>Open renewal conversations.</h3>
+          <p>The current term renews on August 31. We'd like to start the conversation now: scope, stakeholders, and what an expanded Atom partnership could include. Two new modules are coming online (see next slide).</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants · May 13, 2026</div>
+    <div class="counter"><span class="now">11</span><span class="sep">/</span>12</div>
+  </section>
+
+  <!-- ============ 12 WHAT'S NEXT — NEW MODULES ============ -->
+  <section class="slide" data-slide="12">
+    <div class="brand"><img src="../../../../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">What's coming · summer 2026</div>
+      <h2 class="headline tight">Two new modules, built on the same engine.</h2>
+      <p class="lede">The first six months proved the discovery layer. The next phase extends Atom into the workflows that follow once a researcher finds the right opportunity — finding collaborators, and getting from match to submitted proposal.</p>
+      <div class="modules">
+        <div class="module">
+          <div class="module-tag">Module 01 · Discovery</div>
+          <h3 class="module-name">Researcher Search</h3>
+          <p class="module-desc">A purpose-built directory of NYULH faculty, indexed by funding history, publications, and grant interests. Find a co-investigator, a methods lead, or the right senior PI in seconds, without leaving Atom.</p>
+          <ul class="module-list">
+            <li>Search by expertise, funder track record, or open call</li>
+            <li>Surface internal collaborators relevant to a specific grant</li>
+            <li>Discover external collaborators across a worldwide database of researchers</li>
+          </ul>
+        </div>
+        <div class="module">
+          <div class="module-tag">Module 02 · Submission</div>
+          <h3 class="module-name">Proposals</h3>
+          <p class="module-desc">Everything between "I'm interested" and "submitted." Three components, designed to be used independently or together.</p>
+          <ul class="module-list">
+            <li><b>Proposal guides</b> — funder-specific playbooks, sections, examples</li>
+            <li><b>Proposal management</b> — track drafts, deadlines, collaborators, status</li>
+            <li><b>Proposal review &amp; drafting</b> — AI-assisted writing and structured feedback</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">NYU Langone Health · Atom Grants · May 13, 2026</div>
+    <div class="counter"><span class="now">12</span><span class="sep">/</span>12</div>
+  </section>
+
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let idx = 0;
+  function go(n) {
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  }
+  // ?slide=N to deep-link
+  const m = new URLSearchParams(location.search).get('slide');
+  if (m) { const n = parseInt(m, 10); if (!isNaN(n)) go(n - 1); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || (e.key === ' ' && !e.shiftKey)) { e.preventDefault(); go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || (e.key === ' ' && e.shiftKey)) { e.preventDefault(); go(idx - 1); }
+    else if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen?.(); }
+    else if (e.key === 'Escape') { document.exitFullscreen?.(); }
+  });
+  document.addEventListener('click', e => {
+    // Don't advance when clicking links
+    if (e.target.closest('a')) return;
+    go(idx + 1);
+  });
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 name: checkin-deck
-description: Build periodic check-in decks for Atom Grants partner institutions (30/60/90/180/270-day reviews, annual QBRs, renewal-conversation decks). Every deck is agenda-driven (Progress recap → Your objectives → Usage highlights → Feedback → Next 60 days), always carries a required objectives slide and a feedback slide, and follows a fixed slide order, comparison framing, copy register, chart conventions, brand system, and data-interpretation gotchas so every check-in deck across every customer reads as one consistent product. Trigger when the user asks for a "check-in deck", "QBR", "90-day / 180-day / 270-day review", "renewal deck", "customer review deck", or any periodic metrics review for a partner institution. Reference implementations: `SUNY_Cortland_30_Day_Checkin/v1/` (agenda + objectives + feedback structure, first check-in) and `NYULH_180_Day_Checkin/v1/` (period-comparison / cohort / funder-shift components).
+description: Build periodic check-in decks for Atom Grants partner institutions (30/60/90/180/270-day reviews, annual QBRs, renewal-conversation decks). Every deck is agenda-driven (Progress recap → Your objectives → Usage highlights → Feedback → Next 60 days), always carries a required objectives slide and a feedback slide, and follows a fixed slide order, comparison framing, copy register, chart conventions, brand system, and data-interpretation gotchas so every check-in deck across every customer reads as one consistent product. Trigger when the user asks for a "check-in deck", "QBR", "90-day / 180-day / 270-day review", "renewal deck", "customer review deck", or any periodic metrics review for a partner institution. Reference implementations: `references/SUNY_Cortland_30_Day_Checkin.html` (agenda + objectives + feedback structure, first check-in) and `references/NYULH_180_Day_Checkin.html` (period-comparison / cohort / funder-shift components).
 ---
 
 # Atom Grants Partner Check-In Decks
@@ -8,8 +8,8 @@ description: Build periodic check-in decks for Atom Grants partner institutions 
 Decks reviewing a partner institution's engagement with Atom over a defined period. Used in renewal conversations, internal QBRs, and milestone reviews with the customer's research-development leadership.
 
 **Two reference implementations — copy components from whichever fits:**
-- `SUNY_Cortland_30_Day_Checkin/v1/` — the **current house structure**: agenda-driven, with the required objectives slide, the feedback slide, section-labeled eyebrows, and the first-check-in component set (engagement funnel, search themes). Start here.
-- `NYULH_180_Day_Checkin/v1/` — the components that need a **prior** check-in to compare against: period comparison, cohort flow, funder-mix-shift with `NEW` pills. Use these once a deck has a previous cycle to compare to.
+- `references/SUNY_Cortland_30_Day_Checkin.html` — the **current house structure**: agenda-driven, with the required objectives slide, the feedback slide, section-labeled eyebrows, and the first-check-in component set (engagement funnel, search themes). Start here.
+- `references/NYULH_180_Day_Checkin.html` — the components that need a **prior** check-in to compare against: period comparison, cohort flow, funder-mix-shift with `NEW` pills. Use these once a deck has a previous cycle to compare to.
 
 ## When to use
 
@@ -39,6 +39,8 @@ Skip this skill for: one-off pitch decks (use `Intro_Call_Deck` patterns), webin
 ```
 
 **Asset paths.** Inside a `vN/` folder, the deck is two levels deep relative to `/Design/`. Reference shared assets with `../../assets/...` (not `../assets/...`). The partner logo sits *inside* the `vN/` folder and is referenced as a sibling (`nyulogo.png`).
+
+**Reference component library.** The two canonical decks to copy markup from live *inside this skill* at `references/` (`SUNY_Cortland_30_Day_Checkin.html`, `NYULH_180_Day_Checkin.html`) — they are the source of truth for component markup, not standalone deliverables. Built partner decks are deliverables and live in their own top-level `<Partner>_<N>_Day_Checkin/` folder (kept local, not committed).
 
 ## Deck structure (agenda-driven)
 
@@ -77,7 +79,7 @@ Default **~14 slides**. Keep the relative order — never reshuffle. Drop the op
 | 15 | **Next 60 days** | Next 60 days | 3 priorities, each tied back to an objective. Point 03 = renewal conversation when contract end is within 90-120 days |
 | — | **Modules / what's coming** | (add-on) | 2 cards teasing roadmap (Researcher Search + Proposals) — *only* when there's a real renewal story. Drop on early check-ins |
 
-**Section-labeled eyebrows.** Every "Usage highlights" slide's eyebrow reads `Usage highlights <span class="muted">topic</span>` (e.g. "Usage highlights · weekly trend"). The recap slides use `Progress recap`, the objectives slide `Your objectives`, etc. This reinforces the agenda as the reader moves through the deck. See the SUNY Cortland deck for the exact eyebrow markup.
+**Section-labeled eyebrows.** Every "Usage highlights" slide's eyebrow reads `Usage highlights <span class="muted">topic</span>` (e.g. "Usage highlights · weekly trend"). The recap slides use `Progress recap`, the objectives slide `Your objectives`, etc. This reinforces the agenda as the reader moves through the deck. See `references/SUNY_Cortland_30_Day_Checkin.html` for the exact eyebrow markup.
 
 **Don't add a separate "fastest-growing departments" slide.** Slide 09 already accent-highlights the >50% growth rows in its growth column — a second slide duplicates it. Removed after the first NYULH iteration.
 
@@ -90,7 +92,7 @@ A first check-in has nothing to compare against, so two canonical slides have no
 - **Funder mix (10)** loses its `NEW` pills and "shift" framing — show top funders by visits + a breadth callout ("N funders across M grants") instead.
 - The **search-themes** slide (11) is especially valuable here: it's qualitative color about what the faculty actually want, which carries an early deck.
 
-Copy components for all four first-check-in variants from `SUNY_Cortland_30_Day_Checkin/v1/`.
+Copy components for all four first-check-in variants from `references/SUNY_Cortland_30_Day_Checkin.html`.
 
 ## Cover slide (slide 01)
 
@@ -115,7 +117,7 @@ Oct 2025 — May 2026   90-day check-in (Jan 21) May 13, 2026
 
 ## Agenda slide (slide 02 — required)
 
-A numbered list of the five agenda sections. Each row: an accent Cal Sans number (`01`–`05`), a Cal Sans label, and a one-line muted descriptor. Headline: "What we'll cover today." The numbers are the lone accent moment. Copy the `.agenda` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
+A numbered list of the five agenda sections. Each row: an accent Cal Sans number (`01`–`05`), a Cal Sans label, and a one-line muted descriptor. Headline: "What we'll cover today." The numbers are the lone accent moment. Copy the `.agenda` markup from `references/SUNY_Cortland_30_Day_Checkin.html`.
 
 ```
 01  Progress recap     Where the first 30 days landed
@@ -132,7 +134,7 @@ A numbered list of the five agenda sections. Each row: an accent Cal Sans number
 - **Never invent objectives.** If the user hasn't supplied them, **ask** for the objectives agreed during onboarding before building the deck. Pull from CRM/onboarding notes if available.
 - Lay them out as 3 cards (or 2-4): an accent number, a Cal Sans `<h3>` objective title, a one-line plain-language restatement, and a bottom **"Month-N signal"** line that ties the objective to a number already in this deck (e.g. "230 grants across 115 funders — broad, intent-driven discovery"). The signal line is what makes objectives feel measured, not decorative.
 - Place it at slide 05, **after** the progress recap and before the usage detail (matches the agenda order: recap → objectives → usage).
-- Headline: "What we set out to do together." Eyebrow: "Your objectives." Copy the `.objectives` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
+- Headline: "What we set out to do together." Eyebrow: "Your objectives." Copy the `.objectives` markup from `references/SUNY_Cortland_30_Day_Checkin.html`.
 
 ## Feedback slide (required)
 
@@ -143,7 +145,7 @@ A live-discussion slide near the end (before Next steps) inviting the partner to
 - **Gaps** — "What funders, features, or departments still feel missing?"
 - **Rollout** — "What would help bring the rest of the roster on board?"
 
-Headline: "Where are we getting it right — and what's missing?" (accent on "what's missing?"). Copy the `.feedback` markup from `SUNY_Cortland_30_Day_Checkin/v1/`.
+Headline: "Where are we getting it right — and what's missing?" (accent on "what's missing?"). Copy the `.feedback` markup from `references/SUNY_Cortland_30_Day_Checkin.html`.
 
 ## Brand system
 
@@ -417,8 +419,8 @@ Copy this scaffolding to start a new deck. Fill in headline, eyebrow, content bo
 ```
 
 For component-specific markup, copy directly from whichever reference has the component:
-- `SUNY_Cortland_30_Day_Checkin/v1/` — agenda, objectives cards, feedback grid, engagement funnel, search-theme cards, section-labeled eyebrows, top-funders (no-shift) list, single-period channels, first-check-in weekly trend. **The current house structure — start here.**
-- `NYULH_180_Day_Checkin/v1/` — period-comparison stat tiles, cohort flow, funder-mix-shift with `NEW` pills, the long (~37-week) weekly trend with a prior-check-in marker.
+- `references/SUNY_Cortland_30_Day_Checkin.html` — agenda, objectives cards, feedback grid, engagement funnel, search-theme cards, section-labeled eyebrows, top-funders (no-shift) list, single-period channels, first-check-in weekly trend. **The current house structure — start here.**
+- `references/NYULH_180_Day_Checkin.html` — period-comparison stat tiles, cohort flow, funder-mix-shift with `NEW` pills, the long (~37-week) weekly trend with a prior-check-in marker.
 
 ## When the user iterates
 
