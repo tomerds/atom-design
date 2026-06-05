@@ -21,3 +21,7 @@
 # The checkin-deck skill's reference component library lives inside the skill
 # at .claude/skills/checkin-deck/references/ (tracked via the !/.claude/ rule
 # above). Built partner check-in decks are deliverables and stay local.
+
+# Python bytecode
+__pycache__/
+*.pyc

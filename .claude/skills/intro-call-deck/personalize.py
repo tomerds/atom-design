@@ -3,21 +3,30 @@
 Personalize the finalized Atom Grants intro call deck for one prospect.
 
 Only the cover and the close slide change between prospects, so this script
-just swaps five placeholder tokens in the template, writes a per-prospect HTML
-next to the template (so the relative img/ and ../assets paths still
-resolve), and optionally renders a print-ready PDF.
+swaps five placeholder tokens in the template, drops the partner's logo into
+the cover co-brand lockup (--logo, required), writes a per-prospect HTML next
+to the template (so the relative img/ and ../assets paths still resolve), and
+optionally renders a print-ready PDF.
+
+The partner logo is copied into Intro_Call_Deck/tempimg/ (NOT img/) and
+referenced from there. tempimg/ is git-ignored (the .gitignore tracks only the
+template HTML + img/ inside Intro_Call_Deck/), so the per-prospect logo never
+gets committed.
 
 The PDF is always produced with the screenshot-and-stitch method: each slide is
 captured as a 2x PNG (by stepping the deck through its .active states) and the
-PNGs are merged into a 13.333x7.5 PDF. We never use html-to-pdf for this deck —
-its print renderer mis-paginates these full-viewport 16:9 slides.
+PNGs are merged into a 12x8 in (3:2) PDF. We render at a 3:2 viewport (1620x1080)
+so the full-viewport slides reflow into a laptop-friendly, less-wide frame rather
+than the wide 16:9 default. We never use html-to-pdf for this deck — its print
+renderer mis-paginates these full-viewport slides.
 
 Usage:
   python3 .claude/skills/intro-call-deck/personalize.py \
       --institution "University of Iowa" \
       --name "Tomer du Sautoy" \
       --email "tomer@atomgrants.com" \
-      --date "June 2026"
+      --date "June 2026" \
+      --logo ~/Downloads/iowa-logo.png
 
 Optional:
   --title "Atom Grants"     # the ", <Title>" after the presenter name on the cover
@@ -26,6 +35,7 @@ Optional:
 """
 import argparse
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -34,7 +44,10 @@ SKILL_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SKILL_DIR.parents[2]                      # .../Design
 TEMPLATE = REPO_ROOT / "Intro_Call_Deck" / "Intro_Call_Deck.html"
 MERGE = SKILL_DIR.parents[0] / "png-to-pdf" / "merge.py"
-PAGE_SIZE = "13.333x7.5"                               # 16:9 slide, in inches
+# 3:2 (laptop-friendly) is the default: capture at a 3:2 viewport so the
+# full-viewport slides reflow into a less-wide frame, then stitch to a 12x8 page.
+VIEWPORT_W, VIEWPORT_H = 1620, 1080                    # 3:2 capture viewport (CSS px)
+PAGE_SIZE = "12x8"                                     # 3:2 page, in inches
 
 # Token in template  ->  argparse attribute holding the replacement
 TOKENS = {
@@ -44,6 +57,13 @@ TOKENS = {
     "[Institution name]": "institution",
     "[your.email@atomgrants.com]": "email",
 }
+
+# Cover co-brand lockup placeholder (swapped for an <img> using --logo)
+PARTNER_PLACEHOLDER = '<span class="partner-logo">[Partner logo]</span>'
+
+# Git-ignored folder the partner logo is copied into (kept out of the committed img/)
+TEMPIMG_DIRNAME = "tempimg"
+ALLOWED_LOGO_EXTS = {".png", ".jpg", ".jpeg", ".svg", ".webp", ".gif"}
 
 
 def slug(text):
@@ -69,9 +89,9 @@ def ensure_playwright():
 
 
 def render_pdf(html_path, pdf_path, title):
-    """Capture each slide as a 2x PNG, then stitch into a 13.333x7.5 PDF.
+    """Capture each slide as a 2x PNG, then stitch into a 12x8 in (3:2) PDF.
 
-    Slides are full-viewport 16:9 sections shown one at a time. We navigate via
+    Slides are full-viewport sections shown one at a time. We navigate via
     the deck's own hash deep-link (#N), which fires its hashchange listener and
     runs show() — so the .active slide AND the page-number counter both update.
     (Toggling .active directly would leave the counter stuck on 1/N.)
@@ -83,7 +103,7 @@ def render_pdf(html_path, pdf_path, title):
     pngs = []
     with sync_playwright() as p:
         ctx = p.chromium.launch().new_context(
-            viewport={"width": 1920, "height": 1080},
+            viewport={"width": VIEWPORT_W, "height": VIEWPORT_H},
             device_scale_factor=2.0,
         )
         page = ctx.new_page()
@@ -114,6 +134,7 @@ def main():
     ap.add_argument("--email", required=True, help="Presenter email")
     ap.add_argument("--date", required=True, help='e.g. "June 2026"')
     ap.add_argument("--title", default="Atom Grants", help='Presenter title/org on the cover (default: "Atom Grants")')
+    ap.add_argument("--logo", required=True, help="Partner logo image for the cover co-brand lockup (png/svg/jpg); inlined as a data URI, not copied into the repo")
     ap.add_argument("--out", help="Output HTML path (default: alongside the template)")
     ap.add_argument("--no-pdf", action="store_true", help="Skip the PDF render")
     args = ap.parse_args()
@@ -129,6 +150,25 @@ def main():
 
     for tok, attr in TOKENS.items():
         html = html.replace(tok, getattr(args, attr))
+
+    # Partner logo: copy into the git-ignored tempimg/ and point the lockup at it.
+    src = Path(args.logo).expanduser()
+    if not src.exists():
+        sys.exit(f"Logo file not found: {src}")
+    if src.suffix.lower() not in ALLOWED_LOGO_EXTS:
+        sys.exit(f"Unsupported logo type '{src.suffix}'. Use one of: "
+                 + ", ".join(sorted(ALLOWED_LOGO_EXTS)))
+    if PARTNER_PLACEHOLDER not in html:
+        sys.exit("Template is missing the partner-logo placeholder "
+                 f"({PARTNER_PLACEHOLDER}). Is the cover lockup intact?")
+    tempimg = TEMPLATE.parent / TEMPIMG_DIRNAME
+    tempimg.mkdir(exist_ok=True)
+    dest = tempimg / f"{slug(args.institution).lower()}{src.suffix.lower()}"
+    shutil.copyfile(src, dest)
+    img_tag = (f'<img class="partner-logo-img" src="{TEMPIMG_DIRNAME}/{dest.name}" '
+               f'alt="{args.institution}">')
+    html = html.replace(PARTNER_PLACEHOLDER, img_tag)
+    print(f"Logo:  {dest}  (git-ignored)")
 
     out = Path(args.out) if args.out else TEMPLATE.with_name(f"Intro_Call_Deck_{slug(args.institution)}.html")
     if out.parent.resolve() != TEMPLATE.parent.resolve() and not args.out:

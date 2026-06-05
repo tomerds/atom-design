@@ -6,23 +6,29 @@
   on call 2, with leadership in the room.
 
   Slides (8 total):
-    01 Cover ................. Hero line + presenter / date / institution
-    02 Why now .............. The squeeze: rising workload, flat budgets
-    03 A different category . Teammate, not a search tool (+ partner quote)
-    04 How it works ......... Six-step research development workflow
-    05 Case study ........... University of Memphis (dark slide)
-    06 Partners ............. Logo strip + customer quotes + "and 45+ more"
-    07 For leadership ....... Analytics dashboard (shown when leadership joins)
+    01 Cover ................. Hero line + co-brand lockup (Atom x partner) + presenter / date / institution
+    02 Partners ............. Logo strip + customer quotes + "and 45+ more"
+    03 Why now .............. The squeeze: rising workload, flat budgets
+    04 A different category . Teammate, not a search tool (+ partner quote)
+    05 How it works ......... Six product capabilities as website-style cards w/ mini product mocks
+    06 Case study ........... University of Memphis (dark slide)
+    07 The admin backend .... Analytics + project board + faculty directory (shown when leadership joins)
     08 Next steps & Q&A ..... Steer to the full demo + contact
 
   PERSONALIZE PER PROSPECT — only the cover and the close slide change.
-  Replace these five tokens (or use the intro-call-deck skill, which does it):
+  Replace these five text tokens (or use the intro-call-deck skill, which does it):
     [Your name]  [Title]  [Month YYYY]  [Institution name]  [your.email@atomgrants.com]
-  Helper: .claude/skills/intro-call-deck/personalize.py
+  PLUS the partner logo on the cover (required): the helper copies it into the
+  git-ignored Intro_Call_Deck/tempimg/ and points the cover lockup's
+  partner-logo placeholder (the dashed box on the cover) at it. The logo is a
+  per-prospect temp asset kept OUT of the committed img/.
+  See the intro-call-deck SKILL "Partner logo" section.
+  Helper: .claude/skills/intro-call-deck/personalize.py  (pass --logo <file>)
 
   Navigation: ArrowLeft/ArrowRight, Space, click to advance, f fullscreen, #N deep-link.
-  Print/PDF:  @page 13.333in x 7.5in, one slide per page.
-              python3 .claude/skills/html-to-pdf/export.py <file> --size 13.333x7.5
+  Print/PDF:  rendered to a 3:2 (12x8in) PDF via screenshot-and-stitch (never
+              html-to-pdf). personalize.py does this; it captures each slide at a
+              1620x1080 (3:2) viewport so the slides reflow into a less-wide frame.
 
   Brand/copy rules: single accent (#ff4227), white bg, black text; Cal Sans
   titles, DM Sans body; headshots grayscale + square-rounded; no em dashes.
@@ -221,11 +227,44 @@
       text-transform: uppercase;
       color: var(--accent);
     }
+    .cover-lockup {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 1.6vw, 28px);
+      align-self: flex-start;
+      margin-bottom: clamp(20px, 2vw, 32px);
+    }
     .cover-logo {
       height: clamp(48px, 4.2vw, 64px);
       width: auto;
-      align-self: flex-start;
-      margin-bottom: clamp(20px, 2vw, 32px);
+    }
+    .lockup-x {
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: clamp(22px, 2vw, 30px);
+      color: var(--rule-soft);
+      line-height: 1;
+    }
+    .partner-logo {
+      height: clamp(48px, 4.2vw, 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 clamp(18px, 1.6vw, 26px);
+      border: 1px dashed var(--rule-soft);
+      border-radius: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: clamp(12px, 1vw, 14px);
+      letter-spacing: 0.04em;
+    }
+    /* real partner logo swapped in for the placeholder (see SKILL "Partner logo") */
+    .partner-logo-img {
+      height: clamp(40px, 3.6vw, 54px);
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+      display: block;
     }
     .cover-headline {
       font-family: var(--font-title);
@@ -239,7 +278,7 @@
       font-size: clamp(22px, 2vw, 32px);
       line-height: 1.3;
       color: var(--text-muted);
-      max-width: 26ch;
+      max-width: 48ch;
       margin-top: clamp(8px, 1vw, 16px);
     }
     .cover-meta {
@@ -699,9 +738,8 @@
       display: grid;
       grid-template-columns: 0.82fr 1.18fr;
       gap: clamp(36px, 3.6vw, 64px);
-      align-items: center;
-      margin-top: clamp(28px, 2.6vw, 44px);
-      flex: 1;
+      align-items: start;
+      margin-top: 0;
     }
     .lead-copy .lede { max-width: 34ch; }
     .lead-copy ul.lead-list { margin-top: clamp(22px, 2vw, 32px); }
@@ -730,6 +768,164 @@
     .dep .bar span { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 4px; }
     .dep .pct { color: var(--text-muted); font-size: 11px; text-align: right; }
 
+    /* Leadership — admin backend window (analytics + project management) */
+    .admin {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px -34px rgba(0,0,0,0.28);
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-bar {
+      display: flex; align-items: center; gap: 12px;
+      padding: clamp(10px, 0.9vw, 14px) clamp(14px, 1.2vw, 20px);
+      border-bottom: 1px solid var(--rule-soft);
+      background: var(--bg-alt);
+    }
+    .admin-bar .dots { display: flex; gap: 6px; }
+    .admin-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--rule-soft); display: block; }
+    .admin-bar .admin-title { font-family: var(--font-body); font-weight: 600; font-size: clamp(11px, 0.95vw, 14px); color: var(--text); }
+    .admin-bar .admin-chip { margin-left: auto; font-family: var(--font-body); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--rule-soft); border-radius: 999px; padding: 4px 11px; }
+    .admin-body { padding: clamp(14px, 1.3vw, 20px); display: flex; flex-direction: column; gap: clamp(14px, 1.3vw, 20px); }
+    .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: clamp(10px, 0.9vw, 14px); }
+    .sec-head .sec-label { font-family: var(--font-body); font-weight: 600; font-size: clamp(11px, 0.92vw, 13px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+    .sec-head .sec-meta { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text-muted); }
+    .admin-split { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(14px, 1.3vw, 20px); align-items: center; }
+    .admin .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: clamp(8px, 0.8vw, 12px); margin-bottom: 0; }
+    .admin .kpi .v { font-size: clamp(18px, 1.7vw, 26px); }
+    .admin .chart-wrap { border-top: none; padding-top: 0; }
+    .admin .chart-wrap svg { height: clamp(54px, 5vw, 78px); }
+
+    /* Project-management mini board */
+    .pm-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(7px, 0.7vw, 10px); }
+    .pm-col { background: var(--bg-alt); border: 1px solid var(--rule-soft); border-radius: 10px; padding: clamp(7px, 0.7vw, 10px); }
+    .pm-col .col-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(7px, 0.7vw, 10px); }
+    .pm-col .col-h .nm { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .pm-col .col-h .cnt { font-family: var(--font-body); font-size: clamp(9px, 0.72vw, 11px); color: var(--text-muted); }
+    .pm-card { position: relative; background: #fff; border: 1px solid var(--rule-soft); border-radius: 8px; padding: clamp(7px, 0.7vw, 10px); margin-bottom: clamp(6px, 0.55vw, 8px); display: flex; flex-direction: column; }
+    .pm-card:last-child { margin-bottom: 0; }
+    .pm-card .pm-title { order: 1; font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); font-weight: 500; color: var(--text); line-height: 1.25; }
+    .pm-card .sk { height: 5px; border-radius: 3px; background: var(--rule-soft); }
+    .pm-card .sk + .sk { margin-top: 5px; }
+    .pm-card .sk.w90 { width: 90%; } .pm-card .sk.w70 { width: 70%; } .pm-card .sk.w55 { width: 55%; } .pm-card .sk.w45 { width: 45%; }
+    .pm-card .meta { order: 3; display: flex; align-items: center; justify-content: space-between; margin-top: clamp(8px, 0.8vw, 11px); }
+    .pm-card .owner { width: 18px; height: 18px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .pm-card .owner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pm-card .due { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); color: var(--text-muted); }
+
+    /* How it works — website-style cards with mini product mocks */
+    .hiw-grid {
+      margin-top: clamp(16px, 1.6vw, 26px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: clamp(16px, 1.5vw, 26px);
+    }
+    /* finer line used inside the product mocks */
+    .mk { --mk-line: #ededed; }
+    .hiw-card {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 18px;
+      padding: clamp(22px, 2.1vw, 36px);
+      display: flex;
+      flex-direction: column;
+    }
+    .hiw-card h3 { font-size: clamp(18px, 1.7vw, 25px); line-height: 1.08; }
+    .hiw-card .desc {
+      font-family: var(--font-body);
+      font-size: clamp(11px, 0.92vw, 14px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: clamp(6px, 0.6vw, 10px);
+      max-width: 36ch;
+    }
+    /* shared mock panel */
+    .mk {
+      margin: clamp(13px, 1.3vw, 20px) clamp(12px, 1.6vw, 28px) 0;
+      background: #fff;
+      border: 1px solid var(--mk-line);
+      border-radius: 12px;
+      padding: clamp(10px, 0.95vw, 15px);
+      box-shadow: 0 16px 40px -28px rgba(0,0,0,0.22);
+    }
+    .mk-head { display: flex; align-items: center; gap: 7px; font-family: var(--font-body); font-weight: 700; font-size: clamp(10px, 0.85vw, 13px); color: var(--text); margin-bottom: clamp(8px, 0.8vw, 11px); }
+    .mk-head svg { width: 14px; height: 14px; flex: none; }
+    .mk .row { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--mk-line); border-radius: 9px; padding: clamp(6px, 0.6vw, 9px) clamp(8px, 0.8vw, 11px); }
+    .mk .row + .row { margin-top: clamp(6px, 0.6vw, 8px); }
+    .mk .row.hi { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+    /* profile mock */
+    .pf-top { display: flex; align-items: center; gap: 9px; }
+    .pf-av { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .pf-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pf-id { flex: 1; display: flex; flex-direction: column; line-height: 1.2; }
+    .pf-id strong { font-family: var(--font-body); font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); color: var(--text); }
+    .pf-id span { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--text-muted); }
+    .pf-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; flex: none; }
+    .pf-label { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin: clamp(11px, 1vw, 15px) 0 8px; }
+    .pf-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pf-tags .tg { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--accent); background: rgba(255,66,39,0.10); border-radius: 999px; padding: 3px 9px; }
+    .pf-tags .tg.dim { color: rgba(255,66,39,0.5); background: rgba(255,66,39,0.05); }
+
+    /* grant discovery / weekly digest mock */
+    .ag { font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 0.03em; color: var(--gray-dark, #333); background: var(--bg-alt); border-radius: 6px; padding: 3px 7px; flex: none; }
+    .ag.on { color: #fff; background: var(--accent); }
+    .gn { font-family: var(--font-body); font-size: clamp(10px, 0.82vw, 12px); color: var(--text); flex: 1; }
+    .pc { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); font-weight: 600; color: var(--gray-dark, #333); background: var(--bg-alt); border-radius: 6px; padding: 3px 8px; flex: none; }
+    .pc.on { color: var(--accent); background: rgba(255,66,39,0.10); }
+    .dg .mk-head { border-bottom: 1px solid var(--mk-line); padding-bottom: clamp(8px, 0.8vw, 11px); }
+    .sending { margin-left: auto; display: flex; align-items: center; gap: 5px; font-family: var(--font-body); font-weight: 600; font-size: 9px; color: #15803d; background: #ecfdf3; border-radius: 999px; padding: 3px 9px; }
+    .sending i { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; display: block; }
+    .dg-sub { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); color: var(--text-muted); margin-bottom: clamp(8px, 0.8vw, 11px); }
+    .dg-sub strong { color: var(--text); font-weight: 700; }
+    .dg-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid var(--mk-line); margin-top: clamp(9px, 0.9vw, 13px); padding-top: clamp(8px, 0.8vw, 11px); }
+    .dg-count { font-family: var(--font-body); font-size: clamp(8px, 0.7vw, 10px); color: var(--text-muted); }
+    .dg-auto { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); font-weight: 600; color: var(--accent); flex: none; }
+
+    /* eligibility mock */
+    .elig-head { display: flex; justify-content: space-between; font-family: var(--font-body); font-size: clamp(7px, 0.6vw, 9px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; padding: 0 2px; }
+    .elig-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; }
+    .elig-row + .elig-row { margin-top: 6px; }
+    .elig-row .req { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--text); background: #fff; border: 1px solid var(--mk-line); border-radius: 7px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .elig-row .chk { width: 14px; height: 14px; flex: none; }
+    .elig-row .prof { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: #15803d; background: #ecfdf3; border: 1px solid #b7e4c7; border-radius: 7px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* collaborator mock */
+    .cb-search { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); color: var(--text); background: #fff; border: 1px solid var(--mk-line); border-radius: 8px; padding: 6px 10px; margin-bottom: 9px; }
+    .cb-search span { color: var(--text-muted); margin-right: 7px; }
+    .cb-row { display: flex; align-items: center; gap: 8px; }
+    .cb-row + .cb-row { margin-top: 8px; }
+    .cb-av { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .cb-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cb-id { flex: 1; display: flex; flex-direction: column; line-height: 1.2; }
+    .cb-id strong { font-family: var(--font-body); font-weight: 700; font-size: clamp(10px, 0.82vw, 12px); color: var(--text); }
+    .cb-id span { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); color: var(--text-muted); }
+    .mt { font-family: var(--font-body); font-size: 9px; font-weight: 600; color: var(--accent); background: rgba(255,66,39,0.10); border-radius: 6px; padding: 3px 8px; flex: none; }
+
+    /* proposal guide mock */
+    .gd-item { display: flex; align-items: center; gap: 8px; }
+    .gd-item + .gd-item, .gd-sub + .gd-item { margin-top: 7px; }
+    .gd-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rule-soft); flex: none; }
+    .gd-dot.on { background: var(--accent); }
+    .gd-t { font-family: var(--font-body); font-size: clamp(10px, 0.82vw, 12px); font-weight: 600; color: var(--text); flex: 1; }
+    .gd-t.dim { color: var(--text-muted); font-weight: 500; }
+    .gd-gen { font-family: var(--font-body); font-size: 8px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); flex: none; }
+    .gd-sub { font-family: var(--font-body); font-size: clamp(9px, 0.72vw, 11px); color: var(--text-muted); line-height: 1.3; margin: 5px 0 0 25px; position: relative; padding-left: 11px; }
+    .gd-sub::before { content: "\00b7"; position: absolute; left: 2px; }
+
+    /* scorecard mock */
+    .sc-row { display: flex; align-items: center; gap: 8px; }
+    .sc-row + .sc-row { margin-top: 8px; }
+    .sc-row svg { width: 15px; height: 15px; flex: none; }
+    .sc-t { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text); flex: 1; }
+    .sc-row.dim .sc-t { color: var(--text-muted); }
+    .vd { font-family: var(--font-body); font-size: 9px; font-weight: 600; border-radius: 6px; padding: 3px 8px; flex: none; }
+    .vd.pass { color: #15803d; background: #ecfdf3; }
+    .vd.rev { color: var(--accent); background: rgba(255,66,39,0.10); }
+
     /* Print */
     @media print {
       @page { size: 13.333in 7.5in; margin: 0; }
@@ -753,12 +949,16 @@
   <!-- 01 Cover -->
   <section class="slide" data-slide="1">
     <div class="cover-inner">
-      <img class="cover-logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      <div class="cover-lockup">
+        <img class="cover-logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+        <span class="lockup-x">&times;</span>
+        <span class="partner-logo">[Partner logo]</span>
+      </div>
       <h1 class="cover-headline">
         The AI platform for research development teams.
       </h1>
       <p class="cover-sub">
-        Win more proposals, with the team you already have.
+        Find grants, assemble collaborators, and win more proposals<br>with the team you already have.
       </p>
       <div class="cover-meta">
         <div class="col">
@@ -777,167 +977,13 @@
     </div>
   </section>
 
-  <!-- 02 The gap -->
+  <!-- 02 Partners + voices -->
   <section class="slide" data-slide="2">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">01 <span class="muted">/ Why now</span></div>
-      <h2 class="headline">
-        The job of research development keeps growing. The team doesn&rsquo;t.
-      </h2>
-      <div class="contrast">
-        <div class="col neg">
-          <div class="tag">What teams are up against</div>
-          <h3>The squeeze is real.</h3>
-          <ul>
-            <li>Budgets are flat or shrinking, and the team isn&rsquo;t growing.</li>
-            <li>The workload keeps climbing: more faculty, more proposals, more compliance.</li>
-            <li>Less visibility into where funding is actually moving.</li>
-          </ul>
-        </div>
-        <div class="col pos">
-          <div class="tag">What institutions actually need</div>
-          <h3>Outcomes. Submitted proposals. Awarded dollars.</h3>
-          <ul>
-            <li>More faculty reached, without more staff.</li>
-            <li>Stronger proposals, not just more of them.</li>
-            <li>Capacity that scales with the pipeline.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 A different category -->
-  <section class="slide" data-slide="3">
-    <div class="split-right"></div>
-    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
-    <div class="content-wrap" style="position: relative; z-index: 1;">
-      <div class="eyebrow">02 <span class="muted">/ A different category</span></div>
-      <div class="cat-grid">
-        <div class="cat-left">
-          <h2 class="headline tight" style="font-size: clamp(34px, 3.7vw, 58px);">
-            Atom is a <span class="accent">teammate</span>, purpose-built for research development.
-          </h2>
-          <p class="lede" style="margin-top: clamp(24px, 2.2vw, 36px); max-width: 44ch;">
-            Not a search tool. Not a generic AI. Not a years-long internal project. A team of AI agents and research development experts, working alongside your staff on discovery, eligibility, collaborators, drafting, and review.
-          </p>
-        </div>
-        <div class="bridge-quote">
-          <div class="bq-text">
-            &ldquo;Atom is taking the burden away from our pre-award unit because they&rsquo;re guiding the PIs in the submission process.&rdquo;
-          </div>
-          <div class="bq-attrib">
-            <div class="bq-avatar"><img src="img/lydia.png" alt="Lydia Perry"></div>
-            <div class="bq-who">
-              <strong>Lydia Perry</strong>
-              <span>Grant Writer &middot; UA at Little Rock</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 04 How it works: the six-step workflow -->
-  <section class="slide" data-slide="4">
-    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
-    <div class="content-wrap" style="justify-content: flex-start;">
-      <div class="eyebrow">03 <span class="muted">/ How it works</span></div>
-      <h2 class="headline" style="font-size: clamp(38px, 4.4vw, 64px); max-width: 32ch;">
-        Atom runs your entire research development workflow. <span style="color: lab(66.128 -0.0000298023 0.0000119209);">Your team is freed to do the work only they can do.</span>
-      </h2>
-      <div class="six-grid">
-        <div class="cell">
-          <div>
-            <div class="num">01</div>
-            <h3>Automated Profiles</h3>
-          </div>
-          <p>Living profiles of every researcher, tailored to their actual work.</p>
-        </div>
-        <div class="cell">
-          <div>
-            <div class="num">02</div>
-            <h3>Grant Discovery</h3>
-          </div>
-          <p>Relevant opportunities surfaced and automatically distributed to the right faculty.</p>
-        </div>
-        <div class="cell">
-          <div>
-            <div class="num">03</div>
-            <h3>Eligibility Checks</h3>
-          </div>
-          <p>Gate criteria verified before anything reaches a faculty inbox.</p>
-        </div>
-        <div class="cell">
-          <div>
-            <div class="num">04</div>
-            <h3>Collaborator Identification</h3>
-          </div>
-          <p>The right co-PIs, internal and external, for team-based calls.</p>
-        </div>
-        <div class="cell">
-          <div>
-            <div class="num">05</div>
-            <h3>Proposal Guide</h3>
-          </div>
-          <p>Every RFP turned into a section-by-section drafting guide.</p>
-        </div>
-        <div class="cell">
-          <div>
-            <div class="num">06</div>
-            <h3>AI Proposal Review</h3>
-          </div>
-          <p>Drafts stress-tested against reviewer criteria before submission.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 Case study: University of Memphis -->
-  <section class="slide dark" data-slide="5">
-    <div class="brand"><img src="../assets/newredlogowordmarkwhitehighres.png" alt="Atom Grants"></div>
-    <div class="content-wrap">
-      <div class="eyebrow">04 <span class="muted">/ Case study, University of Memphis</span></div>
-      <h2 class="headline" style="font-size: clamp(36px, 4vw, 56px); max-width: 28ch;">
-        Universities are using Atom to set submission records.
-      </h2>
-      <div class="cs-quote-card">
-        <p class="pull-quote">
-          &ldquo;This fiscal year we have set <span class="accent">records for submissions</span>, and I attribute that to the fact people are engaging with Atom.&rdquo;
-        </p>
-        <div class="pull-attrib-row">
-          <div class="cs-avatar"><img src="img/brian.jpg" alt="Brian Evans"></div>
-          <div class="cs-who">
-            <strong>Brian Evans, PhD</strong>
-            <span>Assistant Director &middot; University of Memphis</span>
-          </div>
-        </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat">
-          <div class="v">600+</div>
-          <div class="l">Faculty engaged across the university in one year.</div>
-        </div>
-        <div class="stat">
-          <div class="v">10&times;</div>
-          <div class="l">Lift in faculty engagement vs. prior platform.</div>
-        </div>
-        <div class="stat">
-          <div class="v">Record</div>
-          <div class="l">Year for proposal submissions at Memphis.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 Partners + voices -->
-  <section class="slide" data-slide="6">
-    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
-    <div class="content-wrap">
-      <div class="eyebrow">05 <span class="muted">/ Partners</span></div>
-      <h2 class="headline" style="font-size: clamp(34px, 3.7vw, 54px); max-width: 26ch;">
-        Trusted by 50+ research institutions, from R1 universities to specialized institutes.
+      <div class="eyebrow">01 <span class="muted">/ Partners</span></div>
+      <h2 class="headline" style="font-size: clamp(34px, 3.7vw, 54px); max-width: 50ch;">
+        Trusted by 50+ research institutions,<br>from R1 universities to specialized&nbsp;institutes.
       </h2>
       <div class="logo-row">
         <img src="img/logos/memphis.png" alt="University of Memphis">
@@ -970,48 +1016,310 @@
     </div>
   </section>
 
+  <!-- 03 The gap -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">02 <span class="muted">/ Why now</span></div>
+      <h2 class="headline">
+        The job of research development keeps growing. Your capacity doesn&rsquo;t.
+      </h2>
+      <div class="contrast">
+        <div class="col neg">
+          <div class="tag">What teams are up against</div>
+          <h3>More to do, same team.</h3>
+          <ul>
+            <li>Budgets are flat or shrinking, and the team isn&rsquo;t growing.</li>
+            <li>The workload keeps climbing: more faculty, more proposals, more compliance.</li>
+            <li>Less visibility into where funding is actually moving.</li>
+          </ul>
+        </div>
+        <div class="col pos">
+          <div class="tag">What institutions actually need</div>
+          <h3>Outcomes. Submitted proposals. Awarded dollars.</h3>
+          <ul>
+            <li>More faculty reached, without more staff.</li>
+            <li>Stronger proposals, not just more of them.</li>
+            <li>Capacity that scales with the pipeline.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 A different category -->
+  <section class="slide" data-slide="4">
+    <div class="split-right"></div>
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="position: relative; z-index: 1;">
+      <div class="eyebrow">03 <span class="muted">/ A different category</span></div>
+      <div class="cat-grid">
+        <div class="cat-left">
+          <h2 class="headline tight" style="font-size: clamp(34px, 3.7vw, 58px);">
+            Atom is a <span class="accent">teammate</span>, purpose-built for research development.
+          </h2>
+          <p class="lede" style="margin-top: clamp(24px, 2.2vw, 36px); max-width: 44ch;">
+            Not a search tool. Not a generic AI. Not a years-long internal project. A team of AI agents working alongside your staff on discovery, eligibility, collaborators, drafting, and review.
+          </p>
+        </div>
+        <div class="bridge-quote">
+          <div class="bq-text">
+            &ldquo;Atom is taking the burden away from our pre-award unit because they&rsquo;re guiding the PIs in the submission process.&rdquo;
+          </div>
+          <div class="bq-attrib">
+            <div class="bq-avatar"><img src="img/lydia.png" alt="Lydia Perry"></div>
+            <div class="bq-who">
+              <strong>Lydia Perry</strong>
+              <span>Grant Writer &middot; UA at Little Rock</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 How it works: the six-step workflow -->
+  <section class="slide" data-slide="5">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: center; margin-top: clamp(16px, 1.6vw, 28px);">
+      <div style="display: flex; align-items: flex-start; gap: clamp(10px, 1vw, 16px); margin-bottom: clamp(8px, 1vw, 16px);">
+        <span class="eyebrow" style="margin: 0; padding-top: 0.5em;">04 <span style="color: var(--rule-soft);">/</span></span>
+        <h2 class="headline" style="font-size: clamp(30px, 3vw, 46px);">How it works</h2>
+      </div>
+      <div class="hiw-grid">
+
+        <!-- Automated Profiles -->
+        <div class="hiw-card">
+          <h3>Automated Profiles</h3>
+          <p class="desc">Living profiles of every researcher, tailored to their actual work.</p>
+          <div class="mk">
+            <div class="pf-top">
+              <span class="pf-av"><img src="img/people/grace.jpg" alt=""></span>
+              <div class="pf-id"><strong>Dr. Grace Lin</strong><span>Neuroscience &middot; PI</span></div>
+              <span class="pf-dot"></span>
+            </div>
+            <div class="pf-label">Research focus</div>
+            <div class="pf-tags">
+              <span class="tg">Neuroinflammation</span>
+              <span class="tg">Alzheimer&rsquo;s</span>
+              <span class="tg">PET imaging</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grant Discovery -->
+        <div class="hiw-card">
+          <h3>Grant Discovery</h3>
+          <p class="desc">Every PI gets their own weekly digest, ranked to their work, assembled and sent for you. No generic blasts.</p>
+          <div class="mk dg">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="#ff4227" stroke-width="2"/><path d="M4 7.5l8 5.5 8-5.5" fill="none" stroke="#ff4227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Tuesday digest</span>
+              <span class="sending"><i></i>Sending</span>
+            </div>
+            <div class="dg-sub">For <strong>Dr. Grace Lin</strong> &middot; 3 picks</div>
+            <div class="row"><span class="ag on">NIH</span><span class="gn">R01 Microglial dynamics</span><span class="pc on">96%</span></div>
+            <div class="dg-foot"><span class="dg-count">412 PIs &middot; individual digests</span><span class="dg-auto">Auto-sent &rarr;</span></div>
+          </div>
+        </div>
+
+        <!-- Eligibility Checks -->
+        <div class="hiw-card">
+          <h3>Eligibility Checks</h3>
+          <p class="desc">Researcher credentials matched to grant eligibility, automatically.</p>
+          <div class="mk">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V5l-8-3z" fill="none" stroke="#ff4227" stroke-width="2"/></svg>
+              <span>Eligibility match</span>
+            </div>
+            <div class="elig-head"><span>Requirement</span><span>Profile</span></div>
+            <div class="elig-row"><span class="req">Early-stage PI</span><svg class="chk" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="prof">ESI &middot; PhD 2021</span></div>
+            <div class="elig-row"><span class="req">U.S. institution</span><svg class="chk" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="prof">NYU Langone</span></div>
+            <div class="elig-row"><span class="req">Neuro focus</span><svg class="chk" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="prof">Neuroinflamma&hellip;</span></div>
+          </div>
+        </div>
+
+        <!-- Collaborator Identification -->
+        <div class="hiw-card">
+          <h3>Collaborator Identification</h3>
+          <p class="desc">An AI-matched database for finding the right co-PIs across institutions.</p>
+          <div class="mk">
+            <div class="cb-search"><span>Search</span> Neuroinflammation</div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/patel.jpg" alt=""></span><div class="cb-id"><strong>Dr. K. Patel</strong><span>Johns Hopkins &middot; PET imaging</span></div><span class="mt">Match</span></div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/reyes.jpg" alt=""></span><div class="cb-id"><strong>Dr. J. Reyes</strong><span>UCSF &middot; Clinical trials</span></div><span class="mt">Match</span></div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/tan.jpg" alt=""></span><div class="cb-id"><strong>Dr. M. Tan</strong><span>MIT &middot; Microglia</span></div><span class="mt">Match</span></div>
+          </div>
+        </div>
+
+        <!-- Proposal Guides -->
+        <div class="hiw-card">
+          <h3>Proposal Guides</h3>
+          <p class="desc">Every RFP turned into a section-by-section application guide.</p>
+          <div class="mk">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z" fill="none" stroke="#ff4227" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h5" stroke="#ff4227" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>R01 Application Guide</span>
+            </div>
+            <div class="gd-item"><span class="gd-dot on"></span><span class="gd-t">Project Description</span><span class="gd-gen">Generating</span></div>
+            <div class="gd-sub">Outline objectives and methodology</div>
+            <div class="gd-sub">Address intellectual merit and impact</div>
+            <div class="gd-item"><span class="gd-dot"></span><span class="gd-t dim">Budget &amp; Justification</span></div>
+            <div class="gd-item"><span class="gd-dot"></span><span class="gd-t dim">Biosketch</span></div>
+          </div>
+        </div>
+
+        <!-- AI Proposal Review -->
+        <div class="hiw-card">
+          <h3>AI Proposal Review</h3>
+          <p class="desc">Draft proposals reviewed against funder criteria, before submission.</p>
+          <div class="mk">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1z" fill="#ff4227"/></svg>
+              <span>Reviewer scorecard</span>
+            </div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Specific aims clear</span><span class="vd pass">Pass</span></div>
+            <div class="sc-row dim"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="13" rx="3.5" fill="none" stroke="#ff4227" stroke-width="2"/></svg><span class="sc-t">Preliminary data sufficient</span><span class="vd rev">Revise</span></div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Innovation articulated</span><span class="vd pass">Pass</span></div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Budget justified</span><span class="vd pass">Pass</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Case study: University of Memphis -->
+  <section class="slide dark" data-slide="6">
+    <div class="brand"><img src="../assets/newredlogowordmarkwhitehighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">05 <span class="muted">/ Case study, University of Memphis</span></div>
+      <h2 class="headline" style="font-size: clamp(36px, 4vw, 56px); max-width: 28ch;">
+        Universities are using Atom to set submission records.
+      </h2>
+      <div class="cs-quote-card">
+        <p class="pull-quote">
+          &ldquo;This fiscal year we have set <span class="accent">records for submissions</span>, and I attribute that to the fact people are engaging with Atom.&rdquo;
+        </p>
+        <div class="pull-attrib-row">
+          <div class="cs-avatar"><img src="img/brian.jpg" alt="Brian Evans"></div>
+          <div class="cs-who">
+            <strong>Brian Evans, PhD</strong>
+            <span>Assistant Director &middot; University of Memphis</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="v">600+</div>
+          <div class="l">Faculty engaged across the university in one year.</div>
+        </div>
+        <div class="stat">
+          <div class="v">10&times;</div>
+          <div class="l">Lift in faculty engagement vs. prior platform.</div>
+        </div>
+        <div class="stat">
+          <div class="v">Record</div>
+          <div class="l">Year for proposal submissions at Memphis.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- 07 For Leadership -->
   <section class="slide" data-slide="7">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">06 <span class="muted">/ For leadership</span></div>
+      <div class="eyebrow">06 <span class="muted">/ The admin backend</span></div>
       <div class="lead-layout">
         <div class="lead-copy">
-          <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 50px); max-width: 18ch;">
-            See where your institution stands.
+          <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 50px); max-width: 16ch;">
+            One backend to run the whole operation.
           </h2>
           <p class="lede" style="margin-top: clamp(20px, 1.8vw, 30px);">
-            Atom tracks every interaction and reports it back: agent activity, faculty engagement, pipeline health, and submission trends.
+            Your research development team gets a full admin backend, not just faculty-facing tools.
           </p>
           <ul class="lead-list">
-            <li>Reviewed with your named team at each check-in.</li>
-            <li>A shared data room for every report and deliverable.</li>
-            <li>Spot funder priorities and momentum shifts early.</li>
+            <li><strong>Analytics:</strong> agent activity, faculty engagement, pipeline health, and submission trends.</li>
+            <li><strong>Project management:</strong> track every proposal by stage, owner, and deadline.</li>
+            <li><strong>Faculty directory:</strong> living profiles that capture what each researcher actually works on.</li>
           </ul>
         </div>
-        <div class="dash">
-          <div class="dash-head">
-            <div class="t">Leadership dashboard</div>
-            <div class="chip">Last 180 days</div>
+        <div class="admin">
+          <div class="admin-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="admin-title">Atom &middot; Admin backend</span>
+            <span class="admin-chip">University-wide</span>
           </div>
-          <div class="kpi-grid">
-            <div class="kpi"><div class="v">68%</div><div class="l">Profiles engaged</div></div>
-            <div class="kpi"><div class="v">12.4k</div><div class="l">Grant page views</div></div>
-            <div class="kpi"><div class="v">3,180</div><div class="l">AI chats with Atom</div></div>
-            <div class="kpi"><div class="v accent">+51%</div><div class="l">Daily engagement</div></div>
-          </div>
-          <div class="chart-wrap">
-            <div class="ct"><span>Weekly engagement</span><strong>Trending up</strong></div>
-            <svg viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true">
-              <path d="M0,74 L29,69 L58,75 L87,60 L116,63 L145,52 L174,55 L203,43 L232,47 L261,34 L290,29 L320,22 L320,96 L0,96 Z" fill="#ff4227" fill-opacity="0.08"/>
-              <path d="M0,74 L29,69 L58,75 L87,60 L116,63 L145,52 L174,55 L203,43 L232,47 L261,34 L290,29 L320,22" fill="none" stroke="#ff4227" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="deps">
-            <div class="dep"><span>Medicine</span><div class="bar"><span style="width:92%"></span></div><span class="pct">92%</span></div>
-            <div class="dep"><span>Engineering</span><div class="bar"><span style="width:74%"></span></div><span class="pct">74%</span></div>
-            <div class="dep"><span>Public Health</span><div class="bar"><span style="width:61%"></span></div><span class="pct">61%</span></div>
-            <div class="dep"><span>Arts &amp; Sciences</span><div class="bar"><span style="width:48%"></span></div><span class="pct">48%</span></div>
+          <div class="admin-body">
+            <!-- Analytics region -->
+            <div class="admin-section">
+              <div class="sec-head"><span class="sec-label">Analytics</span><span class="sec-meta">Last 180 days</span></div>
+              <div class="admin-split">
+                <div class="chart-wrap">
+                  <div class="ct"><span>Weekly engagement</span></div>
+                  <svg viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,60 L29,56 L58,61 L87,49 L116,51 L145,42 L174,45 L203,35 L232,38 L261,28 L290,24 L320,18 L320,78 L0,78 Z" fill="#ff4227" fill-opacity="0.08"/>
+                    <path d="M0,60 L29,56 L58,61 L87,49 L116,51 L145,42 L174,45 L203,35 L232,38 L261,28 L290,24 L320,18" fill="none" stroke="#ff4227" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="kpi-grid">
+                  <div class="kpi"><div class="v">68%</div><div class="l">Profiles engaged</div></div>
+                  <div class="kpi"><div class="v">12.4k</div><div class="l">Grant views</div></div>
+                  <div class="kpi"><div class="v">3,180</div><div class="l">AI chats</div></div>
+                  <div class="kpi"><div class="v accent">+51%</div><div class="l">Daily active</div></div>
+                </div>
+              </div>
+            </div>
+            <!-- Project management region -->
+            <div class="admin-section">
+              <div class="sec-head"><span class="sec-label">Project management</span><span class="sec-meta">38 active proposals</span></div>
+              <div class="pm-board">
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">To Do</span><span class="cnt">11</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">R01 Microglial dynamics</div>
+                    <div class="meta"><span class="owner"><img src="img/people/m45.jpg" alt=""></span><span class="due">Jun 18</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">Neural imaging methods</div>
+                    <div class="meta"><span class="owner"><img src="img/people/w68.jpg" alt=""></span><span class="due">Jun 24</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Drafting</span><span class="cnt">9</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">CDMRP TBI biomarkers</div>
+                    <div class="meta"><span class="owner"><img src="img/people/tan.jpg" alt=""></span><span class="due">Jun 12</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">R21 Synaptic plasticity</div>
+                    <div class="meta"><span class="owner"><img src="img/people/reyes.jpg" alt=""></span><span class="due">Jun 20</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Review</span><span class="cnt">7</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">Quantum sensing array</div>
+                    <div class="meta"><span class="owner"><img src="img/people/patel.jpg" alt=""></span><span class="due">Jun 15</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">CAREER: glial signaling</div>
+                    <div class="meta"><span class="owner"><img src="img/people/w33.jpg" alt=""></span><span class="due">Jun 19</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Submitted</span><span class="cnt">11</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">Microgravity neurobiology</div>
+                    <div class="meta"><span class="owner"><img src="img/people/grace.jpg" alt=""></span><span class="due">Jun 09</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">Stroke recovery trial</div>
+                    <div class="meta"><span class="owner"><img src="img/people/m12.jpg" alt=""></span><span class="due">Jun 06</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1022,12 +1330,12 @@
   <section class="slide" data-slide="8">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">Next <span class="muted">/ The next conversation</span></div>
-      <h2 class="headline" style="font-size: clamp(38px, 4.4vw, 66px); max-width: 17ch;">
-        Next: a full demo, on the things you care about most.
+      <div class="eyebrow">07 <span class="muted">/ Next steps</span></div>
+      <h2 class="headline" style="font-size: clamp(38px, 4.4vw, 66px); max-width: 28ch;">
+        Let&rsquo;s book a demo, on the<br>things you care about most.
       </h2>
       <p class="lede" style="margin-top: clamp(20px, 1.8vw, 30px); max-width: 50ch;">
-        We&rsquo;ll walk through the product live and go deep on the workflows that matter most to your team.
+        A live, hands-on walkthrough of the platform.<br>Who else should be in the room?
       </p>
       <div class="focus">
         <div class="focus-label">What should we focus on?</div>
@@ -1038,6 +1346,9 @@
           <span class="chip">Collaborator Identification</span>
           <span class="chip">Proposal Guide</span>
           <span class="chip">AI Proposal Review</span>
+          <span class="chip">Project Management</span>
+          <span class="chip">Analytics</span>
+          <span class="chip">Onboarding</span>
         </div>
       </div>
       <div class="close-line">
