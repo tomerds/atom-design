@@ -21,11 +21,11 @@ Single self-contained HTML file. Full-viewport slides, presented in-browser (fil
 3. **Why now** — the squeeze: rising workload, flat budgets, less funding visibility
 4. **A different category** — "a teammate, not a search tool," with a partner quote
 5. **How it works** — six product capabilities as website-style cards, each with a mini product mock (Automated Profiles, Grant Discovery, Eligibility Checks, Collaborator Identification, Proposal Guides, AI Proposal Review). Sold as one package — never "modules"
-6. **Case study** — University of Memphis, dark slide, quote + stats
-7. **The admin backend** — analytics + project-management board + faculty directory (show when leadership is on the call)
+6. **The admin backend** — analytics + project-management board + faculty directory (show when leadership is on the call)
+7. **Case study** — University of Memphis, dark slide, quote + stats
 8. **Next steps & Q&A** — steer to the full demo, focused on what they care about most
 
-> Slide order is set in the deck (Partners is slide 2, the admin backend is slide 7). The numbered eyebrows in the HTML count the content slides after the cover.
+> Slide order is set in the deck (Partners is slide 2, the admin backend is slide 6). The numbered eyebrows in the HTML count the content slides after the cover.
 
 ## Personalizing for a prospect
 
