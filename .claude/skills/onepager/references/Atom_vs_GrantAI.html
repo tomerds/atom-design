@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Atom vs. GrantAI Comparison (One-pager)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+<style>
+  :root {
+    --accent: #ff4227;
+    --bg: #ffffff;
+    --text: #000000;
+    --gray-dark: #333333;
+    --gray-mid: #6b6b6b;
+    --gray-light: #d9d9d9;
+    --gray-hair: #e8e8e8;
+    --font-title: "Cal Sans", system-ui, sans-serif;
+    --font-body: "DM Sans", system-ui, sans-serif;
+    --font-mono: "DM Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #eceae6;
+    font-family: var(--font-body);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  @page { size: 8.5in 11in; margin: 0; }
+  @media print {
+    html, body { background: #fff; margin: 0; padding: 0; }
+    .poster {
+      margin: 0 !important;
+      box-shadow: none !important;
+      page-break-after: auto;
+      break-after: auto;
+    }
+  }
+
+  .poster {
+    width: 816px;
+    height: 1056px;
+    background: var(--bg);
+    color: var(--text);
+    padding: 34px 48px 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+
+  /* ================= TOP STRIP ================= */
+  .top-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .top-strip .logo { height: 22px; width: auto; display: block; }
+  .top-strip .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text);
+  }
+  .top-strip .tag {
+    font-family: var(--font-mono);
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--gray-mid);
+    font-style: italic;
+  }
+
+  /* ================= HERO ================= */
+  .hero {
+    padding: 20px 0 19px;
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .hero h1 {
+    font-family: var(--font-title);
+    font-weight: 400;
+    font-size: 37px;
+    line-height: 1.03;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero .subtitle {
+    font-size: 13px; line-height: 1.45;
+    color: var(--gray-dark); max-width: 660px; font-weight: 400;
+  }
+  .hero .subtitle strong { font-weight: 600; color: var(--text); }
+
+  /* ================= POSITIONING CARDS ================= */
+  .pos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px 0 4px;
+  }
+  .pos-card {
+    border: 1px solid var(--gray-hair);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    background: #fff;
+    padding: 16px 18px 17px;
+    display: flex; flex-direction: column; gap: 7px;
+  }
+  .pos-card.atom {
+    order: 1;
+    border: 1.5px solid var(--accent);
+    background: #fff5f3;
+    box-shadow: 0 6px 20px rgba(255,66,39,0.08);
+  }
+  .pos-card .pos-name {
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .pos-card .pos-name .n {
+    font-family: var(--font-title);
+    font-weight: 400; font-size: 20px; letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .pos-card.atom .pos-name .n { color: var(--accent); }
+  .pos-card .pos-name .cat {
+    font-family: var(--font-mono);
+    font-size: 8.5px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+  .pos-card .pos-line {
+    font-size: 12px; line-height: 1.4; color: var(--gray-dark);
+  }
+  .pos-card .pos-line strong { color: var(--text); font-weight: 600; }
+  .pos-card .pos-meta {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.04em;
+    color: var(--gray-mid); padding-top: 8px;
+    border-top: 1px solid var(--gray-hair);
+  }
+  .pos-card.atom .pos-meta { color: var(--accent); }
+
+  /* ================= SECTION HEADER ================= */
+  .section-head {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 12px 0 7px;
+  }
+  .section-head h2 {
+    font-family: var(--font-title);
+    font-weight: 400; font-size: 19px; letter-spacing: -0.01em;
+    color: var(--text); white-space: nowrap;
+  }
+  .section-head .rule { flex: 1; height: 1px; background: var(--gray-light); align-self: center; }
+
+  /* ================= COMPARISON TABLE (UX CARD) ================= */
+  .ctable {
+    margin-top: 22px;
+    background: #fff;
+    border: 1px solid var(--gray-hair);
+    border-radius: 16px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.06);
+    padding: 6px 18px 8px 20px;
+  }
+  .crow {
+    display: grid;
+    grid-template-columns: 1.3fr 1.2fr 1.5fr;
+    align-items: stretch;
+  }
+  .crow + .crow .feat,
+  .crow + .crow .cell:not(.atom) {
+    border-top: 1px solid #f1efec;
+  }
+  .crow .feat {
+    padding: 7.5px 14px 7.5px 2px;
+    font-size: 11px; line-height: 1.25; color: var(--gray-dark);
+    display: flex; align-items: center;
+  }
+  .crow.head .feat {
+    font-family: var(--font-mono);
+    font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gray-mid);
+    padding-bottom: 9px;
+  }
+  .crow .cell {
+    padding: 7.5px 14px;
+    font-size: 10.5px; line-height: 1.3; color: var(--gray-dark);
+    display: flex; align-items: center; gap: 8px;
+  }
+  /* GrantAI column gets a hairline rule to its left to separate the two brands */
+  .crow .cell:last-child { border-left: 1px solid #f1efec; }
+  .crow + .crow .cell:last-child { border-top: 1px solid #f1efec; }
+
+  /* Atom column = elevated recommended band */
+  .crow .cell.atom {
+    order: 1;
+    background: #fff5f3;
+    color: var(--text);
+    border-left: 1.5px solid var(--accent);
+    border-right: 1.5px solid var(--accent);
+    margin: 0 7px;
+  }
+  .crow.head .cell.atom { border-top: 1.5px solid var(--accent); border-radius: 12px 12px 0 0; }
+  .crow:last-child .cell.atom { border-bottom: 1.5px solid var(--accent); border-radius: 0 0 12px 12px; }
+
+  .crow.head .cell {
+    font-family: var(--font-title);
+    font-size: 15px; font-weight: 400; letter-spacing: -0.01em;
+    color: var(--gray-dark);
+    padding-top: 9px; padding-bottom: 8px;
+    white-space: nowrap;
+  }
+  .crow.head .cell.atom { color: var(--accent); }
+  .crow.head .cell .badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 7px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; background: var(--accent);
+    padding: 3px 6px; border-radius: 20px;
+  }
+
+  .crow .cell .ic {
+    flex-shrink: 0;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; line-height: 1;
+  }
+  .ic.yes { background: var(--accent); color: #fff; box-shadow: 0 1px 3px rgba(255,66,39,0.35); }
+  .ic.no { background: #ededed; color: #b4b4b4; }
+  .ic.partial { background: #fff; border: 1.5px solid var(--gray-mid); color: var(--gray-mid); font-size: 9px; }
+  .crow .cell .txt { font-weight: 500; }
+  .crow .cell.atom .txt { font-weight: 600; }
+  .crow .cell .txt.muted { color: var(--gray-mid); font-weight: 400; }
+
+  /* ================= WHEN EACH FITS ================= */
+  .fits .section-head { padding-top: 14px; padding-bottom: 12px; }
+  .fits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .fit-card {
+    border: 1px solid var(--gray-hair);
+    border-radius: 14px;
+    padding: 20px 22px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .fit-card.atom {
+    border: 1.5px solid var(--accent);
+    background: #fff5f3;
+  }
+  .fit-lbl {
+    font-family: var(--font-mono);
+    font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+  .fit-card.atom .fit-lbl { color: var(--accent); }
+  .fit-card p { font-size: 12px; line-height: 1.5; color: var(--gray-dark); }
+  .fit-card.atom p { color: var(--text); font-weight: 500; }
+
+  /* ================= PROOF ================= */
+  .proof {
+    margin-top: auto;
+    padding: 13px 18px;
+    background: #fafafa;
+    border: 1px solid var(--gray-hair);
+    border-radius: 14px;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px; align-items: center;
+  }
+  .proof .lbl {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .proof .lbl::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0;
+  }
+  .proof .copy { font-size: 11px; line-height: 1.4; color: var(--gray-dark); }
+  .proof .copy strong { color: var(--text); font-weight: 600; }
+
+  /* ================= FOOTER CTA ================= */
+  .cta {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 2px solid var(--text);
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+  }
+  .cta .lead { display: flex; flex-direction: column; gap: 3px; }
+  .cta .cta-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+  .cta .cta-line {
+    font-family: var(--font-title);
+    font-weight: 400; font-size: 22px; letter-spacing: -0.01em;
+    color: var(--text); line-height: 1;
+  }
+  .cta .cta-line .accent { color: var(--accent); }
+  .cta .contact {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 10.5px; letter-spacing: 0.04em; color: var(--text); line-height: 1.5;
+  }
+  .cta .contact .site { color: var(--accent); font-weight: 500; }
+
+</style>
+</head>
+<body>
+  <div class="poster">
+
+    <!-- Top strip -->
+    <header class="top-strip">
+      <img class="logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom">
+      <div class="eyebrow">Atom vs. GrantAI</div>
+      <div class="tag">Platform comparison</div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>A research-development platform,<br>not just a <span class="accent">writing assistant.</span></h1>
+      <div class="subtitle">Both use AI on grants, but they solve different problems. <strong>GrantAI</strong> is a self-serve copilot that drafts narrative answers. <strong>Atom</strong> runs the whole research-funding workflow for an institution: <strong>find the right opportunities, assemble the team, and win more proposals.</strong></div>
+    </section>
+
+    <!-- Positioning cards -->
+    <section class="pos">
+      <div class="pos-card atom">
+        <div class="pos-name">
+          <span class="n">Atom Grants</span>
+          <span class="cat">End-to-end platform</span>
+        </div>
+        <div class="pos-line">The AI platform for <strong>research development teams</strong> at universities and academic medical centers, covering the full pipeline from discovery and matching to AI review and leadership analytics.</div>
+        <div class="pos-meta">Built for institutions · 50+ research institutions</div>
+      </div>
+      <div class="pos-card">
+        <div class="pos-name">
+          <span class="n">GrantAI</span>
+          <span class="cat">Writing copilot</span>
+        </div>
+        <div class="pos-line">A <strong>self-serve grant-writing assistant</strong> that generates proposal narratives with minimal effort. Aimed broadly at organizations and nonprofits already chasing a known opportunity.</div>
+        <div class="pos-meta">Self-serve · $19.99/mo · 7-day trial</div>
+      </div>
+    </section>
+
+    <!-- Comparison table -->
+    <section class="ctable">
+      <div class="crow head">
+        <div class="feat">Capability</div>
+        <div class="cell atom">Atom Grants<span class="badge">Full platform</span></div>
+        <div class="cell">GrantAI</div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Grant discovery &amp; matching</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Matches federal, foundation &amp; industry funding to each researcher</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">Not offered; you bring the opportunity</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Researcher profiles</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Living profiles built from real work</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">None</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Eligibility verification</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Checks credentials &amp; program fit before you draft</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">None</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Collaborator / co-PI finding</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">AI matching across institutions</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">None</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Proposal &amp; RFP guidance</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Turns RFPs into section-by-section guides</span></div>
+        <div class="cell"><span class="ic partial">~</span><span class="txt muted">Drafts narrative answers only</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">AI narrative writing</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Drafting plus structure &amp; review</span></div>
+        <div class="cell"><span class="ic yes">✓</span><span class="txt">Core product: cowriter for answers</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">AI proposal / red-team review</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Scores drafts against funder criteria</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">None</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Leadership analytics &amp; pipeline</div>
+        <div class="cell atom"><span class="ic yes">✓</span><span class="txt">Institutional dashboards &amp; trends</span></div>
+        <div class="cell"><span class="ic no">✕</span><span class="txt muted">Single-user application tracking</span></div>
+      </div>
+
+      <div class="crow">
+        <div class="feat">Built for</div>
+        <div class="cell atom"><span class="txt">Universities, academic medical centers &amp; research institutions</span></div>
+        <div class="cell"><span class="txt muted">Nonprofits &amp; small organizations</span></div>
+      </div>
+    </section>
+
+    <!-- When each fits -->
+    <section class="fits">
+      <div class="section-head">
+        <h2>When each fits</h2>
+        <span class="rule"></span>
+      </div>
+      <div class="fits-grid">
+        <div class="fit-card">
+          <div class="fit-lbl">Reach for GrantAI when</div>
+          <p>One person needs to draft narrative answers for a grant they've already found, on a low monthly subscription.</p>
+        </div>
+        <div class="fit-card atom">
+          <div class="fit-lbl">Reach for Atom when</div>
+          <p>An institution needs to support more researchers and proposals, from finding the right opportunity to a submission-ready, reviewed application.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
