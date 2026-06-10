@@ -17,6 +17,7 @@ A single Letter-portrait sheet (read on-screen or printed) that makes one argume
 - Page background a warm off-white (`#eceae6`); the `.poster` itself is white with a soft outer shadow.
 - Include the `@page` + `@media print` block (size `8.5in 11in`, margin 0) so it exports clean. See the reference `<style>`.
 - One self-contained HTML file. Brand tokens (`--accent #ff4227`, grays, Cal Sans titles / DM Sans body, DM Mono for eyebrows) come straight from `CLAUDE.md` — load them as CSS variables; the reference already does.
+- Always set `font-weight: 400` on any Cal Sans heading element — `<h1>`/`<h2>`/`<h3>` default to `font-weight: bold` in browsers, which synthetic-bolds Cal Sans and makes it heavier than intended.
 
 ## The soft-card system (this is the style)
 

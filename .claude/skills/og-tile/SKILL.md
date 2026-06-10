@@ -20,7 +20,7 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 | Accent | `#ff4227` (the only brand color — no gradients, no secondary red) |
 | **Tile background** | **`#F9FAFB`** (cool light gray — applied to all three families; page background stays `#ffffff`) |
 | Text | `#000000`, secondary `#333`, tertiary `#666` |
-| Title font | Cal Sans (loaded from `https://fonts.cdnfonts.com/css/cal-sans`) |
+| Title font | Cal Sans (loaded from `https://fonts.cdnfonts.com/css/cal-sans`) — always set `font-weight: 400` on `.title`; `<h1>` has a browser default of `font-weight: bold` which causes synthetic bolding on top of Cal Sans |
 | Body font | DM Sans 400/500/600/700 (Google Fonts) |
 | Logo | `../assets/newredlogowordmarkhighres.png` (height: 44–52px in tiles) |
 | **Tile padding** | **`64px 144px`** (universal — matches the website card padding) |
@@ -333,6 +333,7 @@ Keep one master HTML per family — easier to keep typography and spacing consis
 ## Don't
 
 - Don't add gradients, drop shadows on type, secondary colors, or off-brand fonts.
+- **Don't let `<h1>` bold-synthesize Cal Sans.** Always set `font-weight: 400` on `.title` — browsers default `<h1>` to `font-weight: bold`, which renders Cal Sans heavier than intended.
 - Don't add descriptions/subtitles to **resource** tiles. Title only.
 - Don't use circular avatars in webinar tiles (resource tiles don't have avatars at all). Square + 18px radius is the signature.
 - **Don't add a bottom accent bar to any tile.** The 10px `#ff4227` bottom-bar treatment is retired across all three families — resources, blogs, webinars. The accent word in the title (and the category pill / blog eyebrow / collab strip where applicable) is the only color load.

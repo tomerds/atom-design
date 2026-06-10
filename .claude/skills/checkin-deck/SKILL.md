@@ -158,7 +158,7 @@ Headline: "Where are we getting it right — and what's missing?" (accent on "wh
 | `--rule-soft` | `#e6e6e6` | Table row dividers, soft borders |
 | `--rule-mid` | `#d9d9d9` | Cover `×`, separators |
 | `--rule-strong` | `#333333` | Stat-tile top rules (when not accent) |
-| Title font | Cal Sans (via `fonts.cdnfonts.com/css/cal-sans`) | All headlines, big numbers |
+| Title font | Cal Sans (via `fonts.cdnfonts.com/css/cal-sans`) — always set `font-weight: 400` on heading elements; `<h1>`/`<h2>`/`<h3>` default to `font-weight: bold`, which synthetic-bolds Cal Sans | All headlines, big numbers |
 | Body font | DM Sans 400/500/700 (Google Fonts) | All copy, labels, axis text |
 | Logo | `../../assets/newredlogowordmarkhighres.png` | Brand bar, top-left of every slide (path assumes deck lives in `<project>/vN/`) |
 
