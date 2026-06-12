@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | Partnership Proposal — Max Planck Florida Institute for Neuroscience
+  Quotes / pricing call follow-up (call 2). Two-tier license proposal:
+    Discovery License ........ $5,000 / yr
+    Full Package License ..... $15,000 / yr (Discovery + Collaborator Search + Proposals)
+
+  Landscape deck, 13.333 x 7.5 in, single self-contained HTML. 7 slides:
+    01 Cover ............... Partnership proposal, Atom x MPFI
+    02 Recap .............. The three parts of Atom (tailored to MPFI)
+    03 What we heard ...... MPFI's context, in their numbers
+    04 Two options ........ Comparison table, Full highlighted (the centerpiece)
+    05 Why Full ........... The case for proposals + collaborator search at MPFI
+    06 A better price ..... Design-partner / case-study path
+    07 Terms & next steps . Annual license terms + the decision
+
+  Nav: ArrowLeft/Right, Space, click to advance, f fullscreen, #N deep-link.
+  Print/PDF: 13.333x7.5 print CSS included.
+  Brand: single accent (#ff4227), white bg, black text; Cal Sans titles, DM Sans body; no em dashes.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atom Grants: Partnership Proposal — Max Planck Florida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --accent-soft: rgba(255, 66, 39, 0.08);
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --gray-dark: #333333;
+      --rule-soft: #e4e4e4;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6.5vw, 112px);
+      --pad-y: clamp(48px, 5.5vw, 80px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 180ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .brand {
+      position: absolute;
+      top: clamp(28px, 3.2vw, 44px);
+      left: var(--pad-x);
+      display: flex; align-items: center;
+      height: clamp(26px, 2.3vw, 34px);
+    }
+    .brand img { height: 100%; width: auto; display: block; }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(26px, 3vw, 44px);
+      right: var(--pad-x);
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    .counter span.sep { color: var(--rule-soft); margin: 0 6px; }
+    .counter span.now { color: var(--accent); font-weight: 500; }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: clamp(18px, 1.5vw, 26px);
+    }
+    .eyebrow .muted { color: var(--text-muted); margin-left: 12px; letter-spacing: 0.18em; }
+
+    h1, h2, h3 { font-family: var(--font-title); font-weight: 400; margin: 0; line-height: 1.04; letter-spacing: -0.015em; }
+
+    .content-wrap {
+      margin-top: clamp(40px, 4vw, 64px);
+      flex: 1;
+      display: flex; flex-direction: column;
+      justify-content: center;
+    }
+
+    .headline { font-size: clamp(40px, 4.8vw, 72px); max-width: 22ch; }
+    .headline .accent { color: var(--accent); }
+
+    .lede {
+      font-family: var(--font-body);
+      font-size: clamp(17px, 1.4vw, 23px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 58ch;
+    }
+
+    /* ---------- Cover ---------- */
+    .cover-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: clamp(22px, 2.2vw, 34px); }
+    .cover-lockup { display: flex; align-items: center; gap: clamp(16px, 1.6vw, 26px); align-self: flex-start; margin-bottom: clamp(16px, 1.6vw, 26px); }
+    .cover-logo { height: clamp(44px, 3.8vw, 58px); width: auto; }
+    .lockup-x { font-family: var(--font-body); font-weight: 300; font-size: clamp(20px, 1.8vw, 28px); color: var(--rule-soft); line-height: 1; }
+    .partner-logo-img { height: clamp(52px, 4.6vw, 70px); width: auto; max-width: 260px; object-fit: contain; display: block; }
+    .cover-eyebrow { font-family: var(--font-body); font-size: clamp(13px, 1vw, 15px); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+    .cover-headline { font-family: var(--font-title); font-size: clamp(52px, 6.4vw, 100px); line-height: 0.98; letter-spacing: -0.02em; max-width: 17ch; }
+    .cover-sub { font-family: var(--font-body); font-size: clamp(20px, 1.8vw, 28px); line-height: 1.3; color: var(--text-muted); max-width: 50ch; margin-top: clamp(6px, 0.8vw, 12px); }
+    .cover-meta { display: flex; gap: clamp(20px, 3vw, 52px); margin-top: clamp(30px, 3.2vw, 56px); font-family: var(--font-body); }
+    .cover-meta .col .k { display: block; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    .cover-meta .col .v { color: var(--text); font-weight: 500; font-size: clamp(15px, 1.15vw, 18px); }
+
+    /* ---------- Recap: three pillars ---------- */
+    .pillar-grid { margin-top: clamp(28px, 2.8vw, 46px); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.6vw, 28px); flex: 1; align-content: center; }
+    .pillar { border: 1px solid var(--rule-soft); border-radius: 18px; padding: clamp(22px, 2vw, 34px); display: flex; flex-direction: column; background: #fff; }
+    .pillar.lead { border-color: var(--accent); background: var(--accent-soft); }
+    .pillar .num { font-family: var(--font-title); font-size: clamp(26px, 2.2vw, 34px); color: var(--accent); }
+    .pillar h3 { font-size: clamp(22px, 1.9vw, 30px); margin-top: clamp(10px, 0.9vw, 16px); line-height: 1.08; }
+    .pillar p { font-family: var(--font-body); font-size: clamp(13px, 1.05vw, 16px); color: var(--text-muted); line-height: 1.42; margin: clamp(10px, 0.9vw, 14px) 0 0; }
+    .pillar .tag { margin-top: clamp(14px, 1.2vw, 18px); font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 600; letter-spacing: 0.04em; color: var(--gray-dark); }
+    .pillar.lead .tag { color: var(--accent); }
+
+    /* ---------- What we heard: stat cards ---------- */
+    .heard-grid { margin-top: clamp(30px, 3vw, 50px); display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 1.7vw, 28px); }
+    .stat { border: 1px solid var(--rule-soft); border-radius: 18px; padding: clamp(22px, 2vw, 32px); background: #fff; }
+    .stat .v { font-family: var(--font-title); font-size: clamp(38px, 3.8vw, 58px); line-height: 0.95; color: var(--text); letter-spacing: -0.02em; }
+    .stat .v em { font-style: normal; color: var(--accent); }
+    .stat .l { font-family: var(--font-body); font-size: clamp(13px, 1.02vw, 16px); color: var(--text-muted); line-height: 1.4; margin-top: clamp(12px, 1vw, 16px); max-width: 24ch; }
+    .heard-note { margin-top: clamp(30px, 3vw, 46px); font-family: var(--font-body); font-size: clamp(16px, 1.3vw, 21px); color: var(--text-muted); line-height: 1.5; max-width: 86ch; }
+    .heard-note strong { color: var(--text); font-weight: 600; }
+
+    /* ---------- Projected ROI ---------- */
+    .roi-lede { margin-top: clamp(16px, 1.4vw, 24px); }
+    .roi-grid { margin-top: clamp(32px, 3.2vw, 52px); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 1.8vw, 30px); }
+    .roi-grid .stat .l { max-width: 30ch; }
+    .roi-foot { margin-top: clamp(26px, 2.6vw, 42px); font-family: var(--font-body); font-size: clamp(13px, 1.05vw, 17px); color: var(--text-muted); line-height: 1.5; max-width: 88ch; }
+    .roi-foot strong { color: var(--text); font-weight: 600; }
+
+    /* ---------- Onboarding timeline ---------- */
+    .ob-steps { display: grid; grid-template-columns: repeat(3, 1fr); position: relative; margin: clamp(28px, 2.8vw, 46px) 0 clamp(14px, 1.3vw, 22px); }
+    .ob-steps::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--rule-soft); transform: translateY(-50%); }
+    .ob-step { display: flex; justify-content: center; position: relative; z-index: 1; }
+    .ob-circle { width: clamp(40px, 3.1vw, 50px); height: clamp(40px, 3.1vw, 50px); border-radius: 50%; background: #fff; border: 2px solid var(--rule-soft); color: var(--text); font-family: var(--font-title); font-size: clamp(17px, 1.4vw, 22px); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px #fff; }
+    .ob-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 2vw, 34px); }
+    .phase { border: 1px solid var(--rule-soft); border-radius: 18px; padding: clamp(20px, 1.9vw, 30px); display: flex; flex-direction: column; background: #fff; }
+    .phase .ph-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .phase .ph-eyebrow { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+    .phase .ph-when { font-family: var(--font-body); font-size: clamp(10px, 0.82vw, 12.5px); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .phase h3 { font-size: clamp(22px, 2vw, 30px); margin-top: clamp(6px, 0.6vw, 10px); line-height: 1.05; }
+    .phase .ph-sub { font-family: var(--font-body); font-size: clamp(12.5px, 1vw, 15px); color: var(--text-muted); line-height: 1.4; margin-top: clamp(6px, 0.6vw, 10px); }
+    .phase .ph-tasks { list-style: none; margin: clamp(13px, 1.2vw, 18px) 0 0; padding: clamp(13px, 1.2vw, 17px) 0 0; border-top: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: clamp(9px, 0.9vw, 13px); }
+    .phase .ph-tasks li { position: relative; padding-left: 18px; font-family: var(--font-body); font-size: clamp(12.5px, 1.02vw, 15.5px); color: var(--text); line-height: 1.3; }
+    .phase .ph-tasks li::before { content: ""; position: absolute; left: 0; top: 0.46em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    /* ---------- Comparison table ---------- */
+    .cmp { margin-top: clamp(20px, 2vw, 34px); display: grid; grid-template-columns: 1.85fr 1fr 1fr; position: relative; }
+    .cmp .ch { display: flex; flex-direction: column; }
+    /* column header row */
+    .cmp-head { display: contents; }
+    .col-h { padding: clamp(9px, 0.85vw, 14px) clamp(16px, 1.4vw, 24px); display: flex; flex-direction: column; justify-content: flex-end; }
+    .col-h.feat { justify-content: flex-end; }
+    .col-h.feat .ft-label { font-family: var(--font-body); font-size: clamp(12px, 0.95vw, 14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .col-h .tier-name { font-family: var(--font-title); font-size: clamp(19px, 1.6vw, 25px); color: var(--text); line-height: 1.05; }
+    .col-h .tier-price { font-family: var(--font-title); font-size: clamp(24px, 2.1vw, 33px); color: var(--text); margin-top: 4px; letter-spacing: -0.01em; }
+    .col-h .tier-price small { font-family: var(--font-body); font-size: clamp(12px, 0.9vw, 14px); font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+    .col-h .tier-sub { font-family: var(--font-body); font-size: clamp(12px, 0.92vw, 14px); color: var(--text-muted); margin-top: 6px; line-height: 1.3; }
+
+    /* highlighted Full column panel behind */
+    .cmp .hl-panel { position: absolute; top: 0; bottom: 0; right: 0; width: calc(100% / 3.85 * 1); /* approx third col */ background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 16px; z-index: 0; pointer-events: none; }
+    .cmp > * { position: relative; z-index: 1; }
+    .col-h.full .tier-name, .col-h.full .tier-price { color: var(--accent); }
+    .rec-badge { align-self: flex-start; font-family: var(--font-body); font-size: clamp(9.5px, 0.72vw, 11px); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 4px 11px; margin-bottom: 10px; }
+
+    /* section + feature rows */
+    .sec-row { grid-column: 1 / -1; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); padding: clamp(7px, 0.62vw, 10px) clamp(16px, 1.4vw, 24px) clamp(3px, 0.3vw, 5px); }
+    .f-name { padding: clamp(3px, 0.36vw, 5px) clamp(16px, 1.4vw, 24px); font-family: var(--font-body); font-size: clamp(13px, 1.02vw, 15px); color: var(--text); line-height: 1.3; border-top: 1px solid var(--rule-soft); display: flex; align-items: center; }
+    .f-cell { padding: clamp(3px, 0.36vw, 5px) clamp(16px, 1.4vw, 24px); border-top: 1px solid var(--rule-soft); display: flex; align-items: center; justify-content: center; }
+    .f-cell.full { border-top-color: rgba(255,66,39,0.22); }
+    .chk { width: clamp(18px, 1.5vw, 22px); height: clamp(18px, 1.5vw, 22px); }
+    .chk.green { color: #16a34a; }
+    .chk.accent { color: var(--accent); }
+    .dash { width: clamp(16px, 1.3vw, 20px); height: 2px; background: var(--rule-soft); border-radius: 2px; display: block; }
+    .cmp-foot { margin-top: clamp(10px, 1vw, 16px); font-family: var(--font-body); font-size: clamp(13px, 1.02vw, 16px); color: var(--text-muted); line-height: 1.4; }
+    .cmp-foot strong { color: var(--text); font-weight: 600; }
+    .cmp-foot .impl { display: block; margin-top: 5px; font-size: clamp(12px, 0.95vw, 15px); }
+    .cmp-foot .impl b { color: var(--text); font-weight: 600; }
+
+    /* ---------- Why Full: split ---------- */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 3.6vw, 72px); margin-top: clamp(34px, 3.4vw, 56px); align-items: start; }
+    ul.why-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: clamp(18px, 1.6vw, 26px); }
+    ul.why-list li { position: relative; padding-left: 34px; }
+    ul.why-list li .lt { font-family: var(--font-title); font-size: clamp(19px, 1.55vw, 25px); line-height: 1.15; color: var(--text); }
+    ul.why-list li .lb { font-family: var(--font-body); font-size: clamp(13px, 1.05vw, 16px); color: var(--text-muted); line-height: 1.42; margin-top: 6px; }
+    ul.why-list li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 16px; height: 2px; background: #c2c2c2; }
+    .quote-card { background: var(--bg-alt); border: 1px solid var(--rule-soft); border-radius: 20px; padding: clamp(28px, 2.6vw, 42px); display: flex; flex-direction: column; height: 100%; justify-content: center; }
+    .quote-card .qt { font-family: var(--font-title); font-weight: 400; font-size: clamp(22px, 2vw, 32px); line-height: 1.25; letter-spacing: -0.01em; color: var(--text); }
+    .quote-card .qt .accent { color: var(--accent); }
+    .quote-card .qa { display: flex; align-items: center; gap: 14px; margin-top: clamp(22px, 2vw, 30px); }
+    .qa-av { width: clamp(52px, 4vw, 62px); height: clamp(52px, 4vw, 62px); border-radius: 14px; overflow: hidden; background: #eee; flex: none; }
+    .qa-av img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(100%); }
+    .qa-who { display: flex; flex-direction: column; font-family: var(--font-body); line-height: 1.3; }
+    .qa-who strong { font-weight: 600; font-size: clamp(14px, 1.05vw, 17px); }
+    .qa-who span { color: var(--text-muted); font-size: clamp(12px, 0.9vw, 15px); margin-top: 2px; }
+
+    /* ---------- Design-partner path ---------- */
+    .dp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 2.8vw, 52px); margin-top: clamp(32px, 3.2vw, 52px); }
+    .dp-col { border: 1px solid var(--rule-soft); border-radius: 18px; padding: clamp(26px, 2.4vw, 40px); }
+    .dp-col.give { background: var(--bg-alt); }
+    .dp-col.get { background: var(--accent-soft); border-color: var(--accent); }
+    .dp-col .dp-tag { font-family: var(--font-body); font-size: clamp(12px, 0.95vw, 14px); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: clamp(16px, 1.4vw, 22px); }
+    .dp-col.give .dp-tag { color: var(--text-muted); }
+    .dp-col.get .dp-tag { color: var(--accent); }
+    .dp-col h3 { font-size: clamp(24px, 2.1vw, 33px); line-height: 1.1; margin-bottom: clamp(16px, 1.4vw, 22px); }
+    .dp-col ul { list-style: none; margin: 0; padding: 0; }
+    .dp-col li { font-family: var(--font-body); font-size: clamp(14px, 1.12vw, 18px); line-height: 1.4; padding: clamp(9px, 0.8vw, 12px) 0; border-top: 1px solid var(--rule-soft); color: var(--text); }
+    .dp-col.get li { border-top-color: rgba(255,66,39,0.2); }
+    .dp-col li:first-of-type { border-top: none; }
+    .dp-col.opt .dp-tag { color: var(--accent); margin-bottom: clamp(12px, 1.1vw, 16px); }
+    .dp-col.opt h3 { margin-bottom: clamp(8px, 0.8vw, 12px); }
+    .dp-col .dp-lead { font-family: var(--font-body); font-size: clamp(13px, 1.05vw, 16px); color: var(--text-muted); line-height: 1.4; margin: 0 0 clamp(12px, 1.1vw, 18px); }
+    .dp-col li b { color: var(--text); font-weight: 700; }
+    .dp-note { margin-top: clamp(22px, 2.2vw, 34px); font-family: var(--font-body); font-size: clamp(14px, 1.12vw, 18px); color: var(--text-muted); line-height: 1.45; max-width: 80ch; }
+    .dp-note strong { color: var(--text); font-weight: 600; }
+
+    /* ---------- Terms & next steps (closing) ---------- */
+    .close-grid { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: clamp(40px, 4.4vw, 88px); margin-top: clamp(30px, 3vw, 50px); align-items: stretch; flex: 1; }
+    .close-left { display: flex; flex-direction: column; }
+    ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: clamp(18px, 1.7vw, 28px); }
+    ol.steps li { counter-increment: s; position: relative; padding-left: clamp(46px, 3.8vw, 60px); }
+    ol.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: clamp(30px, 2.6vw, 38px); height: clamp(30px, 2.6vw, 38px); border-radius: 50%; background: var(--accent); color: #fff; font-family: var(--font-title); font-size: clamp(15px, 1.2vw, 19px); display: flex; align-items: center; justify-content: center; }
+    ol.steps li .st { font-family: var(--font-title); font-size: clamp(19px, 1.6vw, 26px); line-height: 1.12; color: var(--text); }
+    ol.steps li .sd { font-family: var(--font-body); font-size: clamp(13px, 1.05vw, 16px); color: var(--text-muted); line-height: 1.42; margin-top: 5px; max-width: 40ch; }
+    .close-contact { margin-top: auto; padding-top: clamp(24px, 2.4vw, 38px); border-top: 1px solid var(--rule-soft); font-family: var(--font-body); font-size: clamp(14px, 1.1vw, 18px); color: var(--text-muted); line-height: 1.55; }
+    .close-contact strong { color: var(--text); font-weight: 600; }
+    .close-contact .accent { color: var(--accent); }
+    /* summary card */
+    .sum-card { background: var(--bg-alt); border: 1px solid var(--rule-soft); border-radius: 22px; padding: clamp(26px, 2.4vw, 40px); display: flex; flex-direction: column; }
+    .sum-card .sum-label { font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: clamp(18px, 1.6vw, 26px); }
+    .opt-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: clamp(12px, 1.1vw, 17px) 0; border-top: 1px solid var(--rule-soft); }
+    .opt-row:first-of-type { border-top: none; padding-top: 0; }
+    .opt-row .on { font-family: var(--font-title); font-size: clamp(18px, 1.55vw, 24px); color: var(--text); line-height: 1.05; }
+    .opt-row .on small { display: block; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 500; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 5px; }
+    .opt-row.rec .on { color: var(--accent); }
+    .opt-row .op { font-family: var(--font-title); font-size: clamp(22px, 1.95vw, 31px); color: var(--text); white-space: nowrap; }
+    .opt-row .op small { font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 500; color: var(--text-muted); }
+    .opt-row.rec .op { color: var(--accent); }
+    .sum-terms { margin-top: clamp(18px, 1.7vw, 26px); padding-top: clamp(16px, 1.5vw, 22px); border-top: 1px solid var(--rule-soft); display: flex; flex-direction: column; gap: clamp(9px, 0.9vw, 13px); }
+    .sum-terms .stm { display: flex; align-items: center; gap: 11px; font-family: var(--font-body); font-size: clamp(13px, 1.02vw, 16px); color: var(--text); }
+    .sum-terms .stm svg { width: clamp(15px, 1.2vw, 18px); height: clamp(15px, 1.2vw, 18px); color: var(--accent); flex: none; }
+
+    /* ---------- Print ---------- */
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { overflow: visible; background: white; }
+      .deck { height: auto; width: auto; }
+      .slide {
+        display: flex !important;
+        position: relative;
+        width: 13.333in; height: 7.5in;
+        page-break-after: always;
+        break-after: page;
+      }
+      .counter { display: none; }
+      .slide.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 01 Cover -->
+  <section class="slide" data-slide="1">
+    <div class="cover-inner">
+      <div class="cover-lockup">
+        <img class="cover-logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+        <span class="lockup-x">&times;</span>
+        <img class="partner-logo-img" src="img/mpfi-logo.png" alt="Max Planck Florida Institute for Neuroscience">
+      </div>
+      <div class="cover-eyebrow">For Max Planck Florida Institute for Neuroscience</div>
+      <h1 class="cover-headline" style="font-size: clamp(44px, 5.4vw, 86px); max-width: none; white-space: nowrap;">Partnership proposal.</h1>
+      <p class="cover-sub">A focused look at pricing, what each license includes, and where we&rsquo;d recommend starting.</p>
+      <div class="cover-meta">
+        <div class="col">
+          <span class="k">Presented by</span>
+          <span class="v">Tomer du Sautoy, Co-founder</span>
+        </div>
+        <div class="col">
+          <span class="k">Date</span>
+          <span class="v">June 2026</span>
+        </div>
+        <div class="col">
+          <span class="k">For</span>
+          <span class="v">Victoria Colina-Brunne &middot; Maygan Hunt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Recap: three parts of Atom -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: center;">
+      <div class="eyebrow">01 <span class="muted">/ What you&rsquo;d be licensing</span></div>
+      <h2 class="headline" style="font-size: clamp(34px, 3.7vw, 54px); max-width: 40ch;">Atom is one platform in three parts.</h2>
+      <div class="pillar-grid" style="flex: 0 0 auto; margin-top: clamp(20px, 2vw, 30px);">
+        <div class="pillar">
+          <div class="num">01</div>
+          <h3>Grant Discovery</h3>
+          <p>Our database of 30,000+ funders, AI matching to each researcher, automated eligibility checks, and weekly curated funding emails. It replaces the vetted list you maintain by hand.</p>
+          <div class="tag">Grows your pipeline</div>
+        </div>
+        <div class="pillar">
+          <div class="num">02</div>
+          <h3>Collaborator Search</h3>
+          <p>Search your own faculty and external researchers to build teams for larger proposals. Find the right co-investigator without the manual digging.</p>
+          <div class="tag">Builds the team</div>
+        </div>
+        <div class="pillar lead">
+          <div class="num">03</div>
+          <h3>Proposals</h3>
+          <p>A project board for everything in flight, AI submission guides from any RFP, a collaborative drafting workspace with versioning, and the AI red-line review you flagged as the standout.</p>
+          <div class="tag">Gets proposals out the door</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 What we heard -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">02 <span class="muted">/ Sized to your institute</span></div>
+      <h2 class="headline" style="font-size: clamp(34px, 3.7vw, 54px); max-width: 36ch;">What we heard from you.</h2>
+      <div class="heard-grid">
+        <div class="stat"><div class="v">9</div><div class="l">Principal investigators, each with a lab actively seeking funding</div></div>
+        <div class="stat"><div class="v">~$10M</div><div class="l">Federal funding per year, with expenditures two to three times that</div></div>
+        <div class="stat"><div class="v">~30</div><div class="l">Proposals out the door each year, federal and private foundations</div></div>
+        <div class="stat"><div class="v"><em>800+</em></div><div class="l">Vetted neuroscience opportunities you maintain by hand today</div></div>
+      </div>
+      <p class="heard-note">Our pricing scales with the size of the organization, so a focused institute like yours sits at the entry end of our range. Your &ldquo;research group leader&rdquo; titles, your basic-neuroscience focus, and that <strong>800-opportunity list all carry over</strong>, and we audit the list on day one to confirm full coverage.</p>
+    </div>
+  </section>
+
+  <!-- 04 Two options: comparison table -->
+  <section class="slide" data-slide="4" style="padding-top: clamp(54px, 5.6vw, 76px); padding-bottom: clamp(16px, 1.8vw, 28px);">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="margin-top: clamp(64px, 6.5vw, 104px); justify-content: flex-start;">
+      <div class="eyebrow" style="margin-bottom: clamp(8px, 0.9vw, 14px);">03 <span class="muted">/ Two licensing options</span></div>
+      <h2 class="headline" style="font-size: clamp(25px, 2.8vw, 38px); max-width: 30ch;">Pick the scope that fits.</h2>
+
+      <div class="cmp" style="margin-top: clamp(4px, 0.5vw, 10px); padding-bottom: clamp(8px, 0.9vw, 14px);">
+        <div class="hl-panel"></div>
+
+        <!-- header row -->
+        <div class="col-h feat"><span class="ft-label">What&rsquo;s included</span></div>
+        <div class="col-h">
+          <div class="tier-name">Discovery</div>
+          <div class="tier-price">$5,000<small>&nbsp;/ year</small></div>
+          <div class="tier-sub">Find and route funding</div>
+        </div>
+        <div class="col-h full">
+          <span class="rec-badge">Recommended</span>
+          <div class="tier-name">Full Package</div>
+          <div class="tier-price">$15,000<small>&nbsp;/ year</small></div>
+          <div class="tier-sub">Discovery + collaborators + proposals</div>
+        </div>
+
+        <!-- Grant Discovery -->
+        <div class="sec-row">Grant Discovery</div>
+        <div class="f-name">30,000+ funder database with AI matching</div>
+        <div class="f-cell"><svg class="chk green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">Automated eligibility checks per researcher</div>
+        <div class="f-cell"><svg class="chk green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">Weekly curated funding emails, by profile</div>
+        <div class="f-cell"><svg class="chk green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">Admin dashboard + onboarding audit of your list</div>
+        <div class="f-cell"><svg class="chk green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <!-- Collaborator Search -->
+        <div class="sec-row">Collaborator Search</div>
+        <div class="f-name">Internal faculty + external collaborator search</div>
+        <div class="f-cell"><span class="dash"></span></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <!-- Proposals -->
+        <div class="sec-row">Proposals</div>
+        <div class="f-name">Submission guides built from any RFP</div>
+        <div class="f-cell"><span class="dash"></span></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">Collaborative drafting workspace with versioning</div>
+        <div class="f-cell"><span class="dash"></span></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">AI red-line / red-team review against the RFP</div>
+        <div class="f-cell"><span class="dash"></span></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+
+        <div class="f-name">Pipeline board + submission-ready export</div>
+        <div class="f-cell"><span class="dash"></span></div>
+        <div class="f-cell full"><svg class="chk accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+
+      <div class="cmp-foot"><strong>Both are annual licenses with unlimited faculty and users.</strong> You never pay per seat, and we only review scope at renewal.<span class="impl"><b>A one-time implementation fee</b> covers onboarding and your list audit, and is set out in the formal quote.</span></div>
+    </div>
+  </section>
+
+  <!-- 05 Projected ROI -->
+  <section class="slide" data-slide="5">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">04 <span class="muted">/ Projected ROI</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 52px); max-width: 24ch;">Look at the <span class="accent">outcome</span>, not the cost.</h2>
+      <p class="lede roi-lede" style="max-width: 70ch;">At roughly $10M in annual funding and 30 proposals a year, the license is a fraction of a single award. It only has to move the needle a little to pay for itself.</p>
+      <div class="roi-grid">
+        <div class="stat">
+          <div class="v">0.15%</div>
+          <div class="l">of your ~$10M in annual funding is the entire cost of the Atom license.</div>
+        </div>
+        <div class="stat">
+          <div class="v"><em>~7&times;</em></div>
+          <div class="l">return if Atom lifts awarded funding by just 1%, which is +$100K on $10M.</div>
+        </div>
+        <div class="stat">
+          <div class="v"><em>16&times;+</em></div>
+          <div class="l">return from a single additional award of $250K or more won with Atom.</div>
+        </div>
+      </div>
+      <p class="roi-foot">Illustrative, based on the figures you shared. <strong>Even the most conservative case returns several times the annual license.</strong> The goal is more funding through the door, so Atom is priced to grow alongside it.</p>
+    </div>
+  </section>
+
+  <!-- 06 Why Full -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">05 <span class="muted">/ Our recommendation</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 26ch;">Why we&rsquo;d start with the <span class="accent">Full Package</span>.</h2>
+      <div class="why-grid">
+        <ul class="why-list">
+          <li>
+            <div class="lt">The proposals module is where Maygan&rsquo;s work lives</div>
+            <div class="lb">Pre-award prep, document collection, and tracking what is complete and ready to pull down all sit inside one board, not scattered across email and Google.</div>
+          </li>
+          <li>
+            <div class="lt">The red-line review was the standout for you</div>
+            <div class="lb">It scales the funder-aligned review you can only do for the biggest grants today across all ~30 proposals a year.</div>
+          </li>
+          <li>
+            <div class="lt">Discovery alone leaves the throughput problem unsolved</div>
+            <div class="lb">More opportunities in front of nine labs means more proposals to manage. The Full package handles both the pipeline and the throughput.</div>
+          </li>
+        </ul>
+        <div class="quote-card">
+          <div class="qt">&ldquo;Atom is taking the burden away from our pre-award unit because they&rsquo;re guiding the PIs in the submission process.&rdquo;</div>
+          <div class="qa">
+            <div class="qa-av"><img src="../Intro_Call_Deck/img/lydia.png" alt="Lydia Perry"></div>
+            <div class="qa-who">
+              <strong>Lydia Perry</strong>
+              <span>Grant Writer &middot; UA at Little Rock</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 A path to a better price -->
+  <section class="slide" data-slide="7">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">06 <span class="muted">/ A path to a better price</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 30ch;">Two ways to lower the price.</h2>
+      <div class="dp-grid">
+        <div class="dp-col opt give">
+          <div class="dp-tag">Option 1</div>
+          <h3>Multiyear commitment</h3>
+          <p class="dp-lead">Lock in a lower annual rate the longer you commit.</p>
+          <ul>
+            <li><b>3-year term:</b> a reduced annual rate, held flat for the term</li>
+            <li><b>5-year term:</b> our lowest annual rate, held flat for the term</li>
+          </ul>
+        </div>
+        <div class="dp-col opt give">
+          <div class="dp-tag">Option 2</div>
+          <h3>Case study commitment</h3>
+          <p class="dp-lead">Share your results and we lower the rate.</p>
+          <ul>
+            <li>Publish a case study with us after a successful 180-day check-in</li>
+            <li>In exchange, we apply a reduced annual rate</li>
+          </ul>
+        </div>
+      </div>
+      <p class="dp-note">Either path can be built straight into the formal quote. <strong>Tell us which fits and we&rsquo;ll structure the discount</strong> rather than leave it to negotiate later.</p>
+    </div>
+  </section>
+
+  <!-- 08 Onboarding timeline -->
+  <section class="slide" data-slide="8">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">07 <span class="muted">/ Getting started</span></div>
+      <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 48px); max-width: 26ch;">From kickoff to launched in about six weeks.</h2>
+      <p class="lede" style="margin-top: clamp(12px, 1.2vw, 20px); max-width: 68ch;">Then we stay close through year one to track results and prove the ROI.</p>
+      <div class="ob-steps">
+        <div class="ob-step"><div class="ob-circle">1</div></div>
+        <div class="ob-step"><div class="ob-circle">2</div></div>
+        <div class="ob-step"><div class="ob-circle">3</div></div>
+      </div>
+      <div class="ob-grid">
+        <div class="phase">
+          <div class="ph-head"><span class="ph-eyebrow">Phase 1</span><span class="ph-when">Weeks 1-2</span></div>
+          <h3>Setup</h3>
+          <p class="ph-sub">Get the platform wired into your systems.</p>
+          <ul class="ph-tasks">
+            <li>Kickoff call</li>
+            <li>Build your department and org structure</li>
+            <li>Set up SSO with your IT team</li>
+            <li>Prepare the faculty list</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="ph-head"><span class="ph-eyebrow">Phase 2</span><span class="ph-when">Weeks 3-6</span></div>
+          <h3>Launch</h3>
+          <p class="ph-sub">Get faculty in the door and trained.</p>
+          <ul class="ph-tasks">
+            <li>Admin training sessions</li>
+            <li>Faculty training sessions</li>
+            <li>Send invites to faculty</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="ph-head"><span class="ph-eyebrow">Phase 3</span><span class="ph-when">Ongoing &middot; Year One</span></div>
+          <h3>Partnership</h3>
+          <p class="ph-sub">Track results and prove the ROI.</p>
+          <ul class="ph-tasks">
+            <li>30-day check-in</li>
+            <li>90-day check-in</li>
+            <li>180-day check-in</li>
+            <li>End-of-year ROI review</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 Terms & next steps -->
+  <section class="slide" data-slide="9">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: flex-start; margin-top: clamp(64px, 6.5vw, 104px);">
+      <div class="eyebrow">08 <span class="muted">/ Next steps</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 24ch;">Where we go from here.</h2>
+      <div class="close-grid">
+        <div class="close-left">
+          <ol class="steps">
+            <li>
+              <div class="st">Decide on the right scope</div>
+              <div class="sd">With the full team here, agree on the license that fits and the budget behind it.</div>
+            </li>
+            <li>
+              <div class="st">We send the formal quote</div>
+              <div class="sd">Your chosen tier, plus any design-partner terms if that route is a fit.</div>
+            </li>
+            <li>
+              <div class="st">Countersign and onboard</div>
+              <div class="sd">We kick off onboarding and get you live in about six weeks.</div>
+            </li>
+          </ol>
+          <div class="close-contact">
+            Questions before then? <span class="accent">Reach me directly.</span><br>
+            <strong>Tomer du Sautoy</strong> &middot; tomer@atomgrants.com &middot; atomgrants.com
+          </div>
+        </div>
+
+        <div class="sum-card" style="align-self: start; margin-top: clamp(-58px, -4.4vw, -34px); min-height: 400px;">
+          <div class="sum-label">Your options at a glance</div>
+          <div class="opt-row">
+            <div class="on">Discovery<small>Find &amp; route funding</small></div>
+            <div class="op">$5,000<small>&nbsp;/ yr</small></div>
+          </div>
+          <div class="opt-row rec">
+            <div class="on">Full Package<small>+ Collaborators &amp; Proposals</small></div>
+            <div class="op">$15,000<small>&nbsp;/ yr</small></div>
+          </div>
+          <div class="sum-terms">
+            <div class="stm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>One-year term, reviewed at renewal</div>
+            <div class="stm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited faculty and users, no per-seat fees</div>
+            <div class="stm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Guided onboarding and training</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="counter" id="counter">
+  <span class="now">01</span><span class="sep">/</span><span class="total">09</span>
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const nowEl = counter.querySelector('.now');
+  const totalEl = counter.querySelector('.total');
+  let current = 0;
+  const total = slides.length;
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function show(i) {
+    current = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    nowEl.textContent = String(current + 1).padStart(2, '0');
+  }
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => {}); }
+    else if (document.exitFullscreen) { document.exitFullscreen(); }
+  }
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case ' ': e.preventDefault(); if (e.shiftKey) prev(); else next(); break;
+      case 'Home': e.preventDefault(); show(0); break;
+      case 'End': e.preventDefault(); show(total - 1); break;
+      case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
+    }
+  });
+  document.addEventListener('click', (e) => { if (e.target.closest('#counter')) return; next(); });
+  function syncFromHash() {
+    const n = parseInt((location.hash || '').replace('#', ''), 10);
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+  show(0);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>
