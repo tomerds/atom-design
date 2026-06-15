@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | Formal Quotation — Denver Health (3-year renewal)
+  Discovery + Proposals license, 3-year term with a 10% multi-year discount.
+  List $30,625/yr -> $27,560/yr for the term ($82,680 contract value).
+  No implementation fee. Letter portrait (816 x 1056px). Traditional formal-quote
+  styling: ruled line-item table, structured meta block, tabular figures, single accent.
+  Export: html-to-pdf (vector, selectable, live links).
+
+  Placeholders to confirm: Quote no. AG-2026-0615-C | Issued Jun 15, 2026 |
+  Valid until Jul 15, 2026 | Payment Net 30 (annual) | Start upon renewal.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atom Grants Quotation — Denver Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --ink: #111111;
+      --text: #1c1c1c;
+      --muted: #6b6b6b;
+      --rule: #c9c9c9;
+      --rule-soft: #e3e3e3;
+      --head-fill: #1a1a1a;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #e8e8e8; font-family: var(--font-body); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    .page {
+      position: relative;
+      width: 816px; min-height: 1056px;
+      margin: 24px auto;
+      background: #fff;
+      padding: 44px 80px 28px;
+      display: flex; flex-direction: column;
+      font-size: 13px; line-height: 1.5;
+    }
+    .num { font-variant-numeric: tabular-nums; }
+
+    /* Masthead */
+    .masthead { display: flex; justify-content: space-between; align-items: flex-start; }
+    .brandmark { display: flex; align-items: center; gap: 9px; }
+    .brandmark .bm-icon { height: 34px; width: auto; display: block; }
+    .brandmark .bm-text { font-family: var(--font-title); font-size: 25px; line-height: 1; color: var(--ink); letter-spacing: 0; }
+    .masthead .seller { margin-top: 12px; font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+    .masthead .seller b { color: var(--text); font-weight: 600; }
+    .masthead .title-block { text-align: right; }
+    .masthead .qtitle { font-family: var(--font-title); font-size: 25px; letter-spacing: 0.04em; color: var(--ink); line-height: 1; }
+    .meta-tbl { margin-top: 13px; border-collapse: collapse; margin-left: auto; }
+    .meta-tbl td { padding: 4px 0 4px 22px; font-size: 11.5px; text-align: right; }
+    .meta-tbl td.k { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; padding-right: 0; }
+    .meta-tbl td.v { color: var(--text); font-weight: 600; }
+
+    .rule-accent { height: 3px; background: var(--accent); margin: 14px -16px 0; }
+
+    /* Parties */
+    .parties { display: grid; grid-template-columns: 1fr 1fr; margin-top: 16px; }
+    .party .lbl { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid var(--rule); margin-bottom: 10px; }
+    .party.from { padding-right: 32px; }
+    .party.to { padding-left: 32px; border-left: 1px solid var(--rule-soft); }
+    .party.from .lbl { margin-left: -16px; padding-left: 16px; }
+    .party.to .lbl { margin-right: -16px; }
+    .party .nm { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .party .ln { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 5px; }
+    .party .ln b { color: var(--text); font-weight: 600; }
+
+    /* Line item table */
+    table.items { width: calc(100% + 32px); border-collapse: collapse; margin: 20px -16px 0; }
+    table.items thead th { background: #f5f5f5; color: var(--text); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-align: left; padding: 10px 16px; border-bottom: 2px solid var(--ink); }
+    table.items thead th.r { text-align: right; }
+    table.items tbody td { padding: 10px 16px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    table.items tbody tr:first-child td { border-top: none; }
+    .it-name { font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+    .it-desc { font-size: 11.5px; color: var(--muted); line-height: 1.45; margin-top: 5px; }
+    td.term { white-space: nowrap; text-align: right; color: var(--text); font-size: 12.5px; width: 110px; }
+    td.amt { text-align: right; font-size: 14.5px; font-weight: 600; color: var(--ink); width: 130px; }
+
+    /* Totals */
+    .totbar { display: flex; justify-content: flex-end; margin-top: 14px; }
+    .tot { width: 294px; }
+    .tot .tr { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; color: var(--muted); }
+    .tot .tr .v { color: var(--text); font-weight: 600; }
+    .tot .grand { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; margin: 0 -16px 6px; background: #f5f5f5; color: var(--ink); border-top: 2px solid var(--ink); }
+    .tot .grand .gk { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+    .tot .grand .gv { font-family: var(--font-title); font-size: 23px; color: var(--ink); letter-spacing: 0.01em; }
+    .tot .grand .gv small { font-family: var(--font-body); font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 2px; }
+    .note { text-align: right; font-size: 11px; color: var(--muted); margin-top: 9px; line-height: 1.55; }
+    .note b { color: var(--text); font-weight: 600; }
+
+    /* Lower: scope + terms */
+    .lower { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 16px; }
+    .sect .shead { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 700; padding-bottom: 7px; border-bottom: 1px solid var(--rule); margin-bottom: 9px; }
+    .lower .sect:first-child .shead { margin-left: -16px; padding-left: 16px; }
+    .sect.terms .shead { margin-right: -16px; }
+    .sect.terms .kv { margin-right: -16px; padding-right: 16px; }
+    .scope { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 16px; }
+    .scope .it { display: flex; align-items: baseline; gap: 9px; font-size: 12.5px; color: var(--text); }
+    .scope .it::before { content: ""; width: 6px; height: 6px; background: var(--accent); flex: none; transform: translateY(-1px); }
+    .terms .kv { display: flex; justify-content: space-between; gap: 14px; padding: 5px 0; border-bottom: 1px dotted var(--rule); font-size: 12.5px; }
+    .terms .kv:last-child { border-bottom: none; }
+    .terms .kv .k { color: var(--muted); }
+    .terms .kv .v { color: var(--text); font-weight: 600; text-align: right; }
+
+    /* Footer */
+    .foot { margin: auto -16px 0; padding: 12px 16px 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--muted); }
+    .foot a { color: var(--muted); text-decoration: none; }
+    .foot .thanks { color: var(--text); font-weight: 600; }
+
+    @page { size: 8.5in 11in; margin: 0; }
+    @media print { html, body { background: #fff; } .page { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Masthead -->
+    <div class="masthead">
+      <div>
+        <div class="brandmark">
+          <img class="bm-icon" src="../assets/newlogo.png" alt="Atom Grants">
+          <span class="bm-text">Atom Grants</span>
+        </div>
+        <div class="seller">
+          tomer@atomgrants.com<br>
+          atomgrants.com
+        </div>
+      </div>
+      <div class="title-block">
+        <div class="qtitle">Renewal quote</div>
+        <table class="meta-tbl">
+          <tr><td class="k">Quote No.</td><td class="v num">AG-2026-0615-C</td></tr>
+          <tr><td class="k">Date Issued</td><td class="v num">June 15, 2026</td></tr>
+          <tr><td class="k">Valid Until</td><td class="v num">July 15, 2026</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="rule-accent"></div>
+
+    <!-- Parties -->
+    <div class="parties">
+      <div class="party from">
+        <div class="lbl">From</div>
+        <div class="nm">Atom Grants</div>
+        <div class="ln"><b>Tomer du Sautoy</b>, Co-founder<br>tomer@atomgrants.com</div>
+      </div>
+      <div class="party to">
+        <div class="lbl">Prepared for</div>
+        <div class="nm">Denver Health</div>
+        <div class="ln">Attn: <b>Amanda Breeden</b>, CRA<br>Research Administration</div>
+      </div>
+    </div>
+
+    <!-- Line items -->
+    <table class="items">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th class="r">Term</th>
+          <th class="r">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="it-name">Atom Discovery + Proposals License</div>
+            <div class="it-desc">Three-year license renewal for Grant Discovery and Proposals. Standard annual rate; multi-year discount applied below.</div>
+          </td>
+          <td class="term">36 months</td>
+          <td class="amt num">$30,625.00<small style="display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:3px;">per year</small></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div class="totbar">
+      <div class="tot">
+        <div class="tr"><span>Multi-year discount (10%)</span><span class="v num">&minus;$3,065.00</span></div>
+        <div class="grand">
+          <span class="gk">Annual license fee</span>
+          <span class="gv num">$27,560<small>/yr</small></span>
+        </div>
+        <div class="tr"><span>3-year contract value</span><span class="v num">$82,680.00</span></div>
+        <div class="note">Three-year fixed term, billed&nbsp;annually.<br>All amounts in USD, excluding any applicable tax.</div>
+      </div>
+    </div>
+
+    <!-- Lower -->
+    <div class="lower">
+      <div class="sect">
+        <div class="shead">License includes</div>
+        <div class="scope">
+          <div class="it">Grant Discovery</div>
+          <div class="it">Proposals</div>
+          <div class="it">SSO</div>
+          <div class="it">Admin Dashboard</div>
+          <div class="it">Training sessions</div>
+          <div class="it">Ongoing support</div>
+        </div>
+      </div>
+      <div class="sect terms">
+        <div class="shead">Terms</div>
+        <div class="kv"><span class="k">License term</span><span class="v">36 months from renewal</span></div>
+        <div class="kv"><span class="k">Start date</span><span class="v">Upon renewal</span></div>
+        <div class="kv"><span class="k">Pricing</span><span class="v">Fixed for the 3-year term</span></div>
+        <div class="kv"><span class="k">Seats</span><span class="v">Unlimited</span></div>
+        <div class="kv"><span class="k">Payment</span><span class="v">Net 30, annual in advance</span></div>
+        <div class="kv"><span class="k">Quote validity</span><span class="v">30 days from issue</span></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <span>Atom Grants &middot; <a href="mailto:tomer@atomgrants.com">tomer@atomgrants.com</a> &middot; <a href="https://atomgrants.com">atomgrants.com</a></span>
+    </div>
+
+  </div>
+</body>
+</html>

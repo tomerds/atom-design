@@ -17,8 +17,9 @@ Primary input is the **partnership-call transcript** plus the **agreed package a
 
 Use `AskUserQuestion` for the commercial details. Confirm:
 - **Institution** name and the **Attn:** contacts.
+- **New deal or renewal**, and **term length** (single-year vs multi-year). This selects the variant (see "Variants"): renewals drop the implementation fee and reframe the title/terms; multi-year deals apply a discount in the totals.
 - **Package** being quoted and the **annual license fee** $ (this is the headline number).
-- **One-time implementation fee** $ (and what it covers, e.g. "Platform set up and Trainings").
+- **One-time implementation fee** $ (and what it covers, e.g. "Platform set up and Trainings"). **Renewals usually have none** — confirm before adding it.
 - **License includes** — the short capability list (reference uses: 4 Training sessions, SSO, Discovery, Collaborators, Proposals, Admin Dashboard, Ongoing support).
 - **Terms** — license term, start date, seats, payment terms, quote validity.
 - **Quote number** and **dates** (issued, valid until). Offer sensible defaults (e.g. `AG-YYYY-MMDD`, issued today, valid 30 days) and proceed; flag them.
@@ -52,6 +53,31 @@ Copy `references/MPFI_Quote.html` and adapt. Logo: the masthead wordmark is **re
 5. **Totals** — right-aligned, **anchored on the annual license fee** (the hero figure in the gray box). Below it, smaller secondary lines for the one-time implementation fee and the Year-1 total, then a renewal note (renews at $X/yr; implementation is Year-1 only; USD, excl. tax).
 6. **License includes** + **Terms** — two columns. Includes = accent-bulleted capability list. Terms = dotted key/value rows (term, start, seats, payment, validity).
 7. **Footer** — `margin-top: auto`, a top rule, contact line with live `mailto:`/site links. No "thank you" line, no signature block.
+
+## Variants
+
+The structure above is the **new-deal** quote (annual license + one-time implementation, anchored on a Year-1 total). Two common variants reshape the line items and totals. Reference: `references/Denver_Health_Renewal_3yr_Quote.html` (a renewal quote with a 3-year multi-year discount — both variants in one file).
+
+### Renewal quote (existing customer, no implementation fee)
+
+When the customer is renewing, ask whether there is an implementation fee — usually there is not. With no implementation fee:
+
+- **Title** reads `Renewal quote` (not `Quote`).
+- **One line item** only — the annual license renewal. No implementation row, no one-time line. The line-item name is just the license (e.g. "Atom Discovery + Proposals License"); carry the "renewal" framing in the title and the row description, **not** an em-dash suffix on the name (no em dashes anywhere).
+- **Totals collapse** to a single gray hero box (the annual license fee) plus a one-line note: `Renews at $X / year on each anniversary. All amounts in USD, excluding any applicable tax.` No implementation line, no Year-1 total.
+- **Terms** say `License term: N months from renewal` and `Start date: Upon renewal` (not "upon signing").
+
+### Multi-year / discounted quote
+
+For a multi-year commitment at a discount (e.g. 3-year at 10% off):
+
+- **Line item stays at the standard (list) annual rate** — the discount is **not** baked into the line item. Show the full term in the TERM column (e.g. `36 months`) and a small `per year` under the amount. The description notes "Standard annual rate; multi-year discount applied below."
+- **Apply the discount in the totals**, in this order: a `Multi-year discount (N%) −$X` line → the **annual license fee hero box** (the discounted rate) → a `N-year contract value` line → the note. The hero box is always the discounted annual rate.
+- **Round the discounted annual rate to the nearest 10** for a clean figure, then recompute the discount amount and contract value **from the rounded rate** so the arithmetic is internally consistent (rounded rate × years = contract value).
+- **No savings-vs-list editorial line** ("Saves $X over the term") — just state the term. **Don't repeat the rate** in the note (it's already the hero figure): the note reads e.g. `Three-year fixed term, billed annually.`, then the USD/tax line. Let it wrap naturally to the box width, but **prevent a single-word orphan** by binding the last two words with a non-breaking space (`billed&nbsp;annually.`) rather than forcing the whole line with `white-space: nowrap`.
+- **Terms** add a `Pricing: Fixed for the N-year term` row alongside the renewal term/start rows.
+
+When a deal needs more than one option (e.g. two tiers, or annual vs multi-year), produce **one quote file per option** in a shared `<Institution>_Quote/` folder, each with its own quote number suffix (`-A`, `-B`, `-C`).
 
 ## Formal-quote style (not the soft-card UX style)
 
