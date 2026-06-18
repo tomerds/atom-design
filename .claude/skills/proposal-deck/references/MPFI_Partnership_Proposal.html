@@ -183,6 +183,8 @@
     /* column header row */
     .cmp-head { display: contents; }
     .col-h { padding: clamp(9px, 0.85vw, 14px) clamp(16px, 1.4vw, 24px); display: flex; flex-direction: column; justify-content: flex-end; }
+    /* priced columns center over their check cells (which are justify-content: center); only the feature column stays left-aligned */
+    .col-h:not(.feat) { align-items: center; text-align: center; }
     .col-h.feat { justify-content: flex-end; }
     .col-h.feat .ft-label { font-family: var(--font-body); font-size: clamp(12px, 0.95vw, 14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
     .col-h .tier-name { font-family: var(--font-title); font-size: clamp(19px, 1.6vw, 25px); color: var(--text); line-height: 1.05; }
@@ -194,7 +196,7 @@
     .cmp .hl-panel { position: absolute; top: 0; bottom: 0; right: 0; width: calc(100% / 3.85 * 1); /* approx third col */ background: var(--accent-soft); border: 1.5px solid var(--accent); border-radius: 16px; z-index: 0; pointer-events: none; }
     .cmp > * { position: relative; z-index: 1; }
     .col-h.full .tier-name, .col-h.full .tier-price { color: var(--accent); }
-    .rec-badge { align-self: flex-start; font-family: var(--font-body); font-size: clamp(9.5px, 0.72vw, 11px); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 4px 11px; margin-bottom: 10px; }
+    .rec-badge { align-self: center; font-family: var(--font-body); font-size: clamp(9.5px, 0.72vw, 11px); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 4px 11px; margin-bottom: 10px; }
 
     /* section + feature rows */
     .sec-row { grid-column: 1 / -1; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); padding: clamp(7px, 0.62vw, 10px) clamp(16px, 1.4vw, 24px) clamp(3px, 0.3vw, 5px); }
