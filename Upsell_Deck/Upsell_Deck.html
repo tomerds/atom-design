@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | Renewal Upsell Deck (FINALIZED TEMPLATE)
+  Single-file HTML deck for the RENEWAL / EXPANSION conversation with an
+  EXISTING partner: discovery is already working, now upsell Researcher Search
+  + Proposal Development ahead of the renewal. Reframes from "what you license"
+  to "the next gain."
+
+  Slides (8 total):
+    01 Cover .............. Hero line + co-brand lockup (Atom x partner) + presenter / date / institution
+    02 Where you are now .. The partner's all-time usage recap (6 metric cells) — DATA, fed per partner
+    03 The gap ............ What Atom solved (discovery) vs what's still on the team (winning)
+    04 Already happening .. Faculty are already using AI to build proposals (+ customer quote)
+    05 What's new ......... Researcher Search + Proposal Guides + AI Proposal Review (product mocks)
+    06 The pipeline ....... Admin backend: analytics + proposal project board
+    07 Case study ......... University of Memphis (dark slide) — reusable proof
+    08 Next steps & Q&A ... Quick demo today, then decide before the renewal
+
+  PERSONALIZE PER PARTNER. Mechanical tokens (swapped by the upsell-deck skill's
+  personalize.py):
+    [Your name]  [Title]  [Month YYYY]  [Institution]  [Institution full]
+    [your.email@atomgrants.com]  [Renewal decision]  [Renewal date]
+  PLUS the partner logo on the cover (required): the helper copies it into the
+  git-ignored Upsell_Deck/tempimg/ and points the cover lockup's partner-logo
+  placeholder (the dashed box on the cover) at it.
+  Helper: .claude/skills/upsell-deck/personalize.py  (pass --logo <file>)
+
+  DATA, filled by hand from the partner's usage (NOT done by personalize.py):
+    - Slide 02 metric cells: the 6 figures + one-line descriptions. Shipped as
+      grey SKELETON bars until the partner's numbers are in.
+    - Slide 06 dashboard KPI values: same data, shown as skeleton until filled.
+  [Institution] = conversational name (e.g. "Youngstown State");
+  [Institution full] = formal name (e.g. "Youngstown State University").
+
+  Navigation: ArrowLeft/ArrowRight, Space, click to advance, f fullscreen, #N deep-link.
+  Print/PDF:  rendered to a 3:2 (12x8in) PDF via screenshot-and-stitch (never
+              html-to-pdf). personalize.py does this; it captures each slide at a
+              1620x1080 (3:2) viewport so the slides reflow into a less-wide frame.
+
+  Brand/copy rules: single accent (#ff4227), white bg, black text; Cal Sans
+  titles, DM Sans body; headshots grayscale + square-rounded; no em dashes.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atom Grants: Renewal Upsell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --rule-soft: #d9d9d9;
+      --rule-strong: #333333;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6.5vw, 112px);
+      --pad-y: clamp(48px, 5.5vw, 88px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 180ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Persistent brand lockup (real logo, not a dot) */
+    .brand {
+      position: absolute;
+      top: clamp(28px, 3.2vw, 48px);
+      left: var(--pad-x);
+      display: flex;
+      align-items: center;
+      height: clamp(28px, 2.4vw, 36px);
+    }
+    .brand img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(28px, 3.2vw, 48px);
+      right: var(--pad-x);
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+    .counter span.sep { color: var(--rule-soft); margin: 0 6px; }
+    .counter span.now { color: var(--accent); font-weight: 500; }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: clamp(20px, 1.6vw, 28px);
+    }
+    .eyebrow .muted { color: var(--text-muted); margin-left: 12px; letter-spacing: 0.18em; }
+
+    h1, h2, h3 { font-family: var(--font-title); font-weight: 400; margin: 0; line-height: 1.04; letter-spacing: -0.015em; }
+
+    .lede {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.5vw, 24px);
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 58ch;
+    }
+
+    /* Content scaffolds */
+    .content-wrap {
+      margin-top: clamp(48px, 5vw, 80px);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .headline {
+      font-size: clamp(44px, 5.6vw, 88px);
+      max-width: 22ch;
+    }
+    .headline.tight { max-width: 18ch; }
+    .headline .accent { color: var(--accent); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: clamp(40px, 5vw, 96px);
+      align-items: start;
+      margin-top: clamp(32px, 3vw, 56px);
+    }
+
+    /* Slide 3 — category + bridge quote */
+    .split-right {
+      position: absolute;
+      top: calc(-1 * var(--pad-y));
+      bottom: calc(-1 * var(--pad-y));
+      right: calc(-1 * var(--pad-x));
+      width: 52%;
+      background: lab(98.2596 -0.247031 -0.706708);
+      z-index: 0;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(40px, 5vw, 88px);
+      align-items: center;
+    }
+    .bridge-quote {
+      background: #ffffff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 20px;
+      padding: clamp(28px, 2.4vw, 40px);
+    }
+    .bq-text {
+      font-family: var(--font-title);
+      font-weight: 400;
+      font-size: clamp(22px, 1.95vw, 31px);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .bq-attrib {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: clamp(20px, 1.8vw, 28px);
+    }
+    .bq-avatar {
+      width: clamp(54px, 4vw, 64px);
+      height: clamp(54px, 4vw, 64px);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f0f0f0;
+      flex: none;
+    }
+    .bq-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      filter: grayscale(100%);
+    }
+    .bq-who { display: flex; flex-direction: column; font-family: var(--font-body); line-height: 1.3; }
+    .bq-who strong { font-weight: 600; font-size: clamp(15px, 1.1vw, 17px); }
+    .bq-who span { color: var(--text-muted); font-size: clamp(13px, 0.95vw, 15px); margin-top: 2px; }
+
+    /* Cover slide */
+    .cover-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(24px, 2.4vw, 36px);
+    }
+    .cover-eyebrow {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 15px);
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .cover-lockup {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 1.6vw, 28px);
+      align-self: flex-start;
+      margin-bottom: clamp(20px, 2vw, 32px);
+    }
+    .cover-logo {
+      height: clamp(48px, 4.2vw, 64px);
+      width: auto;
+    }
+    .lockup-x {
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: clamp(22px, 2vw, 30px);
+      color: var(--rule-soft);
+      line-height: 1;
+    }
+    .partner-logo {
+      height: clamp(48px, 4.2vw, 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 clamp(18px, 1.6vw, 26px);
+      border: 1px dashed var(--rule-soft);
+      border-radius: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: clamp(12px, 1vw, 14px);
+      letter-spacing: 0.04em;
+    }
+    /* real partner logo swapped in for the placeholder (see SKILL "Partner logo") */
+    .partner-logo-img {
+      height: clamp(40px, 3.6vw, 54px);
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+      display: block;
+    }
+    .cover-headline {
+      font-family: var(--font-title);
+      font-size: clamp(56px, 7vw, 112px);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      max-width: 16ch;
+    }
+    .cover-sub {
+      font-family: var(--font-body);
+      font-size: clamp(22px, 2vw, 32px);
+      line-height: 1.3;
+      color: var(--text-muted);
+      max-width: 48ch;
+      margin-top: clamp(8px, 1vw, 16px);
+    }
+    .cover-meta {
+      display: flex;
+      gap: clamp(20px, 3vw, 56px);
+      margin-top: clamp(32px, 3.5vw, 64px);
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.15vw, 18px);
+      color: var(--text-muted);
+    }
+    .cover-meta .col .k {
+      display: block;
+      font-size: clamp(11px, 0.85vw, 13px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .cover-meta .col .v { color: var(--text); font-weight: 500; }
+
+    /* Six-step overview grid */
+    .six-grid {
+      margin-top: clamp(40px, 4vw, 64px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: clamp(20px, 1.6vw, 28px);
+      flex: 1;
+    }
+    .cell {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(20px, 1.8vw, 32px);
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 120ms;
+    }
+    .cell .num {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.6vw, 40px);
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .cell h3 {
+      font-size: clamp(22px, 2vw, 32px);
+      margin-top: clamp(12px, 1vw, 20px);
+      line-height: 1.1;
+    }
+    .cell p {
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: clamp(10px, 0.8vw, 14px) 0 0;
+    }
+
+    /* Proof slide */
+    .proof-grid {
+      margin-top: clamp(40px, 4vw, 60px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(24px, 2.4vw, 40px) clamp(40px, 4vw, 64px);
+      flex: 1;
+      align-content: center;
+    }
+    .inst {
+      border-top: 1px solid var(--rule-soft);
+      padding-top: clamp(14px, 1.2vw, 20px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .inst .name {
+      font-family: var(--font-title);
+      font-size: clamp(22px, 1.9vw, 30px);
+      line-height: 1.1;
+      color: var(--text);
+    }
+    .inst .outcome {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .inst.more .name { color: var(--accent); }
+
+    /* Partners — logo strip + quote cards */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(24px, 3vw, 56px);
+      margin-top: clamp(28px, 2.6vw, 42px);
+    }
+    .logo-row img {
+      height: clamp(30px, 3vw, 44px);
+      max-width: 156px;
+      width: auto;
+      object-fit: contain;
+    }
+    .quote-wall {
+      margin-top: clamp(24px, 2.2vw, 34px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 1.4vw, 22px);
+    }
+    .qcard {
+      background: lab(98.2596 -0.247031 -0.706708);
+      border: 1px solid var(--rule-soft);
+      border-radius: 16px;
+      padding: clamp(20px, 1.7vw, 28px);
+      display: flex;
+      flex-direction: column;
+    }
+    .qcard .q {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      line-height: 1.45;
+      color: var(--gray-dark, #333);
+      flex: 1;
+    }
+    .qcard .who { margin-top: clamp(14px, 1.2vw, 18px); display: flex; align-items: center; gap: 12px; }
+    .qhead { width: clamp(40px, 3.4vw, 48px); height: clamp(40px, 3.4vw, 48px); border-radius: 11px; overflow: hidden; flex: none; background: #f0f0f0; }
+    .qhead img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(100%); display: block; }
+    .qhead.zoom img { transform: scale(1.42); }
+    .qcard .who .meta { display: flex; flex-direction: column; line-height: 1.25; }
+    .qcard .who .meta strong { font-family: var(--font-body); font-weight: 600; font-size: clamp(12px, 0.92vw, 14px); color: var(--text); }
+    .qcard .who .meta span { font-family: var(--font-body); font-size: clamp(10.5px, 0.8vw, 12px); color: var(--text-muted); margin-top: 2px; }
+    .qcard.more { justify-content: flex-start; }
+    .qcard.more .mtitle { font-family: var(--font-title); font-size: clamp(22px, 1.9vw, 30px); line-height: 1.1; color: var(--accent); }
+    .qcard.more .mlist { font-family: var(--font-body); font-size: clamp(13px, 1vw, 16px); color: var(--text-muted); line-height: 1.4; margin-top: 10px; }
+
+    /* Engagement */
+    .engage-list { display: flex; flex-direction: column; gap: clamp(16px, 1.4vw, 22px); }
+    .engage-row {
+      display: grid;
+      grid-template-columns: clamp(48px, 4.5vw, 64px) 1fr;
+      align-items: baseline;
+      border-top: 1px solid var(--rule-soft);
+      padding-top: clamp(14px, 1.2vw, 20px);
+    }
+    .engage-row .n {
+      font-family: var(--font-title);
+      font-size: clamp(20px, 1.6vw, 26px);
+      color: var(--accent);
+    }
+    .engage-row .t {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.5vw, 26px);
+      line-height: 1.35;
+    }
+    .engage-row .t strong { font-weight: 700; }
+
+    /* Pricing anchors */
+    .anchor-stack {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+      margin-top: clamp(36px, 3.5vw, 56px);
+    }
+    .anchor {
+      border-left: 2px solid var(--accent);
+      padding: clamp(16px, 1.4vw, 24px) clamp(18px, 1.5vw, 26px);
+      background: var(--bg-alt);
+      border-radius: 0 10px 10px 0;
+    }
+    .anchor .label {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .anchor .val {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.4vw, 38px);
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .anchor .note {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.05vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Next steps */
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+      margin-top: clamp(40px, 4vw, 56px);
+    }
+    .next-card {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(24px, 2.2vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1.2vw, 18px);
+    }
+    .next-card .badge {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-size: 16px;
+    }
+    .next-card h3 {
+      font-size: clamp(22px, 1.9vw, 30px);
+      line-height: 1.1;
+    }
+    .next-card p {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .focus { margin-top: clamp(30px, 2.8vw, 46px); }
+    .focus-label { font-family: var(--font-body); font-size: clamp(13px, 1vw, 15px); letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: clamp(14px, 1.2vw, 18px); }
+    .chips { display: flex; flex-wrap: wrap; gap: clamp(10px, 0.9vw, 14px); }
+    .chip {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text);
+      border: 1px solid var(--rule-soft);
+      border-radius: 999px;
+      padding: clamp(9px, 0.8vw, 13px) clamp(16px, 1.4vw, 22px);
+      background: #fff;
+    }
+
+    .close-line {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 40px;
+      padding-top: clamp(24px, 2.5vw, 40px);
+      border-top: 1px solid var(--rule-soft);
+    }
+    .close-line .q {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.8vw, 44px);
+      color: var(--accent);
+    }
+    .close-line .contact {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.1vw, 18px);
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .close-line .contact strong { color: var(--text); font-weight: 500; }
+
+    /* Gap slide: two-column contrast */
+    .contrast {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(32px, 3vw, 56px);
+      margin-top: clamp(40px, 4vw, 60px);
+    }
+    .contrast .col {
+      padding: clamp(24px, 2.2vw, 36px);
+      border-radius: 14px;
+      background: var(--bg-alt);
+    }
+    .contrast .col.neg { background: var(--bg-alt); }
+    .contrast .col.pos {
+      background: var(--text);
+      color: var(--bg);
+    }
+    .contrast .col .tag {
+      font-family: var(--font-body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: clamp(12px, 1vw, 18px);
+    }
+    .contrast .col.neg .tag { color: var(--text-muted); }
+    .contrast .col.pos .tag { color: var(--accent); }
+    .contrast .col h3 {
+      font-family: var(--font-title);
+      font-size: clamp(26px, 2.4vw, 38px);
+      line-height: 1.1;
+      margin-bottom: clamp(16px, 1.4vw, 22px);
+    }
+    .contrast .col ul { list-style: none; margin: 0; padding: 0; }
+    .contrast .col li {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.25vw, 20px);
+      line-height: 1.4;
+      padding: clamp(8px, 0.7vw, 10px) 0;
+      border-top: 1px solid rgba(107, 107, 107, 0.22);
+    }
+    .contrast .col.pos li { border-top-color: rgba(255, 255, 255, 0.14); }
+    .contrast .col li:first-child { border-top: none; padding-top: 0; }
+
+    /* Case study stats */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 1.5vw, 24px);
+      margin-top: clamp(20px, 2vw, 32px);
+    }
+    .stat {
+      background: oklab(0.999994 0.0000455678 0.0000200868 / 0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: clamp(16px, 1.6vw, 26px);
+    }
+    .stat .v {
+      font-family: var(--font-title);
+      font-size: clamp(40px, 4.4vw, 64px);
+      line-height: 0.95;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .stat .l {
+      font-family: var(--font-body);
+      font-size: clamp(14px, 1.15vw, 18px);
+      color: var(--text);
+      line-height: 1.4;
+      margin-top: clamp(10px, 0.9vw, 14px);
+      max-width: 22ch;
+    }
+    .pull-quote {
+      font-family: var(--font-title);
+      font-size: clamp(28px, 2.8vw, 44px);
+      line-height: 1.15;
+      color: var(--text);
+      max-width: 28ch;
+      margin-top: clamp(16px, 1.6vw, 24px);
+    }
+    .pull-quote .accent { color: var(--accent); }
+    .pull-attrib {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 16px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: clamp(12px, 1vw, 18px);
+    }
+    .pull-attrib strong { color: var(--text); font-weight: 500; letter-spacing: 0.04em; text-transform: none; font-size: clamp(14px, 1.1vw, 18px); }
+
+    /* Case study — attribution with portrait */
+    .pull-attrib-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: clamp(20px, 1.8vw, 28px);
+    }
+    .cs-avatar {
+      width: clamp(56px, 4.4vw, 68px);
+      height: clamp(56px, 4.4vw, 68px);
+      border-radius: 14px;
+      overflow: hidden;
+      flex: none;
+    }
+    .cs-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; filter: grayscale(100%); }
+    .cs-who { display: flex; flex-direction: column; font-family: var(--font-body); line-height: 1.3; }
+    .cs-who strong { font-weight: 600; font-size: clamp(15px, 1.1vw, 18px); }
+    .cs-who span { font-size: clamp(13px, 0.95vw, 15px); margin-top: 2px; }
+
+    /* Dark slide variant */
+    .slide.dark { background: #0a0a0a; }
+    .cs-quote-card {
+      background: oklab(0.999994 0.0000455678 0.0000200868 / 0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: clamp(20px, 1.8vw, 30px);
+      margin-top: clamp(18px, 1.6vw, 24px);
+    }
+    .cs-quote-card .pull-quote { margin-top: 0; max-width: 46ch; }
+    .slide.dark .headline { color: #ffffff; }
+    .slide.dark .eyebrow .muted { color: #8a8a8a; }
+    .slide.dark .pull-quote { color: #ffffff; }
+    .slide.dark .stat .l { color: #e6e6e6; }
+    .slide.dark .stat-row { border-top-color: rgba(255,255,255,0.18); }
+    .slide.dark .cs-who strong { color: #ffffff; }
+    .slide.dark .cs-who span { color: #b0b0b0; }
+
+    /* Voices grid */
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(24px, 2.2vw, 40px);
+      margin-top: clamp(36px, 3.5vw, 56px);
+    }
+    .voice {
+      border: 1px solid var(--rule-soft);
+      border-radius: 14px;
+      padding: clamp(20px, 1.8vw, 32px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1vw, 16px);
+    }
+    .voice .q {
+      font-family: var(--font-body);
+      font-size: clamp(16px, 1.25vw, 20px);
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .voice .who {
+      font-family: var(--font-body);
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+    .voice .who strong { color: var(--text); font-weight: 500; }
+
+    /* Leadership two-column */
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 4vw, 80px);
+      margin-top: clamp(32px, 3vw, 48px);
+      align-items: start;
+    }
+    .lead-grid p.lede { max-width: 30ch; }
+    ul.lead-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(14px, 1.2vw, 20px);
+    }
+    ul.lead-list li {
+      font-family: var(--font-body);
+      font-size: clamp(18px, 1.4vw, 24px);
+      line-height: 1.35;
+      color: var(--text);
+      padding-left: 28px;
+      position: relative;
+    }
+    ul.lead-list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.65em;
+      width: 14px; height: 2px;
+      background: var(--accent);
+    }
+
+    /* Leadership analytics dashboard */
+    .lead-layout {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: clamp(36px, 3.6vw, 64px);
+      align-items: start;
+      margin-top: 0;
+    }
+    .lead-copy .lede { max-width: 34ch; }
+    .lead-copy ul.lead-list { margin-top: clamp(22px, 2vw, 32px); }
+    .lead-copy ul.lead-list li { font-size: clamp(15px, 1.15vw, 19px); }
+    .dash {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 20px;
+      padding: clamp(20px, 1.8vw, 30px);
+      box-shadow: 0 24px 60px -34px rgba(0,0,0,0.28);
+    }
+    .dash-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(16px, 1.4vw, 22px); }
+    .dash-head .t { font-family: var(--font-title); font-size: clamp(16px, 1.3vw, 21px); color: var(--text); }
+    .dash-head .chip { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--rule-soft); border-radius: 999px; padding: 5px 12px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 1vw, 18px); margin-bottom: clamp(18px, 1.6vw, 24px); }
+    .kpi .v { font-family: var(--font-title); font-size: clamp(20px, 1.9vw, 30px); line-height: 1; color: var(--text); }
+    .kpi .v.accent { color: var(--accent); }
+    .kpi .l { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text-muted); margin-top: 6px; line-height: 1.25; }
+    .chart-wrap { border-top: 1px solid var(--rule-soft); padding-top: clamp(14px, 1.2vw, 20px); }
+    .chart-wrap .ct { font-family: var(--font-body); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 10px; }
+    .chart-wrap .ct strong { color: var(--text); font-weight: 600; }
+    .chart-wrap svg { width: 100%; height: auto; display: block; }
+    .deps { margin-top: clamp(16px, 1.4vw, 20px); display: flex; flex-direction: column; gap: clamp(7px, 0.7vw, 10px); }
+    .dep { display: grid; grid-template-columns: 104px 1fr 34px; align-items: center; gap: 12px; font-family: var(--font-body); font-size: 12px; color: var(--text); }
+    .dep .bar { height: 8px; border-radius: 4px; background: var(--bg-alt); border: 1px solid var(--rule-soft); position: relative; overflow: hidden; }
+    .dep .bar span { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 4px; }
+    .dep .pct { color: var(--text-muted); font-size: 11px; text-align: right; }
+
+    /* Leadership — admin backend window (analytics + project management) */
+    .admin {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px -34px rgba(0,0,0,0.28);
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-bar {
+      display: flex; align-items: center; gap: 12px;
+      padding: clamp(10px, 0.9vw, 14px) clamp(14px, 1.2vw, 20px);
+      border-bottom: 1px solid var(--rule-soft);
+      background: var(--bg-alt);
+    }
+    .admin-bar .dots { display: flex; gap: 6px; }
+    .admin-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--rule-soft); display: block; }
+    .admin-bar .admin-title { font-family: var(--font-body); font-weight: 600; font-size: clamp(11px, 0.95vw, 14px); color: var(--text); }
+    .admin-bar .admin-chip { margin-left: auto; font-family: var(--font-body); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--rule-soft); border-radius: 999px; padding: 4px 11px; }
+    .admin-body { padding: clamp(14px, 1.3vw, 20px); display: flex; flex-direction: column; gap: clamp(14px, 1.3vw, 20px); }
+    .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: clamp(10px, 0.9vw, 14px); }
+    .sec-head .sec-label { font-family: var(--font-body); font-weight: 600; font-size: clamp(11px, 0.92vw, 13px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+    .sec-head .sec-meta { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text-muted); }
+    .admin-split { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(14px, 1.3vw, 20px); align-items: center; }
+    .admin .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: clamp(8px, 0.8vw, 12px); margin-bottom: 0; }
+    .admin .kpi .v { font-size: clamp(18px, 1.7vw, 26px); }
+    .admin .chart-wrap { border-top: none; padding-top: 0; }
+    .admin .chart-wrap svg { height: clamp(54px, 5vw, 78px); }
+
+    /* Project-management mini board */
+    .pm-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(7px, 0.7vw, 10px); }
+    .pm-col { background: var(--bg-alt); border: 1px solid var(--rule-soft); border-radius: 10px; padding: clamp(7px, 0.7vw, 10px); }
+    .pm-col .col-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(7px, 0.7vw, 10px); }
+    .pm-col .col-h .nm { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .pm-col .col-h .cnt { font-family: var(--font-body); font-size: clamp(9px, 0.72vw, 11px); color: var(--text-muted); }
+    .pm-card { position: relative; background: #fff; border: 1px solid var(--rule-soft); border-radius: 8px; padding: clamp(7px, 0.7vw, 10px); margin-bottom: clamp(6px, 0.55vw, 8px); display: flex; flex-direction: column; }
+    .pm-card:last-child { margin-bottom: 0; }
+    .pm-card .pm-title { order: 1; font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); font-weight: 500; color: var(--text); line-height: 1.25; }
+    .pm-card .sk { height: 5px; border-radius: 3px; background: var(--rule-soft); }
+    .pm-card .sk + .sk { margin-top: 5px; }
+    .pm-card .sk.w90 { width: 90%; } .pm-card .sk.w70 { width: 70%; } .pm-card .sk.w55 { width: 55%; } .pm-card .sk.w45 { width: 45%; }
+    .pm-card .meta { order: 3; display: flex; align-items: center; justify-content: space-between; margin-top: clamp(8px, 0.8vw, 11px); }
+    .pm-card .owner { width: 18px; height: 18px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .pm-card .owner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pm-card .due { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); color: var(--text-muted); }
+
+    /* How it works — website-style cards with mini product mocks */
+    .hiw-grid {
+      margin-top: clamp(16px, 1.6vw, 26px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: clamp(16px, 1.5vw, 26px);
+    }
+    /* finer line used inside the product mocks */
+    .mk { --mk-line: #ededed; }
+    .hiw-card {
+      background: #fff;
+      border: 1px solid var(--rule-soft);
+      border-radius: 18px;
+      padding: clamp(22px, 2.1vw, 36px);
+      display: flex;
+      flex-direction: column;
+    }
+    .hiw-card h3 { font-size: clamp(18px, 1.7vw, 25px); line-height: 1.08; }
+    .hiw-card .desc {
+      font-family: var(--font-body);
+      font-size: clamp(11px, 0.92vw, 14px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: clamp(6px, 0.6vw, 10px);
+      max-width: 36ch;
+    }
+    /* shared mock panel */
+    .mk {
+      margin: clamp(13px, 1.3vw, 20px) clamp(12px, 1.6vw, 28px) 0;
+      background: #fff;
+      border: 1px solid var(--mk-line);
+      border-radius: 12px;
+      padding: clamp(10px, 0.95vw, 15px);
+      box-shadow: 0 16px 40px -28px rgba(0,0,0,0.22);
+    }
+    .mk-head { display: flex; align-items: center; gap: 7px; font-family: var(--font-body); font-weight: 700; font-size: clamp(10px, 0.85vw, 13px); color: var(--text); margin-bottom: clamp(8px, 0.8vw, 11px); }
+    .mk-head svg { width: 14px; height: 14px; flex: none; }
+    .mk .row { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--mk-line); border-radius: 9px; padding: clamp(6px, 0.6vw, 9px) clamp(8px, 0.8vw, 11px); }
+    .mk .row + .row { margin-top: clamp(6px, 0.6vw, 8px); }
+    .mk .row.hi { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+    /* profile mock */
+    .pf-top { display: flex; align-items: center; gap: 9px; }
+    .pf-av { width: 30px; height: 30px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .pf-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pf-id { flex: 1; display: flex; flex-direction: column; line-height: 1.2; }
+    .pf-id strong { font-family: var(--font-body); font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); color: var(--text); }
+    .pf-id span { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--text-muted); }
+    .pf-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; flex: none; }
+    .pf-label { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin: clamp(11px, 1vw, 15px) 0 8px; }
+    .pf-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pf-tags .tg { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--accent); background: rgba(255,66,39,0.10); border-radius: 999px; padding: 3px 9px; }
+    .pf-tags .tg.dim { color: rgba(255,66,39,0.5); background: rgba(255,66,39,0.05); }
+
+    /* grant discovery / weekly digest mock */
+    .ag { font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 0.03em; color: var(--gray-dark, #333); background: var(--bg-alt); border-radius: 6px; padding: 3px 7px; flex: none; }
+    .ag.on { color: #fff; background: var(--accent); }
+    .gn { font-family: var(--font-body); font-size: clamp(10px, 0.82vw, 12px); color: var(--text); flex: 1; }
+    .pc { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); font-weight: 600; color: var(--gray-dark, #333); background: var(--bg-alt); border-radius: 6px; padding: 3px 8px; flex: none; }
+    .pc.on { color: var(--accent); background: rgba(255,66,39,0.10); }
+    .dg .mk-head { border-bottom: 1px solid var(--mk-line); padding-bottom: clamp(8px, 0.8vw, 11px); }
+    .sending { margin-left: auto; display: flex; align-items: center; gap: 5px; font-family: var(--font-body); font-weight: 600; font-size: 9px; color: #15803d; background: #ecfdf3; border-radius: 999px; padding: 3px 9px; }
+    .sending i { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; display: block; }
+    .dg-sub { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); color: var(--text-muted); margin-bottom: clamp(8px, 0.8vw, 11px); }
+    .dg-sub strong { color: var(--text); font-weight: 700; }
+    .dg-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid var(--mk-line); margin-top: clamp(9px, 0.9vw, 13px); padding-top: clamp(8px, 0.8vw, 11px); }
+    .dg-count { font-family: var(--font-body); font-size: clamp(8px, 0.7vw, 10px); color: var(--text-muted); }
+    .dg-auto { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); font-weight: 600; color: var(--accent); flex: none; }
+
+    /* eligibility mock */
+    .elig-head { display: flex; justify-content: space-between; font-family: var(--font-body); font-size: clamp(7px, 0.6vw, 9px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px; padding: 0 2px; }
+    .elig-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; }
+    .elig-row + .elig-row { margin-top: 6px; }
+    .elig-row .req { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: var(--text); background: #fff; border: 1px solid var(--mk-line); border-radius: 7px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .elig-row .chk { width: 14px; height: 14px; flex: none; }
+    .elig-row .prof { font-family: var(--font-body); font-size: clamp(9px, 0.75vw, 11px); color: #15803d; background: #ecfdf3; border: 1px solid #b7e4c7; border-radius: 7px; padding: 4px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* collaborator mock */
+    .cb-search { font-family: var(--font-body); font-size: clamp(9px, 0.78vw, 11px); color: var(--text); background: #fff; border: 1px solid var(--mk-line); border-radius: 8px; padding: 6px 10px; margin-bottom: 9px; }
+    .cb-search span { color: var(--text-muted); margin-right: 7px; }
+    .cb-row { display: flex; align-items: center; gap: 8px; }
+    .cb-row + .cb-row { margin-top: 8px; }
+    .cb-av { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; background: var(--rule-soft); flex: none; }
+    .cb-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cb-id { flex: 1; display: flex; flex-direction: column; line-height: 1.2; }
+    .cb-id strong { font-family: var(--font-body); font-weight: 700; font-size: clamp(10px, 0.82vw, 12px); color: var(--text); }
+    .cb-id span { font-family: var(--font-body); font-size: clamp(8px, 0.68vw, 10px); color: var(--text-muted); }
+    .mt { font-family: var(--font-body); font-size: 9px; font-weight: 600; color: var(--accent); background: rgba(255,66,39,0.10); border-radius: 6px; padding: 3px 8px; flex: none; }
+
+    /* proposal guide mock */
+    .gd-item { display: flex; align-items: center; gap: 8px; }
+    .gd-item + .gd-item, .gd-sub + .gd-item { margin-top: 7px; }
+    .gd-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rule-soft); flex: none; }
+    .gd-dot.on { background: var(--accent); }
+    .gd-t { font-family: var(--font-body); font-size: clamp(10px, 0.82vw, 12px); font-weight: 600; color: var(--text); flex: 1; }
+    .gd-t.dim { color: var(--text-muted); font-weight: 500; }
+    .gd-gen { font-family: var(--font-body); font-size: 8px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); flex: none; }
+    .gd-sub { font-family: var(--font-body); font-size: clamp(9px, 0.72vw, 11px); color: var(--text-muted); line-height: 1.3; margin: 5px 0 0 25px; position: relative; padding-left: 11px; }
+    .gd-sub::before { content: "\00b7"; position: absolute; left: 2px; }
+
+    /* scorecard mock */
+    .sc-row { display: flex; align-items: center; gap: 8px; }
+    .sc-row + .sc-row { margin-top: 8px; }
+    .sc-row svg { width: 15px; height: 15px; flex: none; }
+    .sc-t { font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); color: var(--text); flex: 1; }
+    .sc-row.dim .sc-t { color: var(--text-muted); }
+    .vd { font-family: var(--font-body); font-size: 9px; font-weight: 600; border-radius: 6px; padding: 3px 8px; flex: none; }
+    .vd.pass { color: #15803d; background: #ecfdf3; }
+    .vd.rev { color: var(--accent); background: rgba(255,66,39,0.10); }
+
+    /* Skeleton placeholders — used wherever a per-partner figure is pending data.
+       Render as soft grey bars so the layout is proven before the numbers land. */
+    .skel { background: #ececec; border-radius: 6px; display: block; }
+    .skel.num { width: clamp(72px, 7vw, 104px); height: clamp(30px, 2.8vw, 42px); border-radius: 9px; background: rgba(255,66,39,0.12); }
+    .skel.line { height: clamp(11px, 1vw, 14px); }
+    .skel.h { height: clamp(20px, 1.9vw, 28px); width: 72%; border-radius: 7px; margin-bottom: 10px; }
+    .skel.w90 { width: 90%; } .skel.w70 { width: 70%; } .skel.w55 { width: 55%; }
+    .skel.line + .skel.line { margin-top: 9px; }
+    .kpi .skel.kv { width: clamp(34px, 3.2vw, 52px); height: clamp(18px, 1.7vw, 26px); border-radius: 6px; background: rgba(255,66,39,0.12); }
+
+    /* Print */
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { overflow: visible; background: white; }
+      .deck { height: auto; width: auto; }
+      .slide {
+        display: flex !important;
+        position: relative;
+        width: 13.333in; height: 7.5in;
+        page-break-after: always;
+        break-after: page;
+      }
+      .counter { display: none; }
+      .slide.active { animation: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 01 Cover -->
+  <section class="slide" data-slide="1">
+    <div class="cover-inner">
+      <div class="cover-lockup">
+        <img class="cover-logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+        <span class="lockup-x">&times;</span>
+        <span class="partner-logo">[Partner logo]</span>
+      </div>
+      <h1 class="cover-headline" style="font-size: clamp(38px, 4.6vw, 74px); max-width: 32ch;">
+        You&rsquo;re finding more grants.<br>Now let&rsquo;s win more&nbsp;proposals.
+      </h1>
+      <p class="cover-sub">
+        Discovery is working at [Institution]. The next gain<br>is building the right teams and winning proposals with AI.
+      </p>
+      <div class="cover-meta">
+        <div class="col">
+          <span class="k">Presented by</span>
+          <span class="v">[Your name], [Title]</span>
+        </div>
+        <div class="col">
+          <span class="k">Date</span>
+          <span class="v">[Month YYYY]</span>
+        </div>
+        <div class="col">
+          <span class="k">For</span>
+          <span class="v">[Institution full]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Six months in: [Institution] results recap -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: flex-start;">
+      <div class="eyebrow">01 <span class="muted">/ Where [Institution] is now</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 52px); max-width: 30ch;">
+        Discovery is working at [Institution].
+      </h2>
+      <!-- DATA PENDING: replace each .skel with the partner's figure + one-line description.
+           Standard recap metrics kept as labels; swap skeletons for real numbers. -->
+      <div class="six-grid" style="margin-top: clamp(28px, 2.8vw, 44px);">
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Active faculty</h3>
+            <span class="skel line w90"></span><span class="skel line w70"></span>
+          </div>
+        </div>
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Monthly actives</h3>
+            <span class="skel line w90"></span><span class="skel line w55"></span>
+          </div>
+        </div>
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Grants favorited</h3>
+            <span class="skel line w90"></span><span class="skel line w70"></span>
+          </div>
+        </div>
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Faculty using AI chat</h3>
+            <span class="skel line w90"></span><span class="skel line w55"></span>
+          </div>
+        </div>
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Still subscribed</h3>
+            <span class="skel line w90"></span><span class="skel line w70"></span>
+          </div>
+        </div>
+        <div class="cell">
+          <span class="skel num"></span>
+          <div>
+            <h3>Department reach</h3>
+            <span class="skel line w90"></span><span class="skel line w55"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 The gap -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">02 <span class="muted">/ Where the work is now</span></div>
+      <h2 class="headline">
+        Finding the grant was the hard part. Now winning it is.
+      </h2>
+      <div class="contrast">
+        <div class="col neg">
+          <div class="tag">What Atom already solved</div>
+          <h3>Getting the right grants in front of faculty.</h3>
+          <ul>
+            <li>More opportunities surfaced, automatically, every week.</li>
+            <li>Better-fit matches your faculty would not have found alone.</li>
+            <li>Funders beyond NSF and NIH, including foundation and state funders your faculty would have missed.</li>
+          </ul>
+        </div>
+        <div class="col pos">
+          <div class="tag">What&rsquo;s still on your team</div>
+          <h3>Turning a match into a winning submission.</h3>
+          <ul>
+            <li>Building the right team and co-PIs for the proposal.</li>
+            <li>Decoding a dense RFP into a plan faculty can follow.</li>
+            <li>Getting a draft review-ready before the deadline.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 A different category -->
+  <section class="slide" data-slide="4">
+    <div class="split-right"></div>
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="position: relative; z-index: 1;">
+      <div class="eyebrow">03 <span class="muted">/ Already happening at [Institution]</span></div>
+      <div class="cat-grid">
+        <div class="cat-left">
+          <h2 class="headline tight" style="font-size: clamp(34px, 3.7vw, 58px);">
+            Your faculty are <span class="accent">already</span> using AI to build proposals.
+          </h2>
+          <p class="lede" style="margin-top: clamp(24px, 2.2vw, 36px); max-width: 46ch;">
+            Your faculty are already chatting with RFPs inside Atom, pulling out requirements and drafting answers. Your office is already dropping candidate CVs in to surface funding fits. The next step is giving that behavior real tools and guardrails.
+          </p>
+        </div>
+        <div class="bridge-quote">
+          <div class="bq-text">
+            &ldquo;Atom is taking the burden away from our pre-award unit because they&rsquo;re guiding the PIs in the submission process.&rdquo;
+          </div>
+          <div class="bq-attrib">
+            <div class="bq-avatar"><img src="img/lydia.png" alt="Lydia Perry"></div>
+            <div class="bq-who">
+              <strong>Lydia Perry</strong>
+              <span>Grant Writer &middot; UA at Little Rock</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 How it works: the six-step workflow -->
+  <section class="slide" data-slide="5">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap" style="justify-content: center; margin-top: clamp(16px, 1.6vw, 28px);">
+      <div class="eyebrow" style="margin-bottom: clamp(10px, 1vw, 16px);">04 <span class="muted">/ What&rsquo;s new for your renewal</span></div>
+      <h2 class="headline" style="font-size: clamp(28px, 2.9vw, 44px); max-width: 30ch;">
+        Two new ways to win: build the team, then build the proposal.
+      </h2>
+      <p class="lede" style="margin-top: clamp(12px, 1vw, 18px); max-width: 64ch; font-size: clamp(15px, 1.2vw, 19px);">
+        Added to what [Institution] licenses today, no new platform for faculty to learn.
+      </p>
+      <div class="hiw-grid" style="grid-template-rows: 1fr; margin-top: clamp(16px, 1.6vw, 24px);">
+
+        <!-- Researcher Search -->
+        <div class="hiw-card">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: clamp(6px,0.6vw,10px);">
+            <span style="font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 3px 9px;">New</span>
+            <span style="font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted);">Build the team</span>
+          </div>
+          <h3>Researcher Search</h3>
+          <p class="desc">Find the right co-PIs across departments and institutions. Or drop in a faculty CV and surface the funding that fits.</p>
+          <div class="mk">
+            <div class="cb-search"><span>Search</span> Adolescent mental health</div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/patel.jpg" alt=""></span><div class="cb-id"><strong>Dr. K. Patel</strong><span>Psychology &middot; Prevention science</span></div><span class="mt">Match</span></div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/reyes.jpg" alt=""></span><div class="cb-id"><strong>Dr. J. Reyes</strong><span>Education &middot; School policy</span></div><span class="mt">Match</span></div>
+            <div class="cb-row"><span class="cb-av"><img src="img/people/tan.jpg" alt=""></span><div class="cb-id"><strong>Dr. M. Tan</strong><span>Human Dev &middot; Methods</span></div><span class="mt">Match</span></div>
+          </div>
+        </div>
+
+        <!-- Proposal Guides -->
+        <div class="hiw-card">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: clamp(6px,0.6vw,10px);">
+            <span style="font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 3px 9px;">New</span>
+            <span style="font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted);">Build the proposal</span>
+          </div>
+          <h3>Proposal Guides</h3>
+          <p class="desc">Every dense RFP turned into a section-by-section guide and checklist faculty can actually follow.</p>
+          <div class="mk">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z" fill="none" stroke="#ff4227" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h5" stroke="#ff4227" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>NSF Application Guide</span>
+            </div>
+            <div class="gd-item"><span class="gd-dot on"></span><span class="gd-t">Project Description</span><span class="gd-gen">Generating</span></div>
+            <div class="gd-sub">Outline objectives and methodology</div>
+            <div class="gd-sub">Address intellectual merit and impact</div>
+            <div class="gd-item"><span class="gd-dot"></span><span class="gd-t dim">Budget &amp; Justification</span></div>
+            <div class="gd-item"><span class="gd-dot"></span><span class="gd-t dim">Data Management Plan</span></div>
+          </div>
+        </div>
+
+        <!-- AI Proposal Review -->
+        <div class="hiw-card">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: clamp(6px,0.6vw,10px);">
+            <span style="font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 3px 9px;">New</span>
+            <span style="font-family: var(--font-body); font-size: clamp(10px, 0.8vw, 12px); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted);">Win the proposal</span>
+          </div>
+          <h3>AI Proposal Review</h3>
+          <p class="desc">Red-team every draft against funder criteria before it&rsquo;s submitted, the way your faculty are already using AI chat.</p>
+          <div class="mk">
+            <div class="mk-head">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 6.9L21 11l-6.9 2.1L12 20l-2.1-6.9L3 11l6.9-2.1z" fill="#ff4227"/></svg>
+              <span>Reviewer scorecard</span>
+            </div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Specific aims clear</span><span class="vd pass">Pass</span></div>
+            <div class="sc-row dim"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="13" rx="3.5" fill="none" stroke="#ff4227" stroke-width="2"/></svg><span class="sc-t">Preliminary data sufficient</span><span class="vd rev">Revise</span></div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Broader impacts addressed</span><span class="vd pass">Pass</span></div>
+            <div class="sc-row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#16a34a"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sc-t">Budget justified</span><span class="vd pass">Pass</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 For Leadership -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">05 <span class="muted">/ The proposal pipeline</span></div>
+      <div class="lead-layout">
+        <div class="lead-copy">
+          <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 50px); max-width: 16ch;">
+            See every proposal in flight, in one backend.
+          </h2>
+          <p class="lede" style="margin-top: clamp(20px, 1.8vw, 30px);">
+            Proposal development gives your office a live view of every submission, not just faculty-facing tools.
+          </p>
+          <ul class="lead-list">
+            <li><strong>Track each proposal</strong> by stage, owner, and deadline.</li>
+            <li><strong>See what&rsquo;s done:</strong> which documents are drafted, which are still in review.</li>
+            <li><strong>Engagement analytics</strong> across every department, the data behind this deck.</li>
+          </ul>
+        </div>
+        <div class="admin">
+          <div class="admin-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="admin-title">Atom &middot; Admin backend</span>
+            <span class="admin-chip">University-wide</span>
+          </div>
+          <div class="admin-body">
+            <!-- Analytics region -->
+            <div class="admin-section">
+              <div class="sec-head"><span class="sec-label">Analytics</span><span class="sec-meta">Last 180 days</span></div>
+              <div class="admin-split">
+                <div class="chart-wrap">
+                  <div class="ct"><span>Weekly engagement</span></div>
+                  <svg viewBox="0 0 320 78" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0,60 L29,56 L58,61 L87,49 L116,51 L145,42 L174,45 L203,35 L232,38 L261,28 L290,24 L320,18 L320,78 L0,78 Z" fill="#ff4227" fill-opacity="0.08"/>
+                    <path d="M0,60 L29,56 L58,61 L87,49 L116,51 L145,42 L174,45 L203,35 L232,38 L261,28 L290,24 L320,18" fill="none" stroke="#ff4227" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <!-- DATA PENDING: same figures as slide 02 — swap skeletons for the partner's numbers. -->
+                <div class="kpi-grid">
+                  <div class="kpi"><span class="skel kv"></span><div class="l">Profiles engaged</div></div>
+                  <div class="kpi"><span class="skel kv"></span><div class="l">Grants favorited</div></div>
+                  <div class="kpi"><span class="skel kv"></span><div class="l">AI chats</div></div>
+                  <div class="kpi"><span class="skel kv"></span><div class="l">Subscribed</div></div>
+                </div>
+              </div>
+            </div>
+            <!-- Project management region -->
+            <div class="admin-section">
+              <div class="sec-head"><span class="sec-label">Project management</span><span class="sec-meta">38 active proposals</span></div>
+              <div class="pm-board">
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">To Do</span><span class="cnt">10</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">NSF Political networks</div>
+                    <div class="meta"><span class="owner"><img src="img/people/m45.jpg" alt=""></span><span class="due">Jun 18</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">NEH Digital humanities</div>
+                    <div class="meta"><span class="owner"><img src="img/people/w68.jpg" alt=""></span><span class="due">Jun 24</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Drafting</span><span class="cnt">8</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">IES Education equity</div>
+                    <div class="meta"><span class="owner"><img src="img/people/tan.jpg" alt=""></span><span class="due">Jun 12</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">Adolescent mental health</div>
+                    <div class="meta"><span class="owner"><img src="img/people/reyes.jpg" alt=""></span><span class="due">Jun 20</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Review</span><span class="cnt">6</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">NSF Cognitive science</div>
+                    <div class="meta"><span class="owner"><img src="img/people/patel.jpg" alt=""></span><span class="due">Jun 15</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">Spencer Foundation grant</div>
+                    <div class="meta"><span class="owner"><img src="img/people/w33.jpg" alt=""></span><span class="due">Jun 19</span></div>
+                  </div>
+                </div>
+                <div class="pm-col">
+                  <div class="col-h"><span class="nm">Submitted</span><span class="cnt">9</span></div>
+                  <div class="pm-card">
+                    <div class="pm-title">Mellon humanities grant</div>
+                    <div class="meta"><span class="owner"><img src="img/people/grace.jpg" alt=""></span><span class="due">Jun 09</span></div>
+                  </div>
+                  <div class="pm-card">
+                    <div class="pm-title">DoE STEM education</div>
+                    <div class="meta"><span class="owner"><img src="img/people/m12.jpg" alt=""></span><span class="due">Jun 06</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Case study: University of Memphis -->
+  <section class="slide dark" data-slide="7">
+    <div class="brand"><img src="../assets/newredlogowordmarkwhitehighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">06 <span class="muted">/ Case study, University of Memphis</span></div>
+      <h2 class="headline" style="font-size: clamp(36px, 4vw, 56px); max-width: 28ch;">
+        Universities are using Atom to set submission records.
+      </h2>
+      <div class="cs-quote-card">
+        <p class="pull-quote">
+          &ldquo;This fiscal year we have set <span class="accent">records for submissions</span>, and I attribute that to the fact people are engaging with Atom.&rdquo;
+        </p>
+        <div class="pull-attrib-row">
+          <div class="cs-avatar"><img src="img/brian.jpg" alt="Brian Evans"></div>
+          <div class="cs-who">
+            <strong>Brian Evans, PhD</strong>
+            <span>Assistant Director &middot; University of Memphis</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="v">600+</div>
+          <div class="l">Faculty engaged across the university in one year.</div>
+        </div>
+        <div class="stat">
+          <div class="v">10&times;</div>
+          <div class="l">Lift in faculty engagement vs. prior platform.</div>
+        </div>
+        <div class="stat">
+          <div class="v">Record</div>
+          <div class="l">Year for proposal submissions at Memphis.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Next steps & Q&A -->
+  <section class="slide" data-slide="8">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">07 <span class="muted">/ Next steps</span></div>
+      <h2 class="headline" style="font-size: clamp(34px, 4vw, 58px); max-width: 26ch;">
+        A quick demo today, then a decision.
+      </h2>
+      <p class="lede" style="margin-top: clamp(16px, 1.4vw, 24px); max-width: 58ch;">
+        If you have a few minutes now, we&rsquo;ll walk through Researcher Search and Proposal Development live. From there it&rsquo;s one decision: add them to [Institution]&rsquo;s renewal before it auto-renews.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 2vw, 36px); margin-top: clamp(26px, 2.6vw, 42px);">
+        <div>
+          <span class="k" style="display:block; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">Quick demo</span>
+          <span style="font-family: var(--font-title); font-size: clamp(26px, 2.4vw, 38px); color: var(--text);">Today, if you want it</span>
+        </div>
+        <div>
+          <span class="k" style="display:block; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">Decision by</span>
+          <span style="font-family: var(--font-title); font-size: clamp(26px, 2.4vw, 38px); color: var(--text);">[Renewal decision]</span>
+        </div>
+        <div>
+          <span class="k" style="display:block; font-family: var(--font-body); font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">Renews</span>
+          <span style="font-family: var(--font-title); font-size: clamp(26px, 2.4vw, 38px); color: var(--text);">[Renewal date]</span>
+        </div>
+      </div>
+
+      <div class="focus" style="margin-top: clamp(22px, 2vw, 34px);">
+        <div class="focus-label">What the demo covers</div>
+        <div class="chips">
+          <span class="chip">Researcher Search</span>
+          <span class="chip">Proposal Development</span>
+          <span class="chip">University-wide rollout</span>
+          <span class="chip">Onboarding refresher</span>
+        </div>
+      </div>
+      <div class="close-line">
+        <div class="q">Questions?</div>
+        <div class="contact">
+          <strong>[Your name]</strong><br>
+          [your.email@atomgrants.com] &nbsp;&middot;&nbsp; atomgrants.com
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="counter" id="counter" aria-live="polite">
+  <span class="now">01</span><span class="sep">/</span><span class="total">10</span>
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const nowEl = counter.querySelector('.now');
+  const totalEl = counter.querySelector('.total');
+  let current = 0;
+  const total = slides.length;
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function show(i) {
+    current = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    nowEl.textContent = String(current + 1).padStart(2, '0');
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case ' ':
+        e.preventDefault();
+        if (e.shiftKey) prev(); else next();
+        break;
+      case 'Home':
+        e.preventDefault(); show(0); break;
+      case 'End':
+        e.preventDefault(); show(total - 1); break;
+      case 'f':
+      case 'F':
+        e.preventDefault(); toggleFullscreen(); break;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#counter')) return;
+    next();
+  });
+
+  // Deep link via hash (#5 jumps to slide 5)
+  function syncFromHash() {
+    const n = parseInt((location.hash || '').replace('#', ''), 10);
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+
+  show(0);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>
