@@ -20,7 +20,7 @@ Three layouts, same brand system. **Resource** tiles (downloadable resources), *
 | Accent | `#ff4227` (the only brand color — no gradients, no secondary red) |
 | **Tile background** | **`#F9FAFB`** (cool light gray — applied to all three families; page background stays `#ffffff`) |
 | Text | `#000000`, secondary `#333`, tertiary `#666` |
-| Title font | Cal Sans (loaded from `https://fonts.cdnfonts.com/css/cal-sans`) — always set `font-weight: 400` on `.title`; `<h1>` has a browser default of `font-weight: bold` which causes synthetic bolding on top of Cal Sans |
+| Title font | Cal Sans (loaded from `https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap`) — always set `font-weight: 400` on `.title`; `<h1>` has a browser default of `font-weight: bold` which causes synthetic bolding on top of Cal Sans |
 | Body font | DM Sans 400/500/600/700 (Google Fonts) |
 | Logo | `../assets/newredlogowordmarkhighres.png` (height: 44–52px in tiles) |
 | **Tile padding** | **`64px 144px`** (universal — matches the website card padding) |
@@ -77,7 +77,7 @@ Key rules:
 - **Subtitle is required** (event tagline). Gray `#666`, DM Sans 500, 22px.
 - Presenter row sits above a 1px `#d9d9d9` top border. 24px top padding inside the border.
 - Presenter avatars: square with **`border-radius: 18px`** (not circles), 96 × 96px. `background-size: cover; background-position: center top` so the face anchors high.
-- Presenter name: Cal Sans 600 22px, role: DM Sans 400 14px gray, org: DM Sans 600 14px black (use `<span class="org">` to bold the affiliation).
+- Presenter name: Cal Sans 400 22px (Cal Sans ships only weight 400 — never 500/600/700, which synthetic-bold it), role: DM Sans 400 14px gray, org: DM Sans 600 14px black (use `<span class="org">` to bold the affiliation).
 - **No bottom accent bar.** None of the tile families carry one anymore (see "Don't" section).
 
 ### Speaker count variants
@@ -188,7 +188,7 @@ Key shell rules:
 - Bottom collab strip sits above a `1px #d9d9d9` top border, 22px top padding.
 - 96 × 96 grayscale **square with `border-radius: 18px`** headshot — same crop/grayscale rules as webinar speakers (`object-fit: cover; object-position: center 18%` for portrait sources, plus an inset shadow `0 0 0 1px rgba(0,0,0,0.04)` since the headshot sits on the gray tile).
 - Eyebrow: `IN COLLABORATION WITH` — DM Sans 700, 13px, `0.22em` tracking, `#666`.
-- Name: Cal Sans 600 26px black. Role/org line: DM Sans 500 16px gray with `<span class="org">` wrapping the organization in black 600.
+- Name: Cal Sans 400 26px black (Cal Sans has only weight 400 — don't request 600). Role/org line: DM Sans 500 16px gray with `<span class="org">` wrapping the organization in black 600.
 - **Collab strip is the only footer.** No accent bar under it.
 
 ### General variant
