@@ -43,15 +43,15 @@ Apply these consistently across every material unless the user explicitly overri
 Use `#ff4227` as the only brand color. No gradients, no secondary red/orange — one accent, applied as a solid fill. Avoid introducing off-brand colors; if a chart or diagram needs more hues, derive tints/shades of the accent first, then fall back to grayscale.
 
 ### Typography
-- **Titles / display:** Cal Sans
-- **Body / everything else:** DM Sans
+- **Titles / display:** Cal Sans — **single weight only.** Cal Sans ships just `font-weight: 400`; always set `font-weight: 400` on every Cal Sans element. Asking for 500/600/700 makes the browser synthetic-bold it (an off-brand smeared look). `<h1>`–`<h3>` default to bold, so override them explicitly.
+- **Body / everything else:** DM Sans (has real 400–700 weights — use those for any bold text)
 
-Load both via Google Fonts (DM Sans) and the Cal Sans CDN, e.g.:
+Load both via Google Fonts, e.g.:
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
 ```
 
 CSS variables to prefer:

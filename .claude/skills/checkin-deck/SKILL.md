@@ -158,7 +158,7 @@ Headline: "Where are we getting it right — and what's missing?" (accent on "wh
 | `--rule-soft` | `#e6e6e6` | Table row dividers, soft borders |
 | `--rule-mid` | `#d9d9d9` | Cover `×`, separators |
 | `--rule-strong` | `#333333` | Stat-tile top rules (when not accent) |
-| Title font | Cal Sans (via `fonts.cdnfonts.com/css/cal-sans`) — always set `font-weight: 400` on heading elements; `<h1>`/`<h2>`/`<h3>` default to `font-weight: bold`, which synthetic-bolds Cal Sans | All headlines, big numbers |
+| Title font | Cal Sans (via `fonts.googleapis.com/css2?family=Cal+Sans&display=swap`) — always set `font-weight: 400` on heading elements; `<h1>`/`<h2>`/`<h3>` default to `font-weight: bold`, which synthetic-bolds Cal Sans | All headlines, big numbers |
 | Body font | DM Sans 400/500/700 (Google Fonts) | All copy, labels, axis text |
 | Logo | `../../assets/newredlogowordmarkhighres.png` | Brand bar, top-left of every slide (path assumes deck lives in `<project>/vN/`) |
 
@@ -345,7 +345,7 @@ Copy this scaffolding to start a new deck. Fill in headline, eyebrow, content bo
   <title>{Partner}: {N}-Day Check-In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
   <style>
     :root { /* tokens — see Brand system above */ }
     * { box-sizing: border-box; }
