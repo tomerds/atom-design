@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --bg: #ffffff;
+    --frame: #dcdcdc;      /* offset technical frame */
+    --cross: #8c8c8c;      /* crop-mark crosshairs */
+    --shot-radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); }
+
+  .canvas {
+    position: relative;
+    width: __CANVAS_W__px;
+    height: __CANVAS_H__px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  /* wrapper positioned so the frame peeks above-left and the shot spills below */
+  .wrap {
+    position: absolute;
+    left: __WRAP_LEFT__px;
+    top: __WRAP_TOP__px;
+    display: inline-block;
+    line-height: 0;
+  }
+
+  /* the screenshot itself — rounded, flat, sits on top */
+  .shot {
+    display: block;
+    width: __SHOT_W__px;
+    height: auto;
+    border: __SHOT_BORDER__;
+    border-radius: var(--shot-radius);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* offset frame — peeks out top-left and right, sits behind the shot */
+  .frame {
+    position: absolute;
+    top: -74px; left: -66px; right: -46px; bottom: 118px;
+    border: 1px solid var(--frame);
+    z-index: 1;
+  }
+
+  /* crop-mark crosshairs on the frame's two exposed corners */
+  .cross { position: absolute; width: 50px; height: 50px; z-index: 3; }
+  .cross::before, .cross::after { content: ""; position: absolute; background: var(--cross); }
+  .cross::before { left: 0; right: 0; top: 50%; height: 1px; transform: translateY(-50%); }
+  .cross::after { top: 0; bottom: 0; left: 50%; width: 1px; transform: translateX(-50%); }
+  .cross.tl { top: -74px; left: -66px; transform: translate(-50%, -50%); }
+  .cross.br { bottom: 118px; right: -46px; transform: translate(50%, 50%); }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="wrap">
+      <div class="frame"></div>
+      <span class="cross tl"></span>
+      <span class="cross br"></span>
+      <img class="shot" src="__IMAGE_SRC__" alt="">
+    </div>
+  </div>
+</body>
+</html>
