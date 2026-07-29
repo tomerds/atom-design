@@ -13,8 +13,11 @@ family so screenshots across the atomgrants.com blog look designed, not pasted.
 
 A white canvas (rendered at 2× → PNG) containing:
 
-- The screenshot **on top** — rounded corners (12px), flat (no drop shadow). Its
-  uniform outer margin is **auto-trimmed** so the shot crops to the UI edges, its
+- The screenshot **on top** — rounded corners (12px), flat (no drop shadow), sitting
+  inside a **thick glass border**: a 12px frosted ring (translucent gray-white
+  gradient fill, 1px hairline outer edge, 1px white inner highlight, 24px outer
+  radius) that reads like a tablet-style bezel while staying flat and neutral. The
+  shot's uniform outer margin is **auto-trimmed** so it crops to the UI edges, its
   longest side is fit to ~1040px (never upscaled past native), and the **canvas is
   sized around it** with fixed padding, so wide, square, or tall grabs all stay
   proportional and read as one family.
@@ -82,6 +85,15 @@ Pass that resolved path as `<source_image>`.
   border only appears when a single-surface shot has a faint/cut edge; if the
   heuristic guesses wrong, hand-edit the `.shot { border: ... }` line in the generated
   HTML (set it to `none` or a color) and re-render.
+- **Glass thickness** is set in the template's `.glass` rule (12px padding, 24px
+  radius) with the matching `GLASS` constant in `build.py` (pad + 1px edge per side,
+  used for canvas sizing). Change both together if the user wants a thicker or
+  thinner ring.
+- **Partial-scroll captures** (content visibly sliced mid-element at top/bottom):
+  if the trim leaves the cut edges looking cramped or odd, pad the raw with a white
+  margin on the **sides only** (`ImageOps.expand(im, border=(m, 0, m, 0), ...)`,
+  m ≈ 5% of the long side) so the sliced edges run flush into the glass and read as
+  intentional, then update the shot/canvas dimensions in the HTML and re-render.
 - **Colors are locked** to the technical-neutral palette (`--frame #dcdcdc`,
   `--cross #8c8c8c`). No brand accent is added — the accent lives
   inside the product UI being shown. Do not add a logo, URL, or accent bar; this is a

@@ -37,6 +37,7 @@ TARGET_LONG = 1040   # longest side of the screenshot on the canvas (never upsca
 PAD_X = 240          # breathing room left/right of the shot
 PAD_TOP = 210        # room above the shot (frame + crop mark peek up into this)
 PAD_BOTTOM = 170     # room below the shot (it spills past the frame's bottom edge)
+GLASS = 13           # glass ring per side (12px pad + 1px edge in the template)
 
 
 def trim_border(src: Path, dst: Path):
@@ -177,8 +178,8 @@ def main():
     scale = min(TARGET_LONG / max(sw, sh), 1.0)
     shot_w = round(sw * scale)
     shot_h = round(sh * scale)
-    canvas_w = shot_w + 2 * PAD_X
-    canvas_h = shot_h + PAD_TOP + PAD_BOTTOM
+    canvas_w = shot_w + 2 * PAD_X + 2 * GLASS
+    canvas_h = shot_h + PAD_TOP + PAD_BOTTOM + 2 * GLASS
 
     html = (TEMPLATE.read_text()
             .replace("__CANVAS_W__", str(canvas_w))
