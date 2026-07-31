@@ -1,6 +1,6 @@
 ---
 name: proposal-deck
-description: Build an Atom Grants partnership proposal deck (the pricing / quotes call) for a prospect institution, working from the transcript of the partnership call(s). The 9-slide landscape deck reframes from cost to outcome and closes on next steps. Trigger when the user asks to "make a proposal deck", "pricing deck", "quotes-call deck", "partnership proposal deck", "put together a proposal for [institution]", or pastes a partnership-call transcript and asks for a proposal. Reference implementation: references/MPFI_Partnership_Proposal.html.
+description: Build an Atom Grants partnership proposal deck (the pricing / quotes call) for a prospect institution, working from the transcript of the partnership call(s). The 10-slide landscape deck reframes from cost to outcome and closes on next steps. Trigger when the user asks to "make a proposal deck", "pricing deck", "quotes-call deck", "partnership proposal deck", "put together a proposal for [institution]", or pastes a partnership-call transcript and asks for a proposal. Reference implementation: references/MPFI_Partnership_Proposal.html.
 ---
 
 # Atom Grants Partnership Proposal Deck
@@ -27,6 +27,7 @@ Use `AskUserQuestion` for anything not settled by the transcript. At minimum con
 - **Institution name** (confirm your inference) and **partner logo file** (for the cover lockup).
 - **Pricing**: the two tiers and amounts (entry tier $ + name, full tier $ + name), and the **one-time implementation fee** $. The reference uses a `$5,000` Discovery tier and a `$15,000` Full Package + `$5,000` implementation fee — do not reuse those numbers blindly.
 - **Which tier to anchor / recommend** (default: the full package, highlighted).
+- **Whitelabel add-on pricing**: the annual $ and the one-time implementation $. This is set per deal, so always ask alongside the tier pricing; the reference uses `$5,000 / yr` + `$5,000` implementation, which you can offer as the suggested option, but do not assume it. Also confirm the partner's **primary brand color** for the email mock (find it from their logo or brand site).
 - **Presenter** name, title, email, and the **call date / month**.
 - Whether to include the **"path to a better price"** slide and which levers (multiyear discount tiers, case-study commitment, etc.).
 
@@ -52,21 +53,22 @@ Build each deck in its **own top-level folder** (sibling of `assets/`), so the r
 
 Start by copying `references/MPFI_Partnership_Proposal.html` into the new folder and adapting it. Asset paths in the reference: Atom logo `../assets/newredlogowordmarkhighres.png`, partner logo `img/<logo>.png`, customer-quote headshot `../Intro_Call_Deck/img/lydia.png` (reuse an existing grayscale headshot or swap for a more relevant one).
 
-## The 9 slides
+## The 10 slides
 
-The eyebrow on each content slide is numbered (`01 / …` starts on slide 2; the cover is unnumbered). Keep the counter total in sync (`<span class="total">09</span>`).
+The eyebrow on each content slide is numbered (`01 / …` starts on slide 2; the cover is unnumbered). Keep the counter total in sync (`<span class="total">10</span>`).
 
 1. **Cover** — "Partnership proposal." Co-brand lockup: Atom wordmark `×` partner logo. Eyebrow "For <Institution>". Presenter / date / "For <attendees>". *(Changes per prospect.)*
 2. **What you'd be licensing** (`01`) — Atom in three parts: **Grant Discovery**, **Collaborator Search**, **Proposals**. Highlight (accent card) the part they cared about most on the call. *(Highlight changes; copy mostly fixed.)*
 3. **Sized to your institute** (`02`) — four soft-card stats from the transcript (PIs, annual funding, proposals/yr, existing list), then one calm takeaway line tying their terminology/focus to the pricing. Keep accent to a single number. *(Fully prospect-specific.)*
 4. **Two licensing options** (`03`) — the centerpiece comparison table. Two priced columns (entry vs full), the full column highlighted with a "Recommended" badge, grouped feature rows (Grant Discovery / Collaborator Search / Proposals) with check / dash per column. Footer: annual license + unlimited seats, plus the one-time implementation-fee line. **The priced column headers (tier name, price, sub-label, and the Recommended badge) must be center-aligned so they sit directly over the centered check/dash cells below them** — the reference centers them via `.col-h:not(.feat) { align-items: center; text-align: center; }` and `.rec-badge { align-self: center; }`; only the left "What's included" feature column stays left-aligned. A left-aligned header over centered cells is a bug, do not ship it. *(Prices, tier names, and the highlighted tier change.)*
-5. **Projected ROI** (`04`) — the cost→outcome reframe. Headline "Look at the outcome, not the cost." Three stat cards: the license as a fraction of their annual funding (e.g. `0.15%`, neutral), and two return multipliers (e.g. `~7×` on a 1% funding lift, `16×+` on one added award) in accent. **Always label it illustrative** and base the math on their figures; do not over-claim. *(Numbers derived from their funding.)*
-6. **Our recommendation** (`05`) — why the full package, in 3 reasons tied to *their* workflow and pain points (from the transcript), plus a relevant customer quote card. *(Reasons are prospect-specific.)*
-7. **A path to a better price** (`06`) — two concrete levers to lower the price: e.g. **multiyear commitment** (3-year / 5-year discount tiers) and a **case-study commitment** (on a successful 180-day check-in). Two neutral option cards. *(Optional; levers per deal.)*
-8. **Getting started** (`07`) — onboarding timeline. A horizontal 3-phase stepper (subtle white circles on a full-width line): **Setup** (Weeks 1-2: kickoff, org structure, SSO, faculty list), **Launch** (Weeks 3-6: admin + faculty training, invites), **Partnership** (Ongoing · Year One: 30/90/180-day check-ins, end-of-year ROI review). *(Mostly fixed; timeframes adjustable.)*
-9. **Next steps** (`08`) — numbered steps (decide on scope with the team in the room → we send the formal quote → countersign and onboard), an "options at a glance" card recapping the two prices + key terms, and the presenter's contact. *(Prices/contact change.)*
+5. **Whitelabel add-on** (`04`) — the optional whitelabel upsell. Left: two reasons (researchers see their institution's tool, not a vendor; emails sent from *their* servers — **server-sending is a whitelabel feature, never listed in the base tiers**) plus the add-on price in accent (per deal, from "Ask before building"; the reference shows `+$5,000 / yr` and a one-time `$5,000` implementation fee). Right: a **recreation of the Atom weekly digest email in the partner's own logo and primary brand color** (`.email-mock`, set its `--partner` color var): partner logo header, greeting to the main contact by name, intro paragraph, "Recommended For You", italic research-interest line, and one grant card (funder pill, title, due date, description, "View Grant" button). Make the grant example plausible for their research focus, and tell the user it is illustrative filler, not a real opportunity. This is the one place a partner's brand color appears inside a slide; the slide chrome itself stays on-brand. *(Logo, color, greeting, and grant example change per prospect.)*
+6. **Projected ROI** (`05`) — the cost→outcome reframe. Headline "Look at the outcome, not the cost." Three stat cards: the license as a fraction of their annual funding (e.g. `0.15%`, neutral), and two return multipliers (e.g. `~7×` on a 1% funding lift, `16×+` on one added award) in accent. **Always label it illustrative** and base the math on their figures; do not over-claim. *(Numbers derived from their funding.)*
+7. **Our recommendation** (`06`) — why the full package, in 3 reasons tied to *their* workflow and pain points (from the transcript), plus a relevant customer quote card. *(Reasons are prospect-specific.)*
+8. **A path to a better price** (`07`) — two concrete levers to lower the price: e.g. **multiyear commitment** (3-year / 5-year discount tiers) and a **case-study commitment** (on a successful 180-day check-in). Two neutral option cards. *(Optional; levers per deal.)*
+9. **Getting started** (`08`) — onboarding timeline. A horizontal 3-phase stepper (subtle white circles on a full-width line): **Setup** (Weeks 1-2: kickoff, org structure, SSO, faculty list), **Launch** (Weeks 3-6: admin + faculty training, invites), **Partnership** (Ongoing · Year One: 30/90/180-day check-ins, end-of-year ROI review). *(Mostly fixed; timeframes adjustable.)*
+10. **Next steps** (`09`) — numbered steps (decide on scope with the team in the room → we send the formal quote → countersign and onboard), an "options at a glance" card recapping the two prices + the whitelabel add-on row + key terms, and the presenter's contact. *(Prices/contact change.)*
 
-**Slides that change per prospect:** cover (1), sized-to-institute (3), pricing (4), ROI numbers (5), recommendation (6), the price-lever options (7), and the close (9). Slides 2 and 8 are largely fixed copy.
+**Slides that change per prospect:** cover (1), sized-to-institute (3), pricing (4), whitelabel mock (5), ROI numbers (6), recommendation (7), the price-lever options (8), and the close (10). Slides 2 and 9 are largely fixed copy.
 
 ## Brand & copy rules
 
