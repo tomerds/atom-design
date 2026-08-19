@@ -25,6 +25,12 @@
 !/Upsell_Deck/Upsell_Deck.html
 !/Upsell_Deck/img/
 
+# Same for the onboarding kickoff-deck template (the kickoff-deck skill points at it).
+# Per-partner decks (<Slug>_Kickoff/, incl. the partner logo) stay local.
+!/Kickoff_Deck/
+/Kickoff_Deck/*
+!/Kickoff_Deck/Kickoff_Deck.html
+
 # The checkin-deck skill's reference component library lives inside the skill
 # at .claude/skills/checkin-deck/references/ (tracked via the !/.claude/ rule
 # above). Built partner check-in decks are deliverables and stay local.

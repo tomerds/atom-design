@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants — Interview Thumbnail template (see ../SKILL.md)
+  Copy this into a deliverable folder as <Piece_Name>_Thumbnail.html.
+  Drop two color photos next to it as host.png (left) and guest.png (right).
+  Fill the {{TOKENS}}: names/roles, eyebrow, and the title (last phrase -> accent span).
+  Default frame is 1200x1200 (LinkedIn feed). For 1200x630 or 1280x720, see SKILL.md.
+  Render: python3 .claude/skills/html-screenshot/shoot.py <path> --selector "#tile-01" -o <out>@2x.png
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interview Thumbnail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/cal-sans" rel="stylesheet">
+<style>
+  :root{
+    --accent:#ff4227;
+    --tile-bg:#F9FAFB;
+    --text:#000000;
+    --gray-3:#666;
+    --gray-light:#d9d9d9;
+    --font-title:"Cal Sans", system-ui, sans-serif;
+    --font-body:"DM Sans", system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#fff;font-family:var(--font-body);display:flex;justify-content:center;padding:40px;}
+
+  /* Default frame: 1200x1200 square (LinkedIn feed). */
+  .tile{
+    width:1200px;height:1200px;background:var(--tile-bg);
+    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+
+  /* ── photo row (COLOR — do not grayscale; this is the repo's color exception) ── */
+  .photos{display:flex;height:740px;position:relative;background:#000;}
+  .photo{position:relative;width:50%;height:100%;
+    background-size:cover;background-repeat:no-repeat;}
+  /* Adjust position/size per photo to frame each face (see SKILL.md "Crop tuning"). */
+  .photo.left{background-image:url('host.png');background-position:center 26%;}
+  .photo.right{background-image:url('guest.png');background-position:center 26%;}
+  /* placeholder shown until the real files are in place */
+  .photo::before{content:attr(data-ph);position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;color:#5a5f66;background:#e4e6ea;
+    font-family:var(--font-title);font-size:26px;z-index:-1;}
+
+  /* name scrim + label on each photo */
+  .photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:190px;
+    background:linear-gradient(to top, rgba(0,0,0,.74), rgba(0,0,0,0));}
+  .name-tag{position:absolute;left:40px;bottom:32px;z-index:2;color:#fff;}
+  .name-tag .n{font-family:var(--font-title);font-weight:400;font-size:32px;line-height:1.1;}
+  .name-tag .r{font-family:var(--font-body);font-weight:500;font-size:16px;color:rgba(255,255,255,.85);margin-top:4px;}
+
+  /* center "in conversation" badge at the seam */
+  .seam{position:absolute;top:370px;left:50%;transform:translate(-50%,-50%);z-index:5;
+    width:84px;height:84px;border-radius:50%;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 7px var(--tile-bg);}
+  .seam span{font-family:var(--font-title);font-weight:400;font-size:38px;color:#fff;line-height:1;margin-top:-2px;}
+
+  /* ── bottom band ── */
+  .band{flex:1;display:flex;flex-direction:column;justify-content:center;gap:26px;
+    padding:0 64px;background:var(--tile-bg);}
+  .band-top{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .eyebrow{display:flex;align-items:center;gap:10px;
+    font-family:var(--font-body);font-weight:700;font-size:17px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--text);}
+  .eyebrow .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);}
+  .eyebrow .accent{color:var(--accent);}
+  .logo{height:44px;flex-shrink:0;}
+  .title{font-family:var(--font-title);font-weight:400;font-size:62px;
+    line-height:1.03;letter-spacing:-.01em;color:var(--text);}
+  .title .accent{color:var(--accent);}
+</style>
+</head>
+<body>
+  <section class="tile" id="tile-01">
+    <div class="photos">
+      <div class="photo left" data-ph="host.png">
+        <div class="name-tag"><div class="n">{{HOST_NAME}}</div><div class="r">{{HOST_ROLE}}</div></div>
+      </div>
+      <div class="photo right" data-ph="guest.png">
+        <div class="name-tag"><div class="n">{{GUEST_NAME}}</div><div class="r">{{GUEST_ROLE}}</div></div>
+      </div>
+      <div class="seam"><span>&times;</span></div>
+    </div>
+
+    <div class="band">
+      <div class="band-top">
+        <div class="eyebrow"><span class="dot"></span><span class="accent">{{EYEBROW}}</span></div>
+        <img class="logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      </div>
+      <!-- Title: wrap the last word/phrase in <span class="accent">. Use <br> to control breaks. -->
+      <h1 class="title">{{TITLE_LINE_1}}<br>{{TITLE_LINE_2}} <span class="accent">{{TITLE_ACCENT}}</span></h1>
+    </div>
+  </section>
+</body>
+</html>

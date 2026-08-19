@@ -4,15 +4,19 @@
   Quotes / pricing call follow-up (call 2). Two-tier license proposal:
     Discovery License ........ $5,000 / yr
     Full Package License ..... $15,000 / yr (Discovery + Collaborator Search + Proposals)
+    Whitelabel add-on ........ $5,000 / yr + $5,000 one-time implementation
 
-  Landscape deck, 13.333 x 7.5 in, single self-contained HTML. 7 slides:
+  Landscape deck, 13.333 x 7.5 in, single self-contained HTML. 10 slides:
     01 Cover ............... Partnership proposal, Atom x MPFI
     02 Recap .............. The three parts of Atom (tailored to MPFI)
     03 What we heard ...... MPFI's context, in their numbers
     04 Two options ........ Comparison table, Full highlighted (the centerpiece)
-    05 Why Full ........... The case for proposals + collaborator search at MPFI
-    06 A better price ..... Design-partner / case-study path
-    07 Terms & next steps . Annual license terms + the decision
+    05 Whitelabel add-on .. Partner-branded digest email mock, +$5k/yr
+    06 Projected ROI ...... Cost -> outcome reframe on their funding
+    07 Why Full ........... The case for proposals + collaborator search at MPFI
+    08 A better price ..... Multiyear / case-study path
+    09 Getting started .... Onboarding timeline
+    10 Terms & next steps . Annual license terms + the decision
 
   Nav: ArrowLeft/Right, Space, click to advance, f fullscreen, #N deep-link.
   Print/PDF: 13.333x7.5 print CSS included.
@@ -211,6 +215,29 @@
     .cmp-foot strong { color: var(--text); font-weight: 600; }
     .cmp-foot .impl { display: block; margin-top: 5px; font-size: clamp(12px, 0.95vw, 15px); }
     .cmp-foot .impl b { color: var(--text); font-weight: 600; }
+
+    /* ---------- Whitelabel add-on ---------- */
+    /* set --partner to the institution's primary brand color; the email mock renders in it */
+    .wl-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(36px, 3.6vw, 72px); margin-top: clamp(26px, 2.6vw, 42px); align-items: center; flex: 1; min-height: 0; }
+    .wl-left { display: flex; flex-direction: column; gap: clamp(18px, 1.7vw, 28px); }
+    .wl-price { font-family: var(--font-title); font-size: clamp(30px, 2.8vw, 44px); color: var(--accent); letter-spacing: -0.01em; }
+    .wl-price small { font-family: var(--font-body); font-size: clamp(13px, 1vw, 16px); font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+    .wl-price .impl-note { display: block; font-family: var(--font-body); font-size: clamp(13px, 1.02vw, 16px); color: var(--text-muted); margin-top: 6px; letter-spacing: 0; }
+    .email-mock { --partner: #006C66; background: #fff; border: 1px solid var(--rule-soft); border-radius: 16px; box-shadow: 0 18px 44px rgba(0,0,0,0.10); padding: clamp(20px, 1.9vw, 30px) clamp(22px, 2.1vw, 34px); width: 100%; max-width: 560px; justify-self: center; align-self: center; font-family: var(--font-body); }
+    .email-mock .em-head { padding-bottom: clamp(12px, 1.1vw, 16px); border-bottom: 1px solid #e8e8e8; }
+    .email-mock .em-head img { height: clamp(30px, 2.6vw, 40px); width: auto; display: block; }
+    .email-mock .em-hi { font-size: clamp(15px, 1.25vw, 19px); font-weight: 700; color: #14201e; margin-top: clamp(14px, 1.3vw, 20px); }
+    .email-mock .em-p { font-size: clamp(11.5px, 0.95vw, 14px); color: #5b6462; line-height: 1.5; margin-top: clamp(8px, 0.8vw, 12px); }
+    .email-mock .em-h2 { font-size: clamp(13.5px, 1.12vw, 17px); font-weight: 700; color: #14201e; margin-top: clamp(14px, 1.3vw, 20px); padding-bottom: clamp(7px, 0.65vw, 10px); border-bottom: 1px solid #e8e8e8; }
+    .email-mock .em-int { font-size: clamp(11px, 0.9vw, 13.5px); font-style: italic; color: #5b6462; margin-top: clamp(8px, 0.8vw, 12px); }
+    .email-mock .em-card { border: 1px solid #e5e8e7; border-radius: 10px; margin-top: clamp(10px, 1vw, 15px); overflow: hidden; }
+    .email-mock .em-card-top { background: #f5f8f7; padding: clamp(12px, 1.1vw, 17px) clamp(14px, 1.3vw, 20px); border-bottom: 1px solid #e5e8e7; }
+    .email-mock .em-pill { display: inline-block; background: var(--partner); color: #fff; font-size: clamp(9.5px, 0.78vw, 12px); font-weight: 600; border-radius: 6px; padding: 3px 10px; }
+    .email-mock .em-title { font-size: clamp(13px, 1.08vw, 16.5px); font-weight: 700; color: #14201e; margin-top: clamp(7px, 0.65vw, 10px); }
+    .email-mock .em-due { font-size: clamp(10.5px, 0.85vw, 13px); color: #5b6462; margin-top: 3px; }
+    .email-mock .em-card-body { padding: clamp(12px, 1.1vw, 17px) clamp(14px, 1.3vw, 20px); }
+    .email-mock .em-desc { font-size: clamp(11px, 0.9vw, 13.5px); color: #5b6462; line-height: 1.5; }
+    .email-mock .em-btn { display: inline-block; background: var(--partner); color: #fff; font-size: clamp(10.5px, 0.85vw, 13px); font-weight: 600; border-radius: 7px; padding: clamp(7px, 0.6vw, 9px) clamp(13px, 1.1vw, 17px); margin-top: clamp(10px, 0.9vw, 14px); }
 
     /* ---------- Why Full: split ---------- */
     .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 3.6vw, 72px); margin-top: clamp(34px, 3.4vw, 56px); align-items: start; }
@@ -439,11 +466,53 @@
     </div>
   </section>
 
-  <!-- 05 Projected ROI -->
+  <!-- 05 Whitelabel add-on -->
   <section class="slide" data-slide="5">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">04 <span class="muted">/ Projected ROI</span></div>
+      <div class="eyebrow">04 <span class="muted">/ Optional add-on</span></div>
+      <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 26ch;">Whitelabel Atom as your own.</h2>
+      <div class="wl-grid">
+        <div class="wl-left">
+          <ul class="why-list">
+            <li>
+              <div class="lt">Researchers see an institute tool, not a vendor</div>
+              <div class="lb">The weekly digest, deadline alerts, and platform all carry your logo and colors. Adoption reads as an internal service from day one.</div>
+            </li>
+            <li>
+              <div class="lt">Sent from your own servers</div>
+              <div class="lb">Emails go out from your institutional address, not ours. Combined with the full visual identity, faculty trust it on sight.</div>
+            </li>
+          </ul>
+          <div class="wl-price">+$5,000<small>&nbsp;/ year</small><span class="impl-note">plus a one-time $5,000 implementation fee</span></div>
+        </div>
+        <div class="email-mock">
+          <div class="em-head"><img src="img/mpfi-logo.png" alt="Max Planck Florida Institute for Neuroscience"></div>
+          <div class="em-hi">Hi Victoria Colina-Brunne,</div>
+          <div class="em-p">A few grants caught our eye this week, including a new circuit neuroscience opportunity closing in the fall. Worth clicking through to confirm fit, and you can ask Atom AI any questions about eligibility or related awards.</div>
+          <div class="em-h2">Recommended For You</div>
+          <div class="em-int">Based on your research interest: &ldquo;Synaptic plasticity and neural circuits&rdquo;</div>
+          <div class="em-card">
+            <div class="em-card-top">
+              <span class="em-pill">NIH</span>
+              <div class="em-title">BRAIN Initiative Research Grants</div>
+              <div class="em-due">Due: Nov 30, 2026</div>
+            </div>
+            <div class="em-card-body">
+              <div class="em-desc">Supports development of tools and approaches to understand how neural circuits produce behavior, with multiple mechanisms across career stages.</div>
+              <span class="em-btn">View Grant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Projected ROI -->
+  <section class="slide" data-slide="6">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="content-wrap">
+      <div class="eyebrow">05 <span class="muted">/ Projected ROI</span></div>
       <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 52px); max-width: 24ch;">Look at the <span class="accent">outcome</span>, not the cost.</h2>
       <p class="lede roi-lede" style="max-width: 70ch;">At roughly $10M in annual funding and 30 proposals a year, the license is a fraction of a single award. It only has to move the needle a little to pay for itself.</p>
       <div class="roi-grid">
@@ -464,11 +533,11 @@
     </div>
   </section>
 
-  <!-- 06 Why Full -->
-  <section class="slide" data-slide="6">
+  <!-- 07 Why Full -->
+  <section class="slide" data-slide="7">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">05 <span class="muted">/ Our recommendation</span></div>
+      <div class="eyebrow">06 <span class="muted">/ Our recommendation</span></div>
       <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 26ch;">Why we&rsquo;d start with the <span class="accent">Full Package</span>.</h2>
       <div class="why-grid">
         <ul class="why-list">
@@ -499,11 +568,11 @@
     </div>
   </section>
 
-  <!-- 07 A path to a better price -->
-  <section class="slide" data-slide="7">
+  <!-- 08 A path to a better price -->
+  <section class="slide" data-slide="8">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">06 <span class="muted">/ A path to a better price</span></div>
+      <div class="eyebrow">07 <span class="muted">/ A path to a better price</span></div>
       <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 30ch;">Two ways to lower the price.</h2>
       <div class="dp-grid">
         <div class="dp-col opt give">
@@ -529,11 +598,11 @@
     </div>
   </section>
 
-  <!-- 08 Onboarding timeline -->
-  <section class="slide" data-slide="8">
+  <!-- 09 Onboarding timeline -->
+  <section class="slide" data-slide="9">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap">
-      <div class="eyebrow">07 <span class="muted">/ Getting started</span></div>
+      <div class="eyebrow">08 <span class="muted">/ Getting started</span></div>
       <h2 class="headline" style="font-size: clamp(30px, 3.3vw, 48px); max-width: 26ch;">From kickoff to launched in about six weeks.</h2>
       <p class="lede" style="margin-top: clamp(12px, 1.2vw, 20px); max-width: 68ch;">Then we stay close through year one to track results and prove the ROI.</p>
       <div class="ob-steps">
@@ -578,11 +647,11 @@
     </div>
   </section>
 
-  <!-- 09 Terms & next steps -->
-  <section class="slide" data-slide="9">
+  <!-- 10 Terms & next steps -->
+  <section class="slide" data-slide="10">
     <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
     <div class="content-wrap" style="justify-content: flex-start; margin-top: clamp(64px, 6.5vw, 104px);">
-      <div class="eyebrow">08 <span class="muted">/ Next steps</span></div>
+      <div class="eyebrow">09 <span class="muted">/ Next steps</span></div>
       <h2 class="headline" style="font-size: clamp(32px, 3.5vw, 50px); max-width: 24ch;">Where we go from here.</h2>
       <div class="close-grid">
         <div class="close-left">
@@ -616,6 +685,10 @@
             <div class="on">Full Package<small>+ Collaborators &amp; Proposals</small></div>
             <div class="op">$15,000<small>&nbsp;/ yr</small></div>
           </div>
+          <div class="opt-row">
+            <div class="on" style="font-size: clamp(15px, 1.25vw, 19px);">Whitelabel add-on<small>Your brand, end to end</small></div>
+            <div class="op" style="font-size: clamp(18px, 1.55vw, 24px);">+$5,000<small>&nbsp;/ yr</small></div>
+          </div>
           <div class="sum-terms">
             <div class="stm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>One-year term, reviewed at renewal</div>
             <div class="stm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited faculty and users, no per-seat fees</div>
@@ -629,7 +702,7 @@
 </div>
 
 <div class="counter" id="counter">
-  <span class="now">01</span><span class="sep">/</span><span class="total">09</span>
+  <span class="now">01</span><span class="sep">/</span><span class="total">10</span>
 </div>
 
 <script>

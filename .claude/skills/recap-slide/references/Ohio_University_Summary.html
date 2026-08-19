@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ohio University — Conversation Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #ff4227;
+    --bg: #ffffff;
+    --text: #000000;
+    --gray-dark: #333333;
+    --gray-light: #d9d9d9;
+    --font-title: "Cal Sans", system-ui, sans-serif;
+    --font-body: "DM Sans", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: var(--bg); font-family: var(--font-body); color: var(--text);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .poster {
+    width: 1280px; height: 720px;
+    background: var(--bg);
+    padding: 48px 60px 52px;
+    display: flex; flex-direction: column;
+    flex-shrink: 0;
+    transform-origin: center center;
+  }
+
+  /* ---------- header ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 26px;
+  }
+  .topbar img { height: 30px; display: block; }
+  .topbar .meta {
+    font-size: 13px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--gray-dark);
+  }
+  .topbar .meta span { color: var(--accent); }
+
+  h1 {
+    font-family: var(--font-title); font-weight: 400;
+    font-size: 42px; line-height: 1.1; margin-bottom: 30px;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+
+  /* ---------- three columns ---------- */
+  .cols { display: flex; gap: 20px; flex: 1; min-height: 0; }
+  .col {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    border-radius: 18px;
+    padding: 26px 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .col h2 {
+    font-family: var(--font-title); font-weight: 400;
+    font-size: 22px; margin-bottom: 16px;
+  }
+  .col ul { list-style: none; }
+  .col li {
+    font-size: 15px; line-height: 1.45; color: var(--gray-dark);
+    padding-left: 20px; position: relative; margin-bottom: 13px;
+  }
+  .col li::before {
+    content: "●"; position: absolute; left: 0; top: 2px;
+    font-size: 8px; color: var(--gray-light);
+  }
+  .col li.hot::before { color: var(--accent); }
+  .col li strong { color: var(--text); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <div class="topbar">
+    <img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+    <div class="meta">Ohio University · Recap · <span>July 2026</span></div>
+  </div>
+
+  <h1>Our conversation <em>so far</em></h1>
+
+  <div class="cols">
+    <div class="col">
+      <h2>Your office today</h2>
+      <ul>
+        <li><strong>Emerging R1</strong> building research capacity, with ~900 faculty on the Athens campus and limited local research admin support in the colleges.</li>
+        <li>A small RD team covering pre-award support for the whole university: checklists, budgets, and timelines from about 6 weeks out.</li>
+        <li>Each team member managing <strong>5 to 10 proposals</strong> at once.</li>
+        <li>Current tooling: an <strong>Excel tracker</strong>, Word-doc project plans, and manual reminder emails.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2>What matters most</h2>
+      <ul>
+        <li class="hot"><strong>Project management:</strong> milestone deadlines, automatic reminders, and keeping PIs on track toward submission.</li>
+        <li class="hot"><strong>Faculty engagement:</strong> more researchers finding the right opportunities than Pivot delivers today.</li>
+        <li>Personalized discovery for <strong>niche research areas</strong> and small local foundations.</li>
+        <li>Limited submissions managed through <strong>InfoReady</strong>, with funder deadlines getting shorter.</li>
+        <li>A solution in place by <strong>end of summer</strong>.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2>What stood out</h2>
+      <ul>
+        <li class="hot">The project dashboard with <strong>automated deadline reminders</strong>, replacing the Excel tracker.</li>
+        <li class="hot"><strong>Curated one-to-one funding emails</strong> with eligibility filtering, and the Memphis engagement results.</li>
+        <li>The <strong>InfoReady export</strong> for limited-submission competitions.</li>
+        <li><strong>Unlimited seats</strong>: add any faculty member, student, or postdoc without per-seat pricing.</li>
+        <li>The live faculty profile built on the demo call, which matched your team's read of his research.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+<script>
+  function fitSlide() {
+    var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+    document.querySelector('.poster').style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fitSlide);
+  fitSlide();
+</script>
+</body>
+</html>
