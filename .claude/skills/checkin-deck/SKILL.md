@@ -265,6 +265,7 @@ These are lessons from the NYULH deck — verify these explicitly when pulling d
 4. **Event count ≠ distinct items.** "1,308 favorites" is 1,308 favoriting events across 780 distinct grants. Label both when relevant.
 5. **Convert all relative dates to absolute** when writing copy ("Aug 31" not "renewal date").
 6. **Per-day rates beat raw totals** when comparing unequal-length periods. See "Period comparison framing" above.
+7. **Check field coverage before comparing a field across periods.** On long-tenured partners, a column can be sparsely populated early and complete later, which turns a tracking-coverage change into a fake behavior change. On the Memphis two-year deck, `funder_name` was null on 68% of year-one grant visits (funder tagging only became complete around May 2025) but 0% of year-two visits, so "141 funders → 511 funders" was an artifact, not discovery breadth. Fix: count nulls per period for every field you compare; if coverage differs materially, present the field for the clean period only and say so in a note.
 
 ## Render / export
 
