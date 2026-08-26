@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<!--
+  Atom Grants | Webinar Deck Template
+  ==================================
+  A basic 6-slide shell for any Atom Grants webinar. Built from the Atom 3.0
+  launch deck. Currently populated with:
+
+    "Building a Smart Research Administration Ecosystem"
+    Wednesday 26 August 2026 - Morgan State University round table
+
+  13.333 x 7.5 in landscape, one slide per page.
+  Nav: ArrowLeft/Right, Space, click to advance, f fullscreen, #N deep-link.
+  Export: python3 .claude/skills/html-to-pdf/export.py Webinar_Deck/Webinar_Deck.html
+
+  Brand: single accent (#ff4227), white bg, black text; Cal Sans titles at
+  weight 400 only, DM Sans body; no colored left-rule bars; no em dashes.
+
+  ---------------------------------------------------------------------------
+  TO REUSE FOR ANOTHER WEBINAR, swap only these:
+    [TITLE]      webinar title, one word wrapped in <span class="accent">
+    [SUBTITLE]   one-line description (matches the OG tile subtitle)
+    [WHEN]       day, date, time
+    [SPEAKERS]   the .sp cards on slide 03 and the .presenter rows on 01/04/05
+                 (headshots live in ../Webinar_Tiles/<lastname>_gray.jpg)
+    [AGENDA]     the .agenda-list items on slide 02
+  ---------------------------------------------------------------------------
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building a Smart Research Administration Ecosystem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff4227;
+      --bg: #ffffff;
+      --bg-alt: #fafafa;
+      --card: #ffffff;
+      --text: #000000;
+      --text-muted: #6b6b6b;
+      --rule-soft: #ececec;
+      --rule-mid: #d9d9d9;
+      --font-title: "Cal Sans", "DM Sans", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --pad-x: clamp(56px, 6vw, 104px);
+      --pad-y: clamp(46px, 5vw, 76px);
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: #111;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+    .slide {
+      position: absolute; inset: 0;
+      width: 100vw; height: 100vh;
+      padding: var(--pad-y) var(--pad-x);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--bg);
+    }
+    .slide.active { display: flex; animation: fade 200ms ease-out; }
+    @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+    .brand {
+      position: absolute;
+      top: clamp(26px, 3vw, 42px);
+      left: var(--pad-x);
+      height: clamp(24px, 2.1vw, 32px);
+      z-index: 6;
+    }
+    .brand img { height: 100%; width: auto; display: block; }
+
+    .counter {
+      position: absolute;
+      bottom: clamp(26px, 3vw, 42px);
+      right: var(--pad-x);
+      font-size: clamp(11px, 0.9vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      z-index: 6;
+    }
+    .counter .sep { color: var(--rule-mid); margin: 0 6px; }
+    .counter .now { color: var(--accent); font-weight: 600; }
+
+    .eyebrow {
+      font-size: clamp(11px, 0.92vw, 13.5px);
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .slide-title {
+      font-family: var(--font-title);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .accent { color: var(--accent); }
+
+    .head .slide-title { font-size: clamp(30px, 3.5vw, 50px); margin: 10px 0 0; }
+    .head .kicker { margin-top: 12px; color: var(--text-muted); font-size: clamp(13.5px, 1.15vw, 17px); max-width: 62ch; line-height: 1.45; }
+
+    /* shared presenter row (cover, handover, Q&A) */
+    .presenters { display: flex; gap: clamp(18px, 2vw, 34px); flex-wrap: wrap; }
+    .presenter { display: flex; align-items: flex-start; gap: 12px; }
+    .presenter .ph {
+      width: clamp(42px, 3.6vw, 54px); height: clamp(42px, 3.6vw, 54px);
+      border-radius: 14px; overflow: hidden; flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+    .presenter .ph img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(100%); display: block; }
+    .presenter .nm { font-size: clamp(12.5px, 1.02vw, 15.5px); font-weight: 600; line-height: 1.2; }
+    .presenter .rl { font-size: clamp(10.5px, 0.85vw, 12.5px); color: var(--text-muted); margin-top: 3px; line-height: 1.3; }
+    .presenter .rl b { color: var(--text); font-weight: 600; }
+
+    /* ============ 01 COVER ============ */
+    .cover { justify-content: space-between; }
+    .cover-top { display: flex; align-items: center; justify-content: space-between; }
+    .cover-logo { height: clamp(30px, 2.6vw, 40px); width: auto; }
+    .cover-tag {
+      font-size: clamp(11px, 0.92vw, 13.5px);
+      font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .cover-eyebrow {
+      font-size: clamp(12px, 1vw, 15px); font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    }
+    .cover-headline {
+      font-family: var(--font-title); font-weight: 400;
+      font-size: clamp(44px, 6.2vw, 92px); line-height: 0.98;
+      letter-spacing: -0.02em; margin: clamp(14px, 1.4vw, 22px) 0 0;
+      max-width: 20ch;
+    }
+    .cover-sub {
+      font-size: clamp(15px, 1.35vw, 21px); color: var(--text-muted);
+      margin: clamp(16px, 1.6vw, 24px) 0 0; max-width: 56ch; line-height: 1.4;
+    }
+    .cover-foot { border-top: 1px solid var(--rule-mid); padding-top: clamp(18px, 1.8vw, 26px); }
+    .cover-foot .presenters { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px, 1.4vw, 22px); }
+    .cover-meta {
+      display: flex; align-items: flex-start; gap: clamp(36px, 4.5vw, 76px);
+      margin-top: clamp(16px, 1.6vw, 24px);
+      border-top: 1px solid var(--rule-soft); padding-top: clamp(14px, 1.4vw, 20px);
+    }
+    .cover-meta .col { display: flex; flex-direction: column; gap: 5px; }
+    .cover-meta .k { font-size: clamp(10px, 0.82vw, 12px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+    .cover-meta .v { font-size: clamp(13px, 1.08vw, 16px); color: var(--text); font-weight: 500; }
+    .cover-meta .v.hot { color: var(--accent); }
+
+    /* ============ 02 AGENDA ============ */
+    .agenda { margin-top: clamp(24px, 2.6vw, 38px); max-width: 900px; }
+    .agenda-list { list-style: none; margin: 0; padding: 0; }
+    .agenda-list li {
+      display: flex; align-items: baseline; gap: clamp(16px, 1.6vw, 24px);
+      padding: clamp(14px, 1.4vw, 20px) 0; border-bottom: 1px solid var(--rule-soft);
+    }
+    .agenda-list li:last-child { border-bottom: none; }
+    .agenda-list .n { font-family: var(--font-title); font-weight: 400; font-size: clamp(16px, 1.4vw, 21px); color: var(--accent); flex-shrink: 0; width: 1.6em; }
+    .agenda-list .t { font-family: var(--font-title); font-weight: 400; font-size: clamp(17px, 1.55vw, 23px); letter-spacing: -0.01em; }
+    .agenda-list .d { margin-left: auto; font-size: clamp(11px, 0.9vw, 13.5px); color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; flex-shrink: 0; }
+
+    /* ============ 03 SPEAKERS ============ */
+    .speakers {
+      margin-top: clamp(28px, 3vw, 44px);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: clamp(20px, 2.4vw, 40px);
+    }
+    .sp { display: flex; flex-direction: column; }
+    .sp-ph {
+      width: clamp(88px, 8.2vw, 124px); height: clamp(88px, 8.2vw, 124px);
+      border-radius: 18px; overflow: hidden; background: var(--bg-alt);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+    }
+    .sp-ph img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; filter: grayscale(100%); display: block; }
+    .sp-nm {
+      font-family: var(--font-title); font-weight: 400;
+      font-size: clamp(17px, 1.5vw, 22px); letter-spacing: -0.01em; line-height: 1.1;
+      margin: clamp(18px, 1.8vw, 26px) 0 0;
+    }
+    .sp-org {
+      margin: clamp(9px, 0.9vw, 13px) 0 0;
+      font-size: clamp(11.5px, 0.94vw, 14px); font-weight: 600; color: var(--text);
+      line-height: 1.3;
+    }
+    .sp-rl {
+      margin: 5px 0 0;
+      font-size: clamp(11px, 0.9vw, 13.5px); color: var(--text-muted);
+      line-height: 1.45; max-width: 22ch;
+    }
+
+    /* ============ 04 HANDOVER / 05 Q&A ============ */
+    .close { justify-content: center; align-items: flex-start; }
+    .close-eyebrow { font-size: clamp(12px, 1vw, 15px); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+    .close-h {
+      font-family: var(--font-title); font-weight: 400;
+      font-size: clamp(44px, 5.6vw, 84px); line-height: 1.0;
+      letter-spacing: -0.02em; margin: clamp(16px, 1.6vw, 26px) 0 0; max-width: 20ch;
+    }
+    .close-sub { margin: clamp(18px, 1.9vw, 28px) 0 0; font-size: clamp(15px, 1.35vw, 21px); color: var(--text-muted); max-width: 54ch; line-height: 1.42; }
+
+    /* ============ 06 CLOSING ============ */
+    .fin { justify-content: flex-start; }
+    .fin-mid { margin-top: auto; display: grid; grid-template-columns: 1fr auto; gap: clamp(44px, 5vw, 88px); align-items: center; }
+    .fin-h {
+      font-family: var(--font-title); font-weight: 400;
+      font-size: clamp(56px, 7.4vw, 112px); line-height: 0.96;
+      letter-spacing: -0.02em; margin: clamp(14px, 1.4vw, 24px) 0 0;
+    }
+    .fin-sub { margin: clamp(16px, 1.7vw, 26px) 0 0; font-size: clamp(15px, 1.35vw, 21px); color: var(--text-muted); max-width: 46ch; line-height: 1.42; }
+    .fin-url {
+      font-family: var(--font-title); font-weight: 400; color: var(--accent);
+      font-size: clamp(24px, 2.4vw, 37px); letter-spacing: -0.01em;
+      margin-top: clamp(20px, 2vw, 32px);
+    }
+    .fin-qr-card {
+      background: #fff; border: 1px solid var(--rule-soft); border-radius: 24px;
+      padding: clamp(24px, 2.4vw, 36px);
+      display: flex; flex-direction: column; align-items: center; gap: clamp(12px, 1.2vw, 18px);
+    }
+    .fin-qr-card img { width: clamp(160px, 14vw, 216px); height: auto; display: block; }
+    .fin-qr-card .cap { font-size: clamp(11.5px, 0.95vw, 14px); color: var(--text-muted); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+    .fin-meta {
+      margin-top: auto;
+      display: flex; align-items: flex-start; gap: clamp(36px, 4.5vw, 78px);
+      border-top: 1px solid var(--rule-mid); padding-top: clamp(18px, 1.8vw, 28px);
+    }
+    .fin-meta .col { display: flex; flex-direction: column; gap: 5px; }
+    .fin-meta .k { font-size: clamp(10px, 0.82vw, 12px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+    .fin-meta .v { font-size: clamp(13px, 1.08vw, 16px); color: var(--text); font-weight: 500; max-width: 26ch; line-height: 1.35; }
+    .fin-meta .v.hot { color: var(--accent); }
+
+    /* ---------- Print ---------- */
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      html, body { background: #fff; overflow: visible; }
+      .deck { height: auto; width: auto; overflow: visible; }
+      .slide {
+        display: flex !important; position: relative;
+        width: 13.333in; height: 7.5in;
+        page-break-after: always; break-after: page;
+      }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .slide.active { animation: none; }
+      .counter { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 01 COVER -->
+  <section class="slide cover active" data-slide="1">
+    <div class="cover-top">
+      <img class="cover-logo" src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants">
+      <span class="cover-tag">Webinar &middot; Live</span>
+    </div>
+    <div class="cover-mid">
+      <div class="cover-eyebrow">Welcome</div>
+      <h1 class="cover-headline">Building a Smart Research Administration <span class="accent">Ecosystem</span></h1>
+      <p class="cover-sub">A round table on an eight-step AI framework for the full award lifecycle.</p>
+    </div>
+    <div class="cover-foot">
+      <div class="presenters">
+        <div class="presenter">
+          <div class="ph"><img src="../Webinar_Tiles/mirithu_gray.jpg" alt="Poline Mirithu"></div>
+          <div><div class="nm">Poline Mirithu</div><div class="rl"><b>Morgan State University</b><br>Grants &amp; Contracts Manager</div></div>
+        </div>
+        <div class="presenter">
+          <div class="ph"><img src="../Webinar_Tiles/jiang_gray.jpg" alt="Dr. Lulu Jiang"></div>
+          <div><div class="nm">Dr. Lulu Jiang</div><div class="rl"><b>Morgan State University</b><br>Program Administrator, NTC &amp; SMARTER Center</div></div>
+        </div>
+        <div class="presenter">
+          <div class="ph"><img src="../Webinar_Tiles/zhang_gray.jpg" alt="Ailing Zhang"></div>
+          <div><div class="nm">Ailing Zhang</div><div class="rl"><b>Morgan State University</b><br>Sr. Grants Manager, ORA</div></div>
+        </div>
+        <div class="presenter">
+          <div class="ph"><img src="../Webinar_Tiles/mills_gray.jpg" alt="Dr. Anita Mills"></div>
+          <div><div class="nm">Dr. Anita Mills</div><div class="rl"><b>Ignita Consulting</b><br>Founder</div></div>
+        </div>
+      </div>
+      <div class="cover-meta">
+        <div class="col"><span class="k">When</span><span class="v">Wednesday 26 August &middot; 11am ET</span></div>
+        <div class="col"><span class="k">Format</span><span class="v">60 minutes &middot; round table</span></div>
+        <div class="col"><span class="k">Questions</span><span class="v hot">Drop them in the chat as we go</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 AGENDA -->
+  <section class="slide" data-slide="2">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="head">
+      <div class="eyebrow">Welcome</div>
+      <h2 class="slide-title">The next 60 minutes</h2>
+      <p class="kicker">Drop questions in the chat as we go. We will take them all at the end.</p>
+    </div>
+    <div class="agenda">
+      <ol class="agenda-list">
+        <li><span class="n">01</span><span class="t">Welcome and introductions</span><span class="d">Tomer &middot; 5 min</span></li>
+        <li><span class="n">02</span><span class="t">Building a Smart Research Administration Ecosystem</span><span class="d">The panel &middot; 40 min</span></li>
+        <li><span class="n">03</span><span class="t">Q&amp;A</span><span class="d">All &middot; 15 min</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 03 SPEAKERS -->
+  <section class="slide" data-slide="3">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="head">
+      <div class="eyebrow">Your panel</div>
+      <h2 class="slide-title">Who you are hearing from</h2>
+    </div>
+    <div class="speakers">
+      <div class="sp">
+        <div class="sp-ph"><img src="../Webinar_Tiles/mirithu_gray.jpg" alt="Poline Mirithu"></div>
+        <h3 class="sp-nm">Poline Mirithu</h3>
+        <div class="sp-org">Morgan State University</div>
+        <p class="sp-rl">Grants &amp; Contracts Manager</p>
+      </div>
+      <div class="sp">
+        <div class="sp-ph"><img src="../Webinar_Tiles/jiang_gray.jpg" alt="Dr. Lulu Jiang"></div>
+        <h3 class="sp-nm">Dr. Lulu Jiang</h3>
+        <div class="sp-org">Morgan State University</div>
+        <p class="sp-rl">Program Administrator, NTC &amp; SMARTER Center</p>
+      </div>
+      <div class="sp">
+        <div class="sp-ph"><img src="../Webinar_Tiles/zhang_gray.jpg" alt="Ailing Zhang"></div>
+        <h3 class="sp-nm">Ailing Zhang</h3>
+        <div class="sp-org">Morgan State University</div>
+        <p class="sp-rl">Sr. Grants Manager, Office of Research Administration</p>
+      </div>
+      <div class="sp">
+        <div class="sp-ph"><img src="../Webinar_Tiles/mills_gray.jpg" alt="Dr. Anita Mills"></div>
+        <h3 class="sp-nm">Dr. Anita Mills</h3>
+        <div class="sp-org">Ignita Consulting</div>
+        <p class="sp-rl">Founder</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 HANDOVER TO THE SPEAKERS -->
+  <section class="slide close" data-slide="4">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="close-eyebrow">Over to our speakers</div>
+    <h2 class="close-h">Building a Smart Research Administration <span class="accent">Ecosystem</span></h2>
+    <p class="close-sub">An eight-step AI framework for the full award lifecycle, and what it looks like in a real office.</p>
+  </section>
+
+  <!-- 05 Q&A -->
+  <section class="slide close" data-slide="5">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="close-eyebrow">Q&amp;A</div>
+    <h2 class="close-h">Ask the panel <span class="accent">anything.</span></h2>
+    <p class="close-sub">Put your question in the chat or the Q&amp;A panel and we will work through as many as we can.</p>
+  </section>
+
+  <!-- 06 THANK YOU -->
+  <section class="slide fin" data-slide="6">
+    <div class="brand"><img src="../assets/newredlogowordmarkhighres.png" alt="Atom Grants"></div>
+    <div class="fin-mid">
+      <div>
+        <div class="close-eyebrow">Thank you for joining us</div>
+        <h2 class="fin-h">See you at<br>the <span class="accent">next one.</span></h2>
+        <p class="fin-sub">Every Atom Grants webinar, upcoming and on demand, lives in one place.</p>
+        <div class="fin-url">atomgrants.com/webinars</div>
+      </div>
+      <div class="fin-qr-card">
+        <img src="webinars_qr.png" alt="QR code for atomgrants.com/webinars">
+        <div class="cap">Scan for our<br>next webinars</div>
+      </div>
+    </div>
+    <div class="fin-meta">
+      <div class="col"><span class="k">Your panel</span><span class="v">Poline Mirithu &middot; Lulu Jiang &middot; Ailing Zhang &middot; Anita Mills</span></div>
+      <div class="col"><span class="k">The replay</span><span class="v">In your inbox tomorrow</span></div>
+      <div class="col"><span class="k">Questions later</span><span class="v">tomer@atomgrants.com</span></div>
+      <div class="col"><span class="k">See the platform</span><span class="v hot">atomgrants.com/demo</span></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="counter" id="counter" aria-live="polite">
+  <span class="now">01</span><span class="sep">/</span><span class="total">06</span>
+</div>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const nowEl = counter.querySelector('.now');
+  const totalEl = counter.querySelector('.total');
+  let current = 0;
+  const total = slides.length;
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  function show(i) {
+    current = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    nowEl.textContent = String(current + 1).padStart(2, '0');
+  }
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+    else if (document.exitFullscreen) document.exitFullscreen();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case ' ': e.preventDefault(); if (e.shiftKey) prev(); else next(); break;
+      case 'Home': e.preventDefault(); show(0); break;
+      case 'End': e.preventDefault(); show(total - 1); break;
+      case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#counter')) return;
+    next();
+  });
+
+  function syncFromHash() {
+    const n = parseInt((location.hash || '').replace('#', ''), 10);
+    if (!isNaN(n) && n >= 1 && n <= total) show(n - 1);
+  }
+  window.addEventListener('hashchange', syncFromHash);
+
+  show(0);
+  syncFromHash();
+})();
+</script>
+</body>
+</html>
