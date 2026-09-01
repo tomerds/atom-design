@@ -76,6 +76,7 @@ Follow the house brand system (see root `CLAUDE.md`): single accent `#ff4227` as
 
 - **Plain language, no marketing voice.** Simplest word that works. **No em dashes** — use commas, colons, semicolons.
 - **Accent discipline.** One accent load per slide. On the stats and ROI slides, keep accent to a single number; the rest stays black. Do not wrap copy in tinted callout/admonition panels (banned in `CLAUDE.md`) — emphasize with an accent eyebrow, a single accent word, a soft-card, or the highlighted comparison column.
+- **Flat, no shadows.** This deck is exported to PDF, so nothing carries a drop shadow or glow (see "Banned: shadows on documents" in `CLAUDE.md`) — cards, the pricing table, and the whitelabel email mock are all border + radius + fill. The only `box-shadow` in the file is the zero-blur knockout collar on the timeline circles (`0 0 0 8px #fff`), which masks the connector line.
 - **Honesty on ROI.** Mark projections illustrative and anchor them to the prospect's own numbers. State the denominator if asked (annual license vs full Year-1 outlay).
 - **Reflect, don't invent.** The "sized to your institute" and "recommendation" slides must come from the transcript. Ask if unsure.
 

@@ -40,7 +40,7 @@ The input is usually a contact email or institution name. Query Granola (`query_
 ## Format
 
 - `.poster` at **1280 × 720** (13.333 × 7.5 in at 96dpi), one self-contained HTML file in its own folder: `<Institution>_Summary/` or `<Institution>_Conversation_Summary/`.
-- Three equal `.col` cards: `border: 1px solid #eeeeee`, `border-radius: 18px`, soft shadow — the house soft-card look, no hard rules, no colored left bars.
+- Three equal `.col` cards: `border: 1px solid #eeeeee`, `border-radius: 18px`, **flat (no shadow)** — the house soft-card look, no hard rules, no colored left bars. This slide exports to PDF, so it follows the "Banned: shadows on documents" rule in `CLAUDE.md`: border + radius + fill only.
 - Topbar: logo left (`../assets/newredlogowordmarkhighres.png`, height 30px), right meta `INSTITUTION · RECAP · MONTH YEAR` with the date in accent.
 - Cal Sans `font-weight: 400` on `<h1>` and `.col h2`; DM Sans everywhere else.
 - Keep the fit-to-window `<script>` from the reference so the HTML presents cleanly in a browser.

@@ -131,7 +131,7 @@ page.query_selector('[data-slide="3"]').screenshot(path="s3.png")
 
 - Edit `Kickoff_Deck/Kickoff_Deck.html`, then regenerate partner copies from it. Do not hand-edit per-partner decks.
 - Keep the five cover tokens and the six `[Reason N ...]` placeholders intact, and keep the `.partner-logo-img` rule on one line — `personalize.py` matches all of them textually.
-- Brand: single accent `#ff4227`, white bg, black text; Cal Sans titles, DM Sans body. Load Cal Sans from **Google Fonts** (`family=Cal+Sans`), not the retired cdnfonts CDN.
+- Brand: single accent `#ff4227`, white bg, black text; Cal Sans titles, DM Sans body. Load Cal Sans from **Google Fonts** (`family=Cal+Sans`), not the retired cdnfonts CDN. **Flat — no shadows:** this deck exports to PDF, so no `box-shadow` with blur or offset, no `filter: drop-shadow`, no glow; cards read from their border, radius, and fill (see "Banned: shadows on documents" in `CLAUDE.md`). Zero-blur rings (`0 0 0 1px`) used as hairline borders are fine.
 - Cal Sans ships one weight. Always set `font-weight: 400` on heading elements, since browsers synthetic-bold `<h1>`/`<h2>`/`<h3>` into an off-brand smear.
 - **Never** put a colored left rule (`border-left: 3px solid var(--accent)`) on a panel or text block. Emphasize with an accent eyebrow, a single accent word, or a chip.
 - No em dashes anywhere in copy. Plain language over marketing voice.

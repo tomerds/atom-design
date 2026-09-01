@@ -5,16 +5,16 @@ description: Build Atom Grants one-pagers (single-page Letter sheets — product
 
 # Atom Grants One-Pagers
 
-A single Letter-portrait sheet (read on-screen or printed) that makes one argument: what a product/module does, how it compares, or why someone should care. The house style is **soft UX cards on white** — rounded, lightly shadowed cards separated by hairline gray, never hard black rules.
+A single Letter-portrait sheet (read on-screen or printed) that makes one argument: what a product/module does, how it compares, or why someone should care. The house style is **soft UX cards on white** — rounded, **flat** cards with a hairline border, separated by hairline gray, never hard black rules. One-pagers are printed and read as PDFs, so they carry **no shadows at all** (see "Banned: shadows on documents" in `CLAUDE.md`).
 
 **Canonical reference (copy from this):** `references/Atom_vs_GrantAI.html` — a comparison one-pager that exercises every component in the system (positioning cards, the highlighted-column comparison table, scenario cards, the proof card). Start by reading it; reuse its CSS tokens and component blocks. The comparison layout is one *application* of the system — the **style** (cards, dividers, accent discipline, balance) is the part that's fixed.
 
-> ⚠️ **Do NOT copy `Proposals_Module_Onepager/`.** It's the retired style: hard black hairlines, square corners, no shadows, a left-accent-bar proof box. That's exactly what this skill replaces.
+> ⚠️ **Do NOT copy `Proposals_Module_Onepager/`.** It's the retired style: hard black hairlines, square corners, a left-accent-bar proof box. That's exactly what this skill replaces.
 
 ## Page setup
 
 - Letter **portrait**, `.poster` = `816 × 1056px` (8.5×11in at 96dpi), fixed height, `padding: 34px 48px 28px`.
-- Page background a warm off-white (`#eceae6`); the `.poster` itself is white with a soft outer shadow.
+- Page background a warm off-white (`#eceae6`); the `.poster` itself is plain white. **No outer shadow and no page border** — the white sheet reads against the warm background on its own, and the exported PDF has no edge line.
 - Include the `@page` + `@media print` block (size `8.5in 11in`, margin 0) so it exports clean. See the reference `<style>`.
 - One self-contained HTML file. Brand tokens (`--accent #ff4227`, grays, Cal Sans titles / DM Sans body, DM Mono for eyebrows) come straight from `CLAUDE.md` — load them as CSS variables; the reference already does.
 - Always set `font-weight: 400` on any Cal Sans heading element — `<h1>`/`<h2>`/`<h3>` default to `font-weight: bold` in browsers, which synthetic-bolds Cal Sans and makes it heavier than intended.
@@ -25,14 +25,14 @@ Everything that groups content is a **card**, and every card obeys the same rule
 
 - **Rounded corners:** `14px` (cards) / `16px` (the comparison table wrapper).
 - **Borders:** `1px solid var(--gray-hair)` (`#e8e8e8`). Never a black border.
-- **Shadows (soft, low):** `0 4px 16px rgba(0,0,0,0.05)` for cards; `0 6px 22px rgba(0,0,0,0.06)` for the table. Subtle, not floaty.
+- **No shadows.** Cards are flat: border + radius + fill, nothing else. No `box-shadow`, no `filter: drop-shadow`, no accent glow. If a card isn't reading as a card, strengthen the border, don't add elevation.
 - **Inner hairlines:** `#f1efec` or `--gray-hair` for row/cell dividers. **Structural rules** (top strip, hero underline, the thin line beside a section header) use `--gray-light` (`#d9d9d9`). **No black `var(--text)` dividers anywhere, ever.**
 
 ### Accent discipline
 
 One accent (`#ff4227`), used sparingly: the **highlighted card**, status checks, and the one or two words that carry the punch. The highlighted card (the Atom side, the recommended option) gets:
 
-- border `1.5px solid var(--accent)`, tint `background: #fff5f3`, and a faint accent glow `0 6px 20px rgba(255,66,39,0.08)`.
+- border `1.5px solid var(--accent)` and tint `background: #fff5f3`. **No accent glow** — the border and tint carry it.
 
 **Keep the highlighted side consistent.** If Atom is the recommended/winning column, put it on the **same side in every section** of the sheet (the reference keeps Atom on the **right** in the positioning cards, the comparison table, and the scenario cards). The reader's eye should land on Atom in the same place every time. Use CSS `order` to place it without reordering the DOM.
 
@@ -43,7 +43,7 @@ Cal Sans `h2` (~19px) + a `flex: 1` rule line in `--gray-light`. That's the only
 ## Component recipes (all in the reference)
 
 - **Positioning cards** (`.pos-card`) — two side-by-side cards introducing the things being compared; the highlighted one tinted + accent-bordered. Title (Cal Sans) + mono category tag + a plain-language line + a mono meta footer.
-- **Comparison table** (`.ctable`) — an elevated rounded card. Left column = capability labels; the highlighted product is a **full-height accent band** (continuous `#fff5f3` fill, accent left/right borders, rounded **top corners on the header cell** and **bottom corners on the last row**, `margin: 0 7px`). Header carries a small accent **pill badge** (e.g. "Full platform"). Status icons: accent **filled circle check** with a soft glow for yes, **muted gray ✕** (`#ededed` bg, `#b4b4b4` mark) for no, **hollow ring `~`** for partial. The losing column stays muted gray text so the accent column reads as the answer.
+- **Comparison table** (`.ctable`) — a flat rounded card (border only, no elevation). Left column = capability labels; the highlighted product is a **full-height accent band** (continuous `#fff5f3` fill, accent left/right borders, rounded **top corners on the header cell** and **bottom corners on the last row**, `margin: 0 7px`). Header carries a small accent **pill badge** (e.g. "Full platform"). Status icons: accent **filled circle check** (flat, no glow) for yes, **muted gray ✕** (`#ededed` bg, `#b4b4b4` mark) for no, **hollow ring `~`** for partial. The losing column stays muted gray text so the accent column reads as the answer.
 - **Scenario / "when each fits" cards** — two cards, mono uppercase label + one plain sentence each; highlighted card tinted to match.
 - **Proof card** (`.proof`) — a rounded `#fafafa` card with a small **accent status dot** before a mono label, then the named-customers line. **Not** a hard left-accent bar.
 
@@ -96,9 +96,9 @@ Use `html-screenshot` + `png-to-pdf` only for a pure poster/brand-art sheet with
 ## Build checklist
 
 - [ ] White `.poster` on warm bg, `@page`/print CSS present.
-- [ ] Every group is a rounded, softly-shadowed card; no black dividers (structural = `--gray-light`, inner = `#f1efec`).
-- [ ] One accent; highlighted card tinted + accent-bordered + glow; highlighted side **consistent across all sections**.
-- [ ] Comparison table = elevated card with full-height accent band, badge, and the three icon states.
+- [ ] Every group is a rounded, **flat** bordered card; **zero `box-shadow` / `drop-shadow` in the file**; no black dividers (structural = `--gray-light`, inner = `#f1efec`).
+- [ ] One accent; highlighted card tinted + accent-bordered (no glow); highlighted side **consistent across all sections**.
+- [ ] Comparison table = flat bordered card with full-height accent band, badge, and the three icon states.
 - [ ] Proof = soft gray card with accent dot (no left bar).
 - [ ] Plain copy, no em dashes.
 - [ ] **Fit-check passes** (`overflow ≤ 0`) and the page is balanced top-to-bottom.

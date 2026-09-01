@@ -76,6 +76,7 @@ The talk gets **exactly one agenda line, carrying its real title**, matching sli
 - One accent word in the title, the same word on 01 and 04. On 06 the accent lands on the closing phrase and the URL.
 - Slide 05 is the headline plus one line. It previously carried three "nothing is too basic" style notes; they were cut and should stay cut.
 - The QR card is **white with a hairline border and no shadow**. It reads as a card against the white page from the border alone.
+- **Nothing in this deck carries a shadow.** It exports to PDF, so no `box-shadow` with blur or offset, no `filter: drop-shadow`, no glow anywhere (see "Banned: shadows on documents" in `CLAUDE.md`). The only `box-shadow` in the file is the zero-blur `0 0 0 1px rgba(0,0,0,0.08)` hairline ring on the speaker portraits, which is a border.
 - Plain copy, no em dashes, no colored left-rule bars, Cal Sans at weight 400 only.
 
 ## Render
