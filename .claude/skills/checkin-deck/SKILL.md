@@ -182,6 +182,10 @@ Headline: "Where are we getting it right — and what's missing?" (accent on "wh
 }
 ```
 
+### Flat, no shadows
+
+Check-in decks are exported to PDF, so every surface is **flat**: no `box-shadow` with blur or offset, no `filter: drop-shadow`, no card elevation or glow. Stat tiles, objective cards, feedback prompts, and chart panels read from their **border, radius, and fill** alone (`--rule-soft` hairlines). If a card isn't reading as a card, strengthen the border, don't add depth. Zero-blur rings (`box-shadow: 0 0 0 1px …`) used as hairline borders around a headshot are fine. See "Banned: shadows on documents" in `CLAUDE.md`.
+
 ## Accent discipline (most important visual rule)
 
 **One focal accent moment per slide.** When everything is highlighted, nothing is. Default everything to black / muted gray and earn the accent.

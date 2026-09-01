@@ -39,6 +39,8 @@ The HTML must tell Chromium how to paginate. Add this once to the document's `<s
 }
 ```
 
+The `box-shadow: none !important` line is a safety net, not a licence to design with shadows: PDF deliverables are **flat** by house rule (see "Banned: shadows on documents" in `CLAUDE.md`), so the source HTML should have no blurred or offset shadows to strip in the first place.
+
 Swap `.page` for whatever class wraps each page section and `8.5in 11in` for the target paper size. Without these rules Chromium will paginate based on its own heuristics and you'll get misaligned or split pages.
 
 Any `<a href="https://...">` in the HTML automatically becomes a clickable annotation — wrap whole cards in `<a>` if you want the whole card to be clickable.

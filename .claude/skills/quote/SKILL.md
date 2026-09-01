@@ -84,6 +84,7 @@ When a deal needs more than one option (e.g. two tiers, or annual vs multi-year)
 This deliverable is a **traditional business document**, the one place that intentionally departs from the soft-card one-pager house style:
 
 - **Ruled tables and square corners**, tabular numbers (`font-variant-numeric: tabular-nums`).
+- **Completely flat.** No `box-shadow`, no `filter: drop-shadow`, no elevation anywhere — structure comes from rules and fills. (The house rule for every PDF deliverable; see "Banned: shadows on documents" in `CLAUDE.md`.)
 - **Restraint on accent and dark fills.** One accent (`#ff4227`) on the masthead rule, section labels, and includes bullets. No heavy near-black fills — the table header is light gray with dark text; the total box is light gray with a dark top rule (not an accent or black block). No tinted left-rule callouts (banned in `CLAUDE.md`).
 - **Cal Sans** for the "Quote" title, totals figure, and item titles; **DM Sans** for everything else. **No em dashes.**
 
