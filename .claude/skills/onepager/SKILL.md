@@ -23,7 +23,7 @@ A single Letter-portrait sheet (read on-screen or printed) that makes one argume
 
 Everything that groups content is a **card**, and every card obeys the same rules:
 
-- **Rounded corners:** `14px` (cards) / `16px` (the comparison table wrapper).
+- **Rounded corners:** `14px` (cards) / `12px` (the ends of the comparison-table accent band).
 - **Borders:** `1px solid var(--gray-hair)` (`#e8e8e8`). Never a black border.
 - **No shadows.** Cards are flat: border + radius + fill, nothing else. No `box-shadow`, no `filter: drop-shadow`, no accent glow. If a card isn't reading as a card, strengthen the border, don't add elevation.
 - **Inner hairlines:** `#f1efec` or `--gray-hair` for row/cell dividers. **Structural rules** (top strip, hero underline, the thin line beside a section header) use `--gray-light` (`#d9d9d9`). **No black `var(--text)` dividers anywhere, ever.**
@@ -43,7 +43,7 @@ Cal Sans `h2` (~19px) + a `flex: 1` rule line in `--gray-light`. That's the only
 ## Component recipes (all in the reference)
 
 - **Positioning cards** (`.pos-card`) — two side-by-side cards introducing the things being compared; the highlighted one tinted + accent-bordered. Title (Cal Sans) + mono category tag + a plain-language line + a mono meta footer.
-- **Comparison table** (`.ctable`) — a flat rounded card (border only, no elevation). Left column = capability labels; the highlighted product is a **full-height accent band** (continuous `#fff5f3` fill, accent left/right borders, rounded **top corners on the header cell** and **bottom corners on the last row**, `margin: 0 7px`). Header carries a small accent **pill badge** (e.g. "Full platform"). Status icons: accent **filled circle check** (flat, no glow) for yes, **muted gray ✕** (`#ededed` bg, `#b4b4b4` mark) for no, **hollow ring `~`** for partial. The losing column stays muted gray text so the accent column reads as the answer.
+- **Comparison table** (`.ctable`): **no outer card**, the table sits flush on the page. Left column = capability labels, middle = the muted product, right = the highlighted product as a **full-height accent band** (continuous `#fff5f3` fill, `1.5px` accent left/right borders, rounded **top corners on the header cell** and **bottom corners on the last row**). The band **lines up exactly with the highlighted cards above and below it**: grid `minmax(0,1.1fr) minmax(0,1fr) calc(50% + 8px)` with `margin-left: 16px` on the band cells, paired with a `16px` gap on every two-card grid (`.pos`, `.fits-grid`). **Row dividers run straight across**: a `#f1efec` line (`.crow + .crow::before`) spans the two left columns and the gap and stops at the band's border; inside the band a tinted `#f5ddd7` line (`.cell.atom::before`, `left: 0; right: 0`) continues between the borders, so the accent outline is never cut. Header carries a small accent **pill badge** (e.g. "Full platform"). Status icons: accent **filled circle check** (flat, no glow) for yes, **muted gray ✕** (`#ededed` bg, `#b4b4b4` mark) for no, **hollow ring `~`** for partial. The losing column stays muted gray text so the accent column reads as the answer.
 - **Scenario / "when each fits" cards** — two cards, mono uppercase label + one plain sentence each; highlighted card tinted to match.
 - **Proof card** (`.proof`) — a rounded `#fafafa` card with a small **accent status dot** before a mono label, then the named-customers line. **Not** a hard left-accent bar.
 
@@ -66,7 +66,7 @@ Cal Sans `h2` (~19px) + a `flex: 1` rule line in `--gray-light`. That's the only
    `overflow ≤ 0` = fits (the fixed-height `.poster` floors scrollHeight at 1056). `> 0` = trim.
 
 3. **Levers to reclaim space, in order:**
-   - **Comparison-table column widths.** This is the #1 culprit. A too-narrow *label* column wraps the labels to two lines (taller rows); a too-narrow *content* column wraps the descriptions. Balance them — short cells (mostly "None") can be the narrow column. In the reference, `1.3fr / 1.2fr / 1.5fr` (label / muted / highlighted) keeps every label on one line.
+   - **Comparison-table column widths.** This is the #1 culprit. The highlighted column is fixed (it must align with the cards), so balance the two left columns against each other: a too-narrow *label* column wraps labels to two lines, a too-narrow *muted* column wraps its descriptions. Shorten labels or muted cells before touching the band. Short cells (mostly "None") can live in the narrow column.
    - Table cell padding (`.crow .cell` / `.feat` vertical padding).
    - Section-header `padding-top`, card paddings, the hero padding.
    - Last resort: trim copy by a line (one-pagers reward terseness).
@@ -98,7 +98,7 @@ Use `html-screenshot` + `png-to-pdf` only for a pure poster/brand-art sheet with
 - [ ] White `.poster` on warm bg, `@page`/print CSS present.
 - [ ] Every group is a rounded, **flat** bordered card; **zero `box-shadow` / `drop-shadow` in the file**; no black dividers (structural = `--gray-light`, inner = `#f1efec`).
 - [ ] One accent; highlighted card tinted + accent-bordered (no glow); highlighted side **consistent across all sections**.
-- [ ] Comparison table = flat bordered card with full-height accent band, badge, and the three icon states.
+- [ ] Comparison table = no outer border; accent band aligned with the highlighted cards; row lines run through without cutting the band's outline; badge and the three icon states.
 - [ ] Proof = soft gray card with accent dot (no left bar).
 - [ ] Plain copy, no em dashes.
 - [ ] **Fit-check passes** (`overflow ≤ 0`) and the page is balanced top-to-bottom.
